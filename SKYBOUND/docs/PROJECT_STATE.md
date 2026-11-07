@@ -230,3 +230,14 @@ Der Flugterrain-Shader mischt jetzt vier unabhängige Gras-, Wald- und
 Fels-Albedos, darunter zwei CC0-Materialien mit Höhen-, Normal- und
 Rauheitskarten (1K). Boden- und Flugansichten in `VISUAL_OVERHAUL.md`.
 Zehn unabhängige hochauflösende Materialien und GPU-Messung bleiben offen.
+
+## Bodenbewuchs
+
+Zusätzlich zu Bäumen und Sträuchern erzeugt der Flugmodus deterministisch
+Grasbüschel, Kräuter und kleine Blüten als instanzierte 3D-Pflanzen auf
+geeigneten Wiesen. Maximal 1.600 Kandidaten je Kachel; Höhe, Neigung und
+Seegrenzen filtern die Platzierung. Feine Pflanzen werden nur bei näheren
+Detailstufen und bis 450 m angezeigt; aus größerer Entfernung wirkt die
+Bodentextur. Die Pflanzen sind selbst erzeugte, vereinfachte Geometrie,
+keine fotorealistischen Scans. RTX-/Windows-FPS und Langzeitverbrauch sind
+noch nicht getestet. Flug-, Pflanzen-, Preset- und Überflugtests bestehen.

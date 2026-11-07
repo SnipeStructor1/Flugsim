@@ -151,3 +151,20 @@ höher aufgelöst, und es gibt noch keine zehn unabhängigen Bodentexturen.
 Flug-, Preset-, Vegetations- und X11-Eingabetests bestehen. Zusätzliche
 Texturzugriffe und Speicherbedarf sind auf RTX 5070/Windows nicht gemessen.
 Lizenzzuordnung steht in `assets/licenses/README.md`.
+
+## 3D-Bodenbewuchs
+
+Für den Flugmodus werden Wiesenbüschel mit einzelnen Halmen, Kräutern und
+kleinen Blüten instanziert; die selbst erzeugte GLB-Datei ist über
+`tools/vegetation/build_groundcover.py` reproduzierbar. Die Vegetation folgt
+Geländekontakt, Hangneigung, Höhe und der bestehenden Seegrenze. Bis zu 1.600
+Kandidaten je Kachel werden getestet; keine Platzierung auf Schnee und steilen
+Felsen. Kleiner Bewuchs erscheint auf nahen/mittleren Kacheln bis 450 m
+Kameraabstand, weiter entfernt bleibt die Bodentextur sichtbar.
+
+Vergleich gleiche Bodenansicht: `visuals/terrain_detail_after.png` vor und
+`visuals/groundcover_after.png` nach der Änderung. Die Pflanzen sind sichtbar,
+aber noch vereinfacht und stellen keine fotorealistischen Scans dar.
+Vegetations- und Flugtests sowie X11-Tastaturtest bestanden. Die dichtere
+Szene braucht beim Software-Rendering länger; VRAM/FPS auf RTX 5070 oder
+Windows sind nicht gemessen.

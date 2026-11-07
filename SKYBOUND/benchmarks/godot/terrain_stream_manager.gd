@@ -21,6 +21,7 @@ var async_enabled := false
 var flight_vegetation := false
 var tree_mesh: Mesh
 var fir_mesh: Mesh
+var groundcover_mesh: Mesh
 var vegetation_noise := FastNoiseLite.new()
 var job = null
 var pending: Dictionary = {}
@@ -68,12 +69,13 @@ func _load_visual_mesh(path: String) -> Mesh:
 func load_flight_tree() -> bool:
 	tree_mesh = _load_visual_mesh("res://flight/assets/vegetation/tree.glb")
 	fir_mesh = _load_visual_mesh("res://flight/assets/vegetation/alpine_fir.glb")
+	groundcover_mesh = _load_visual_mesh("res://flight/assets/vegetation/groundcover.glb")
 	vegetation_noise.seed = int(model.seed_value) + 1207
 	vegetation_noise.frequency = 0.0017
 	vegetation_noise.fractal_octaves = 3
-	return tree_mesh != null and fir_mesh != null
+	return tree_mesh != null and fir_mesh != null and groundcover_mesh != null
 
-func _add_vegetation_batch(parent: MeshInstance3D, source: Mesh, transforms: Array[Transform3D]) -> void:
+func _add_vegetation_batch(parent: MeshInstance3D, source: Mesh, transforms: Array[Transform3D], max_distance: float = 0.0) -> void:
 	if transforms.is_empty():
 		return
 	var multi := MultiMesh.new()
@@ -84,6 +86,9 @@ func _add_vegetation_batch(parent: MeshInstance3D, source: Mesh, transforms: Arr
 		multi.set_instance_transform(i, transforms[i])
 	var node := MultiMeshInstance3D.new()
 	node.multimesh = multi
+	if max_distance > 0.0:
+		node.visibility_range_end = max_distance
+		node.visibility_range_end_margin = 30.0
 	parent.add_child(node)
 
 # Deterministic woodland patches and shrubs. Height and slope limit placement;
@@ -119,6 +124,28 @@ func _vegetation_transforms(operation: Dictionary) -> Dictionary:
 			shrubs.append(Transform3D(basis, Vector3(x, y, z)))
 	return {"firs": firs, "broadleaf": broadleaf, "shrubs": shrubs}
 
+# Small cover uses independent deterministic samples and only appears close to
+# the viewer; it has no collision or influence on terrain or flight physics.
+func _groundcover_transforms(operation: Dictionary) -> Array[Transform3D]:
+	var origin_value: Vector2 = operation.origin
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(operation.key) ^ int(model.seed_value) ^ 0x52b834
+	var result: Array[Transform3D] = []
+	for i in range(1600):
+		var x := origin_value.x + rng.randf_range(1.0, chunk_size - 1.0)
+		var z := origin_value.y + rng.randf_range(1.0, chunk_size - 1.0)
+		var y: float = builder.sample_height(model, origin_value, chunk_size, cells, operation.lod, x, z)
+		var in_lake := absf(x + 400.0) <= 220.0 and absf(z + 400.0) <= 160.0
+		if (in_lake and y < 13.0) or y > 205.0 or model.normal(x, z).y < 0.84:
+			continue
+		var density: float = vegetation_noise.get_noise_2d(x + 600.0, z - 430.0)
+		if density < -0.25:
+			continue
+		var scale := rng.randf_range(0.48, 1.18)
+		var basis := Basis(Vector3.UP, rng.randf_range(0.0, TAU)).scaled(Vector3(scale, scale * rng.randf_range(0.75, 1.25), scale))
+		result.append(Transform3D(basis, Vector3(x, y - 0.03, z)))
+	return result
+
 func _add_flight_trees(parent: MeshInstance3D, operation: Dictionary) -> void:
 	if tree_mesh == null or fir_mesh == null:
 		return
@@ -126,6 +153,9 @@ func _add_flight_trees(parent: MeshInstance3D, operation: Dictionary) -> void:
 	_add_vegetation_batch(parent, fir_mesh, groups.firs)
 	_add_vegetation_batch(parent, tree_mesh, groups.broadleaf)
 	_add_vegetation_batch(parent, tree_mesh, groups.shrubs)
+	# Only near/intermediate chunks need meter-scale grass at flight distances.
+	if operation.lod < 2 and groundcover_mesh != null:
+		_add_vegetation_batch(parent, groundcover_mesh, _groundcover_transforms(operation), 450.0)
 
 func _tick_async(camera_xz: Vector2, camera_y: float) -> Dictionary:
 	var plan: Dictionary = _plan(camera_xz, camera_y, max_resident)

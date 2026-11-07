@@ -58,3 +58,9 @@ kennzeichnet diese ambientCG-Assets als CC0 1.0. Jeweils 1024×1024 Pixel;
 RGB/Alpha packen Albedo/Höhe und Normale/Rauheit. Die direkten ambientCG-Seiten
 waren in dieser Umgebung nicht erreichbar; die Quellenzuordnung stammt aus
 dem mit den Bildern veröffentlichten Terrain3D-Hinweis.
+
+## Wiesenpflanzen – projekterzeugt
+
+`flight/assets/vegetation/groundcover.glb` wird aus
+`tools/vegetation/build_groundcover.py` in Blender generiert und enthält
+keine externen Texturen oder übernommenen Pflanzenmodelle.

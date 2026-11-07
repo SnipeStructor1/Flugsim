@@ -31,6 +31,22 @@ func _initialize() -> void:
 						quit(1)
 						return
 					count += 1
+	var op := {"key": Vector2i(0, -20), "origin": Vector2(0, -5120), "lod": 0}
+	var cover: Array[Transform3D] = manager._groundcover_transforms(op)
+	var cover_again: Array[Transform3D] = manager._groundcover_transforms(op)
+	if cover != cover_again or cover.is_empty():
+		printerr("Groundcover missing or nondeterministic")
+		manager.free()
+		quit(1)
+		return
+	for t in cover:
+		var expected: float = manager.builder.sample_height(manager.model, op.origin, 256, 16, 0, t.origin.x, t.origin.z)
+		if absf((t.origin.y + 0.03) - expected) > 0.01 or t.origin.y + 0.03 > 205.0 or manager.model.normal(t.origin.x, t.origin.z).y < 0.84:
+			printerr("Groundcover terrain contact or slope invalid")
+			manager.free()
+			quit(1)
+			return
+	print("GROUNDCOVER_TEST_PASS count=", cover.size(), " deterministic terrain_contact slope")
 	manager.free()
 	if count < 10:
 		printerr("Test region did not generate vegetation")
