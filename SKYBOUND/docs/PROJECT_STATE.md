@@ -216,3 +216,12 @@ Benchmarkobjekte bleiben unverändert.
 
 Die tatsächliche Ausgabe in 2560×1440 wurde als Medium-Softwarebild bestätigt;
 keine Aussage über FPS oder Leistung auf der Ziel-GPU.
+
+## Alpenlook und visuelle Korrektur
+
+Licht, Schattenübergänge, Grastextur, Schnee und höhen-/hangabhängige
+Waldgruppen wurden für die Flugansicht angepasst. Gleiche Kamerapositionen
+vor/nachher und Grenzen stehen in `VISUAL_OVERHAUL.md`. Vegetations-, Flug-,
+Terrain- und Eingabetests bestanden; GPU-/Windows-Performance offen. Der
+Jet ist unverändert, ein detailliertes Modell und echtes Alpenvegetations-
+Asset fehlen. Keine Terrainhöhen oder Streamingplanung geändert.

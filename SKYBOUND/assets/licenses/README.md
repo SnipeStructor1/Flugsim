@@ -33,3 +33,15 @@ von [Ricardo Sanchez](https://sketchfab.com/380660711785),
 [Godot-Demos](https://github.com/godotengine/godot-demo-projects/tree/b761b4cd5718a7118f2c95eb55f181d0a5f004f1/3d/truck_town/town/tree),
 Commit `b761b4cd5718a7118f2c95eb55f181d0a5f004f1`; der ursprüngliche
 [Urheberhinweis](tree-low-poly-CC-BY-4.0.txt) liegt bei.
+
+## Grastextur – Godot Demo Projects
+
+`benchmarks/godot/flight/assets/grass/grass.webp` stammt aus dem
+[Truck-Town-Demo](https://github.com/godotengine/godot-demo-projects/blob/b761b4cd5718a7118f2c95eb55f181d0a5f004f1/3d/truck_town/town/materials/grass.webp),
+Commit `b761b4cd5718a7118f2c95eb55f181d0a5f004f1`; das Demo-Repository ist
+MIT-lizenziert, siehe [godot-demo-projects-MIT.txt](godot-demo-projects-MIT.txt).
+Die Textur selbst ist unverändert, die Darstellung im Shader ist abgetönt.
+
+`flight/assets/vegetation/alpine_fir.glb` ist eine konisch umgeformte Variante
+des oben genannten CC-BY-4.0-Baumes von Ricardo Sanchez; reproduzierbar über
+`tools/vegetation/build_conifer.py`. Die gleichen Namensnennungen gelten.

@@ -20,6 +20,8 @@ var nodes := {}
 var async_enabled := false
 var flight_vegetation := false
 var tree_mesh: Mesh
+var fir_mesh: Mesh
+var vegetation_noise := FastNoiseLite.new()
 var job = null
 var pending: Dictionary = {}
 var geometry_config: Dictionary = {}
@@ -50,51 +52,80 @@ func _install_mesh(operation: Dictionary, mesh: ArrayMesh) -> void:
 
 # Load the licensed tree as a shared mesh once; per-chunk instances own no
 # independent textures and are released with their parent chunk.
-func load_flight_tree() -> bool:
+func _load_visual_mesh(path: String) -> Mesh:
 	var document := GLTFDocument.new()
 	var state := GLTFState.new()
-	var path := ProjectSettings.globalize_path("res://flight/assets/vegetation/tree.glb")
-	if document.append_from_file(path, state) != OK:
-		return false
+	if document.append_from_file(ProjectSettings.globalize_path(path), state) != OK:
+		return null
 	var scene := document.generate_scene(state)
 	if scene == null:
-		return false
+		return null
 	var meshes := scene.find_children("*", "MeshInstance3D", true, false)
-	if meshes.is_empty():
-		scene.free()
-		return false
-	tree_mesh = (meshes[0] as MeshInstance3D).mesh
+	var result: Mesh = (meshes[0] as MeshInstance3D).mesh if not meshes.is_empty() else null
 	scene.free()
-	return tree_mesh != null
+	return result
 
-# Flight-only decorative trees outside the original authored 2 km area. Their
-# seed and transforms depend only on chunk identity, so reloads are repeatable.
-func _add_flight_trees(parent: MeshInstance3D, operation: Dictionary) -> void:
-	var chunk_origin: Vector2 = operation.origin
-	if chunk_origin.x >= -1024.0 and chunk_origin.x < 1024.0 and chunk_origin.y >= -1024.0 and chunk_origin.y < 1024.0:
-		return
-	if tree_mesh == null:
-		return
-	var rng := RandomNumberGenerator.new()
-	rng.seed = hash(operation.key) ^ int(model.seed_value)
-	var transforms: Array[Transform3D] = []
-	for i in range(12):
-		var x := chunk_origin.x + rng.randf_range(1.0, chunk_size - 1.0)
-		var z := chunk_origin.y + rng.randf_range(1.0, chunk_size - 1.0)
-		var y: float = builder.sample_height(model, chunk_origin, chunk_size, cells, operation.lod, x, z)
-		if y > 10.0 and y < 350.0:
-			transforms.append(Transform3D(Basis.IDENTITY, Vector3(x, y, z)))
+func load_flight_tree() -> bool:
+	tree_mesh = _load_visual_mesh("res://flight/assets/vegetation/tree.glb")
+	fir_mesh = _load_visual_mesh("res://flight/assets/vegetation/alpine_fir.glb")
+	vegetation_noise.seed = int(model.seed_value) + 1207
+	vegetation_noise.frequency = 0.0017
+	vegetation_noise.fractal_octaves = 3
+	return tree_mesh != null and fir_mesh != null
+
+func _add_vegetation_batch(parent: MeshInstance3D, source: Mesh, transforms: Array[Transform3D]) -> void:
 	if transforms.is_empty():
 		return
 	var multi := MultiMesh.new()
 	multi.transform_format = MultiMesh.TRANSFORM_3D
-	multi.mesh = tree_mesh
+	multi.mesh = source
 	multi.instance_count = transforms.size()
 	for i in range(transforms.size()):
 		multi.set_instance_transform(i, transforms[i])
 	var node := MultiMeshInstance3D.new()
 	node.multimesh = multi
 	parent.add_child(node)
+
+# Deterministic woodland patches and shrubs. Height and slope limit placement;
+# the noise field is in world coordinates so groups cross chunk boundaries.
+func _vegetation_transforms(operation: Dictionary) -> Dictionary:
+	var chunk_origin: Vector2 = operation.origin
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(operation.key) ^ int(model.seed_value)
+	var firs: Array[Transform3D] = []
+	var broadleaf: Array[Transform3D] = []
+	var shrubs: Array[Transform3D] = []
+	for i in range(90):
+		var x := chunk_origin.x + rng.randf_range(1.0, chunk_size - 1.0)
+		var z := chunk_origin.y + rng.randf_range(1.0, chunk_size - 1.0)
+		var y: float = builder.sample_height(model, chunk_origin, chunk_size, cells, operation.lod, x, z)
+		var slope: float = model.normal(x, z).y
+		var patch: float = vegetation_noise.get_noise_2d(x, z)
+		var in_lake := absf(x + 400.0) <= 220.0 and absf(z + 400.0) <= 160.0
+		if (in_lake and y < 13.0) or y > 330.0 or slope < 0.72:
+			continue
+		var angle := rng.randf_range(0.0, TAU)
+		if patch > -0.10 and y < 270.0 and slope > 0.79:
+			var scale := rng.randf_range(0.72, 1.25)
+			var basis := Basis(Vector3.UP, angle).scaled(Vector3(scale, scale * rng.randf_range(0.9, 1.2), scale))
+			var transform := Transform3D(basis, Vector3(x, y, z))
+			if rng.randf() < 0.82:
+				firs.append(transform)
+			else:
+				broadleaf.append(transform)
+		elif patch > -0.30 and rng.randf() < 0.7:
+			var scale := rng.randf_range(0.10, 0.23)
+			var basis := Basis(Vector3.UP, angle).scaled(Vector3(scale * 1.3, scale * 0.65, scale * 1.3))
+			shrubs.append(Transform3D(basis, Vector3(x, y, z)))
+	return {"firs": firs, "broadleaf": broadleaf, "shrubs": shrubs}
+
+func _add_flight_trees(parent: MeshInstance3D, operation: Dictionary) -> void:
+	if tree_mesh == null or fir_mesh == null:
+		return
+	var groups := _vegetation_transforms(operation)
+	_add_vegetation_batch(parent, fir_mesh, groups.firs)
+	_add_vegetation_batch(parent, tree_mesh, groups.broadleaf)
+	_add_vegetation_batch(parent, tree_mesh, groups.shrubs)
 
 func _tick_async(camera_xz: Vector2, camera_y: float) -> Dictionary:
 	var plan: Dictionary = _plan(camera_xz, camera_y, max_resident)

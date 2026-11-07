@@ -23,6 +23,7 @@ def main():
     common = [args.godot, '--headless', '--path', str(ROOT / 'benchmarks/godot')]
     checks = [
         (common + ['--script', 'res://flight/test_flight_model.gd'], {}, 'FLIGHT_MODEL_TEST_PASS'),
+        (common + ['--script', 'res://flight/test_alpine_vegetation.gd'], {}, 'ALPINE_VEGETATION_TEST_PASS'),
         (common + ['--fixed-fps', '60', '--quit-after', '1000', 'res://flight/flight.tscn'], {'SKYBOUND_FLIGHT_AUTOTEST': '1'}, 'FLIGHT_SCENE_TEST_PASS'),
         (common + ['--fixed-fps', '60', '--quit-after', '5000', 'res://flight/flight.tscn'], {'SKYBOUND_FLIGHT_JOURNEY': '1'}, 'FLIGHT_JOURNEY_TEST_PASS'),
     ]

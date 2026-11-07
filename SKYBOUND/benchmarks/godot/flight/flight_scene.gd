@@ -88,20 +88,29 @@ func _ready() -> void:
 			get_tree().quit(2)
 			return
 		manager.terrain_material.set_shader_parameter(entry[0], ImageTexture.create_from_image(image))
+	var grass_image := Image.new()
+	var grass_path := ProjectSettings.globalize_path("res://flight/assets/grass/grass.webp")
+	if grass_image.load(grass_path) != OK or grass_image.generate_mipmaps() != OK:
+		push_error("Could not load alpine grass texture")
+		get_tree().quit(2)
+		return
+	manager.terrain_material.set_shader_parameter("grass_albedo", ImageTexture.create_from_image(grass_image))
 	manager.planner.infinite_grid = true
 	manager.flight_vegetation = true
 	if not manager.load_flight_tree():
 		push_error("Could not load flight vegetation asset")
 		get_tree().quit(2)
 		return
-	# The original scene places tree placeholders at half their height. Replace
-	# only those cylinders and retain rocks, buildings and their placement.
+	# Remove scattered benchmark placeholders in the flight scene. The terrain
+	# manager places ecological groups that follow slope and height instead.
+	var retained_ground: Array[Dictionary] = []
 	for entry in world.ground_objects:
 		var node: MeshInstance3D = entry.node
 		if node.mesh is CylinderMesh:
-			node.mesh = manager.tree_mesh
-			node.material_override = null
-			entry.offset = 0.0
+			node.visible = false
+		else:
+			retained_ground.append(entry)
+	world.ground_objects = retained_ground
 	manager.planner.policy.load_distance = 1000.0
 	manager.max_resident = 100
 	manager.build_budget = 8
@@ -141,10 +150,10 @@ func _ready() -> void:
 	hud.add_theme_constant_override("shadow_offset_y", 2)
 	layer.add_child(hud)
 	reset_flight()
-	if capture_view in ["far", "lake_jet", "low"] and not capture_path.is_empty():
+	if capture_view in ["far", "lake_jet", "low", "ground"] and not capture_path.is_empty():
 		if capture_view == "lake_jet":
 			model.position = Vector3(-400, 140, -230)
-		elif capture_view == "low":
+		elif capture_view in ["low", "ground"]:
 			model.position = Vector3(0, world.terrain.height(0, -5000) + 85.0, -5000)
 		else:
 			model.position = Vector3(0, 350, -5000)
@@ -166,6 +175,16 @@ func apply_flight_atmosphere() -> void:
 			sky_material = ShaderMaterial.new()
 			sky_material.shader = load("res://flight/flight_sky.gdshader")
 			child.environment.sky.sky_material = sky_material
+			# Flight-only grading: preserve distant depth while avoiding the
+			# benchmark's dense uniform haze over nearby terrain.
+			child.environment.tonemap_mode = Environment.TONE_MAPPER_ACES
+			child.environment.tonemap_exposure = 0.88
+			child.environment.ambient_light_energy = 0.72
+			child.environment.fog_density = 0.00016
+			child.environment.volumetric_fog_density = 0.0015
+			child.environment.adjustment_enabled = true
+			child.environment.adjustment_contrast = 1.10
+			child.environment.adjustment_saturation = 0.88
 			# Retain distance haze on geometry without washing out the entire sky.
 			child.environment.fog_sky_affect = 0.0
 			child.environment.volumetric_fog_sky_affect = 0.0
@@ -212,9 +231,10 @@ func update_daylight(delta: float) -> void:
 		day_phase = fposmod(day_phase + delta / 1200.0, 1.0)
 	var elevation := 35.0 + 35.0 * sin(day_phase * TAU)
 	var dusk := 1.0 - smoothstep(3.0, 22.0, elevation)
+	world.sunlight.directional_shadow_blend_splits = true
 	world.sunlight.rotation_degrees.x = -maxf(elevation, 1.0)
 	world.sunlight.light_color = Color(1.0, lerpf(0.96, 0.62, dusk), lerpf(0.87, 0.40, dusk))
-	world.sunlight.light_energy = lerpf(1.2, 0.70, dusk)
+	world.sunlight.light_energy = lerpf(1.20, 0.72, dusk)
 	if sky_material != null:
 		sky_material.set_shader_parameter("sunset_strength", dusk)
 
@@ -371,6 +391,15 @@ func update_camera() -> void:
 		camera.look_at(Vector3(-400, 8, -400), Vector3.UP)
 		return
 	var orientation := Basis(model.attitude)
+	if not capture_path.is_empty() and capture_view == "ground":
+		aircraft.visible = false
+		cockpit.visible = false
+		var gx := 40.0
+		var gz := -5000.0
+		camera.position = Vector3(gx, world.terrain.height(gx, gz) + 8.0, gz)
+		var ahead := Vector3(gx + 20.0, world.terrain.height(gx + 20.0, gz - 90.0) + 5.0, gz - 90.0)
+		camera.look_at(ahead, Vector3.UP)
+		return
 	if not capture_path.is_empty() and capture_view == "aircraft":
 		aircraft.visible = true
 		cockpit.visible = false

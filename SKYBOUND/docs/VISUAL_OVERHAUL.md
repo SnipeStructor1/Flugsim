@@ -106,3 +106,29 @@ Nadelbäume, Wind, LOD und Leistungsprüfung sind offen.
 Eine 2560×1440-Tiefflugaufnahme in Medium wurde mit Software-Vulkan
 erfolgreich erstellt: `visuals/visual_1440p_software.png`. Das beweist die
 Ausgabeauflösung, aber weder Echtzeitfähigkeit noch RTX-Performance.
+
+## Alpen-Anmutung und Lichtkorrektur
+
+Auf Nutzerwunsch bleibt die Terrain-Generierung und Streaming-Planung unverändert.
+Im Flugmodus: weniger volumetrischer und regulärer Nebel, ACES-Tonemapping,
+angepasstes Umgebungslicht und Kontrast sowie weichere Übergänge zwischen
+Schattenkaskaden. `visuals/alpine_light_before.png` und
+`visuals/alpine_light_after.png` zeigen dieselbe Flugkamera nach 30
+Simulationsschritten; zwischen den Aufnahmen wurde zusätzlich die Baumvariante
+ersetzt. Die Gegenüberstellung ist daher kein isolierter Beleuchtungsbenchmark.
+
+`visuals/alpine_ground_before.png` und `visuals/alpine_ground_after.png`
+zeigen die gleiche bodennahe Kameraposition (Medium); beide Licht und Baumform
+änderten sich zwischen den Aufnahmen. Die Szene nutzt eine MIT-lizenzierte
+Grastextur sowie Felsmaterial und verbreiterte Schneezonen. Der alte
+Höhenfilter, der überall unter 13 m Vegetation verhinderte, wurde auf den
+bestehenden See beschränkt; Waldgruppen, Laubbäume und kleine Buschvarianten
+folgen Höhe, Hang und zusammenhängendem Dichtefeld. Die Nadelbaum-Anmutung
+basiert auf einer geformten Variante eines CC-BY-Laubbaums und ist kein
+realistischer Nadelbaum-Scan; Büsche sind verkleinerte Baumvarianten.
+
+Die Vegetationsprüfung kontrolliert deterministisches Neugenerieren, Höhe,
+Hangneigung und Bodenkontakt für 1.483 Instanzen im Testgebiet. Die gleich
+getesteten Flugfunktionen und 4,2-km-Reise funktionieren weiter. Softwarebilder
+sind keine GPU-Leistungsmessung. Es fehlen echte Alpen-Nadelbäume, dedizierte
+Sträucher und ein hochwertiges Erdmaterial; der Jet bleibt vorerst unverändert.

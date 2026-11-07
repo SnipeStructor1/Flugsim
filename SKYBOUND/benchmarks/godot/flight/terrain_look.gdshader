@@ -1,6 +1,7 @@
 shader_type spatial;
 render_mode diffuse_burley, specular_schlick_ggx;
 
+uniform sampler2D grass_albedo : source_color, repeat_enable, filter_linear_mipmap;
 uniform sampler2D rock_albedo : source_color, repeat_enable, filter_linear_mipmap;
 uniform sampler2D rock_roughness : repeat_enable, filter_linear_mipmap;
 uniform sampler2D rock_normal : repeat_enable, filter_linear_mipmap;
@@ -38,12 +39,18 @@ void fragment() {
 	float mid_noise = triplanar_noise(world_position * 0.045 + vec3(17.0, 8.0, 3.0), n);
 	float detail = triplanar_noise(world_position * 0.19 + vec3(4.0, 21.0, 11.0), n);
 	float steep = smoothstep(0.12, 0.52, 1.0 - n.y);
-	float snow = smoothstep(270.0 + macro_noise * 90.0, 365.0 + macro_noise * 90.0, world_position.y) * smoothstep(0.40, 0.87, n.y);
-	float shore = (1.0 - smoothstep(7.0, 26.0, world_position.y)) * smoothstep(0.7, 0.95, n.y);
+	float snow = smoothstep(205.0 + macro_noise * 45.0, 285.0 + macro_noise * 45.0, world_position.y) * smoothstep(0.30, 0.78, n.y);
+	vec2 lake_offset = (world_position.xz - vec2(-400.0, -400.0)) / vec2(260.0, 200.0);
+	float lake_region = 1.0 - smoothstep(0.85, 1.2, length(lake_offset));
+	float shore = (1.0 - smoothstep(7.0, 26.0, world_position.y)) * smoothstep(0.7, 0.95, n.y) * lake_region;
 	float strata = 0.5 + 0.5 * sin(world_position.y * 0.36 + mid_noise * 5.0);
 	float rock_detail = mix(mid_noise, strata, 0.30);
 	vec3 grass = mix(vec3(0.065, 0.105, 0.039), vec3(0.20, 0.25, 0.10), macro_noise);
-	grass *= mix(0.82, 1.16, mid_noise);
+	vec3 grass_detail = texture(grass_albedo, world_position.xz * 0.12).rgb;
+	vec3 grass_broad = texture(grass_albedo, world_position.xz * 0.033 + vec2(11.0, 7.0)).rgb;
+	float grass_luma = dot(mix(grass_detail, grass_broad, 0.35), vec3(0.2126, 0.7152, 0.0722));
+	grass = mix(grass, grass_detail * vec3(0.50, 0.52, 0.40), 0.58);
+	grass *= mix(0.82, 1.18, clamp(grass_luma, 0.0, 1.0)) * mix(0.80, 1.18, mid_noise);
 	vec3 rock_sample = triplanar_texture(rock_albedo, world_position * 0.035, n).rgb;
 	vec3 rock_sample_far = triplanar_texture(rock_albedo, world_position * 0.013 + vec3(13.0), n).rgb;
 	float rock_luma = dot(mix(rock_sample, rock_sample_far, 0.40), vec3(0.2126, 0.7152, 0.0722));
