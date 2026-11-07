@@ -1,0 +1,237 @@
+{
+  "mode": "SOFTWARE_RENDER_CHECK",
+  "performance_measured": false,
+  "resolution": [
+    960,
+    540
+  ],
+  "scene_sha256": "05feeb00a4fa6c73c69896e9e905d87013ad50479c1d968b41a2fad26f7ecce2",
+  "views_sha256": "bb1dcc3ef4df16b6fef190bb80d2e917e163289b826ee2637412a18686834940",
+  "runs": [
+    {
+      "profile": "Medium",
+      "view": "mountains",
+      "status": "PASS",
+      "wall_seconds_including_shader_compilation": 15.951119865999999,
+      "engine_settings": {
+        "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 540,
+        "profile": "Medium",
+        "render_check": true,
+        "renderer": "forward_plus",
+        "smoke": false,
+        "terrain_stream": false,
+        "upscaling": "native",
+        "view": "mountains",
+        "width": 960
+      },
+      "completion": {
+        "camera_end": "(0.0, 180.0, 700.0)",
+        "frames": 4,
+        "render_check": true,
+        "resident_chunks": 0,
+        "smoke": false,
+        "stream_settled": false,
+        "terrain_stream": false,
+        "total_frames": 4
+      },
+      "screenshot": "Medium_mountains.png",
+      "sha256": "e717a279ec47669c6031ce1ce6d7f563a948e3a035675754c5924979601da945"
+    },
+    {
+      "profile": "Medium",
+      "view": "sunset",
+      "status": "PASS",
+      "wall_seconds_including_shader_compilation": 15.952582472000131,
+      "engine_settings": {
+        "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 540,
+        "profile": "Medium",
+        "render_check": true,
+        "renderer": "forward_plus",
+        "smoke": false,
+        "terrain_stream": false,
+        "upscaling": "native",
+        "view": "sunset",
+        "width": 960
+      },
+      "completion": {
+        "camera_end": "(250.0, 260.0, 750.0)",
+        "frames": 4,
+        "render_check": true,
+        "resident_chunks": 0,
+        "smoke": false,
+        "stream_settled": false,
+        "terrain_stream": false,
+        "total_frames": 4
+      },
+      "screenshot": "Medium_sunset.png",
+      "sha256": "311314dfc3a2a13d83d5eccf50b59d48ef42287de070a5ddb24e424a8b080d20"
+    },
+    {
+      "profile": "Medium",
+      "view": "lake",
+      "status": "PASS",
+      "wall_seconds_including_shader_compilation": 12.699423154999977,
+      "engine_settings": {
+        "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 540,
+        "profile": "Medium",
+        "render_check": true,
+        "renderer": "forward_plus",
+        "smoke": false,
+        "terrain_stream": false,
+        "upscaling": "native",
+        "view": "lake",
+        "width": 960
+      },
+      "completion": {
+        "camera_end": "(-400.0, 80.0, -230.0)",
+        "frames": 4,
+        "render_check": true,
+        "resident_chunks": 0,
+        "smoke": false,
+        "stream_settled": false,
+        "terrain_stream": false,
+        "total_frames": 4
+      },
+      "screenshot": "Medium_lake.png",
+      "sha256": "69a908b7997cd6a1daad849a1732286c73e303c1fa8f77b9be375c678fb01285"
+    },
+    {
+      "profile": "Medium",
+      "view": "forest",
+      "status": "PASS",
+      "wall_seconds_including_shader_compilation": 15.712745901000062,
+      "engine_settings": {
+        "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 540,
+        "profile": "Medium",
+        "render_check": true,
+        "renderer": "forward_plus",
+        "smoke": false,
+        "terrain_stream": false,
+        "upscaling": "native",
+        "view": "forest",
+        "width": 960
+      },
+      "completion": {
+        "camera_end": "(5.0, 72.0, 400.0)",
+        "frames": 4,
+        "render_check": true,
+        "resident_chunks": 0,
+        "smoke": false,
+        "stream_settled": false,
+        "terrain_stream": false,
+        "total_frames": 4
+      },
+      "screenshot": "Medium_forest.png",
+      "sha256": "fc1eeb0124696623779ffa725f451bbc74434d7ab6ec7fae667a8918791b0d02"
+    },
+    {
+      "profile": "Medium",
+      "view": "clouds",
+      "status": "PASS",
+      "wall_seconds_including_shader_compilation": 12.544288556000083,
+      "engine_settings": {
+        "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 540,
+        "profile": "Medium",
+        "render_check": true,
+        "renderer": "forward_plus",
+        "smoke": false,
+        "terrain_stream": false,
+        "upscaling": "native",
+        "view": "clouds",
+        "width": 960
+      },
+      "completion": {
+        "camera_end": "(0.0, 750.0, 800.0)",
+        "frames": 4,
+        "render_check": true,
+        "resident_chunks": 0,
+        "smoke": false,
+        "stream_settled": false,
+        "terrain_stream": false,
+        "total_frames": 4
+      },
+      "screenshot": "Medium_clouds.png",
+      "sha256": "40887af8c47981262136a7df99ba85ca5fd090dff4820e2df28db04050604a31"
+    },
+    {
+      "profile": "Medium",
+      "view": "ground",
+      "status": "PASS",
+      "wall_seconds_including_shader_compilation": 16.00531080399992,
+      "engine_settings": {
+        "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 540,
+        "profile": "Medium",
+        "render_check": true,
+        "renderer": "forward_plus",
+        "smoke": false,
+        "terrain_stream": false,
+        "upscaling": "native",
+        "view": "ground",
+        "width": 960
+      },
+      "completion": {
+        "camera_end": "(0.0, 89.0, 350.0)",
+        "frames": 4,
+        "render_check": true,
+        "resident_chunks": 0,
+        "smoke": false,
+        "stream_settled": false,
+        "terrain_stream": false,
+        "total_frames": 4
+      },
+      "screenshot": "Medium_ground.png",
+      "sha256": "7ac7d06194d5141b972f6717b6ed2e12df4d4b62e4916b4f1049bc26ceaebb58"
+    },
+    {
+      "profile": "Medium",
+      "view": "high_altitude",
+      "status": "PASS",
+      "wall_seconds_including_shader_compilation": 12.995552364000105,
+      "engine_settings": {
+        "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 540,
+        "profile": "Medium",
+        "render_check": true,
+        "renderer": "forward_plus",
+        "smoke": false,
+        "terrain_stream": false,
+        "upscaling": "native",
+        "view": "high_altitude",
+        "width": 960
+      },
+      "completion": {
+        "camera_end": "(0.0, 1250.0, 700.0)",
+        "frames": 4,
+        "render_check": true,
+        "resident_chunks": 0,
+        "smoke": false,
+        "stream_settled": false,
+        "terrain_stream": false,
+        "total_frames": 4
+      },
+      "screenshot": "Medium_high_altitude.png",
+      "sha256": "2b0b6e548f8f2a7d0b0849703af4d94610024f5abb0db8617efec78a770128fd"
+    }
+  ],
+  "status": "PASS"
+}

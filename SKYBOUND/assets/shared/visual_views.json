@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "views": {
+    "mountains": {
+      "position_m": [
+        0,
+        180,
+        700
+      ],
+      "look_at_m": [
+        0,
+        50,
+        0
+      ],
+      "sun_rotation_deg": [
+        -35,
+        -25,
+        0
+      ]
+    },
+    "sunset": {
+      "position_m": [
+        250,
+        260,
+        750
+      ],
+      "look_at_m": [
+        0,
+        70,
+        -150
+      ],
+      "sun_rotation_deg": [
+        -5,
+        -25,
+        0
+      ]
+    },
+    "lake": {
+      "position_m": [
+        -400,
+        80,
+        -230
+      ],
+      "look_at_m": [
+        -400,
+        8,
+        -400
+      ],
+      "sun_rotation_deg": [
+        -35,
+        -25,
+        0
+      ]
+    },
+    "forest": {
+      "position_m": [
+        5,
+        72,
+        400
+      ],
+      "look_at_m": [
+        -13,
+        95,
+        353
+      ],
+      "sun_rotation_deg": [
+        -35,
+        -25,
+        0
+      ]
+    },
+    "clouds": {
+      "position_m": [
+        0,
+        750,
+        800
+      ],
+      "look_at_m": [
+        0,
+        700,
+        0
+      ],
+      "sun_rotation_deg": [
+        -35,
+        -25,
+        0
+      ]
+    },
+    "ground": {
+      "position_m": [
+        0,
+        89,
+        350
+      ],
+      "look_at_m": [
+        50,
+        110,
+        250
+      ],
+      "sun_rotation_deg": [
+        -35,
+        -25,
+        0
+      ]
+    },
+    "high_altitude": {
+      "position_m": [
+        0,
+        1250,
+        700
+      ],
+      "look_at_m": [
+        0,
+        30,
+        -100
+      ],
+      "sun_rotation_deg": [
+        -35,
+        -25,
+        0
+      ]
+    }
+  }
+}

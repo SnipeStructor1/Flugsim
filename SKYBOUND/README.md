@@ -89,3 +89,18 @@ Für interaktive Prüfung `godot --path benchmarks/godot --rendering-method
 forward_plus -- --interactive=true --terrain-stream=true`. Der Modus ist für
 Benchmarks gesperrt: sichtbare Übergänge, Ladeverhalten, CPU-/GPU-Leistung und
 harte Speicherbudgets müssen noch überprüft werden.
+
+## Feste Bildreferenzen
+
+Sieben Kameras (`mountains`, `sunset`, `lake`, `forest`, `clouds`, `ground`,
+`high_altitude`) sind in `assets/shared/visual_views.json` gespeichert. Beispiel:
+
+```sh
+python scripts/render_check.py --preview --profiles Medium --views mountains sunset lake forest clouds ground high_altitude --compare-dir docs/visuals/references --max-mean-difference 1 --output /tmp/skybound-reference-check
+```
+
+Der Bildvergleich benötigt optional Pillow. Er misst pixelweise RGB-Abweichungen;
+eine Toleranz ist nur dann ein Fehlerkriterium, wenn sie explizit angegeben wird.
+Renderer, Treiber und Umgebungsbedingungen können Bildwerte ändern. Automatische
+Abweichungen ersetzen keine visuelle Beurteilung. Referenzbilder sind technische
+Baselines, keine Behauptung fertiger fotorealistischer Grafik.

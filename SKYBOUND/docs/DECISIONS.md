@@ -56,3 +56,22 @@
   ersten Bild verglichen. Die frühere Fenstereinstellung allein lieferte bei
   angeforderten 960×540 einen 1920×1080-Puffer. Durch Vorprüfung des
   Benchmark-GDScripts werden Parsefehler vor langen Bildläufen erkannt.
+
+- Sieben feste Referenzansichten erfassen auch unvollständige Systeme sichtbar.
+  Namen wie `forest` und `sunset` beschreiben die zu prüfende Absicht; sie
+  bedeuten nicht, dass Wald oder Sonnenuntergang bereits produktionsreif sind.
+- Pixelvergleiche benötigen übereinstimmende Auflösung und eine ausdrücklich
+  gesetzte Fehlertoleranz. Ohne Schwelle protokollieren sie Unterschiede,
+  entscheiden aber weder über Qualität noch über einen Regressionserfolg.
+
+- Eine bodennahe Kachelansicht zeigte trotz verbundener Randpositionen eine
+  helle Linie. Normalen an feinen Kanten werden nun aus groben Endpunkten
+  interpoliert. Die Linie blieb im Vergleich sichtbar; Ursache und Abhilfe sind
+  offen. Veränderte Pixel allein belegen weder Verbesserung noch Regression.
+- LOD wird gegenwärtig über horizontale Kacheldistanz gewählt; die Flughöhe bleibt
+  ausdrücklich eine offene Effizienzfrage, bis projizierte Fehler gemessen sind.
+
+- Ein gezielter Lauf ohne Skirts änderte an der Bodenansicht nur zwei Pixel über
+  dem RGB-Schwellenwert 2; die fragliche Linie erschien auch im monolithischen
+  Referenzbild. Die Skirts sind wieder eingeschaltet. Eine Streaming-spezifische
+  Ursache für diese Linie ist daher nicht belegt.

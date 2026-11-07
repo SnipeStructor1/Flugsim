@@ -1,0 +1,12 @@
+{
+  "width": 1920,
+  "height": 1080,
+  "mean_absolute_rgb_difference_0_255": 9.484310699588478e-06,
+  "changed_pixels": 1,
+  "changed_fraction": 4.822530864197531e-07,
+  "channel_threshold": 2,
+  "interpretation": "Pixel difference only; lighting, renderer and driver changes require human review.",
+  "reference": "SKYBOUND/docs/visuals/terrain_revision3_medium.png",
+  "candidate": "SKYBOUND/docs/visuals/comparisons/mountains_current.png",
+  "within_limit": null
+}

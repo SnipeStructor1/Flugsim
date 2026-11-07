@@ -45,8 +45,8 @@ auf die Vorgabe gesetzt; ein Lauf bricht bei Abweichung ab. Software-Bilder mit
 PNG-/Puffergröße. Dies sind keine GPU-Performancemessungen. Der frühere
 Software-Benchmark verwendete 1080p und bleibt als Revision-2-Ergebnis erhalten.
 
-Tests: fünf Python-Tests; Godot-Tests für Terrain, LOD, Kacheln, Planer und
-Lifecycle; Script-Vorprüfung; drei Standard-Headless-Läufe; Streaming-Headless-
+Tests: sieben Python-Tests (davon zwei optional mit Pillow); Godot-Tests für Terrain, LOD, Kacheln, Planer und
+Lifecycle und integrierte Szenenreise; Script-Vorprüfung; drei Standard-Headless-Läufe; Streaming-Headless-
 Kamerafahrt und Bildprüfung. Einzelheiten in `visuals/streaming_validation.json`.
 
 Offen: harter Zeit-/Byte-Budgetnachweis, asynchroner Aufbau, visuelle Bewegung über
@@ -54,6 +54,45 @@ die Ladegrenze in der Szene, morphende LOD-Wechsel, mehrere Referenzkameras, hö
 Material-/Normalmaps, Wasser, Wolken und Flugmodell. RTX-5070-/Windows-Tests
 und O3DE bleiben mangels passender Hardware bzw. Speicher ungetestet.
 
+Ein integrierter Headless-Szenentest prüft Laden → Sprung über 3 km → Rückkehr:
+64 → 0 → 64 Kacheln und Sichtbarkeit/Position aller 222 Bodenobjekte bestehen.
+Dies ersetzt keine visuelle oder zeitliche Prüfung des bewegten Bildes.
+
 Nächster Schritt: schnelle Kamerabewegungen und Wechsel über Ladegrenzen samt
-Sichtbarkeit/Objekten in der Szene automatisiert und visuell prüfen; dann asynchronen Aufbau
+Sichtbarkeit/Objekten in der Szene visuell und zeitlich prüfen; dann asynchronen Aufbau
 und harte Ressourcenbudgets untersuchen. `NEXT_TASKS.md` enthält die Reihenfolge.
+
+## Aktuelle Arbeit: VIS-001
+
+Sieben feste Blickpunkte liegen in `assets/shared/visual_views.json`;
+`render_check.py --views ...` erzeugt Bilder und kann sie mit einem gespeicherten
+Referenzordner vergleichen. `scripts/compare_images.py` misst RGB-Abweichungen
+und liefert nur bei explizit gewählter Toleranz ein automatisches Fehlerurteil.
+Die Bildvergleichstests verwenden Pillow, sofern vorhanden; fehlt es, werden sie
+ausdrücklich übersprungen. Der Vergleich zweier 1080p-Bergbilder derselben Szene
+zeigte bei Schwellwert 2 ein abweichendes Pixel; er beweist Reproduzierbarkeit
+dieser Umgebung, keine allgemeine Grafikqualität. Sieben 960×540-Baselines liegen
+unter `visuals/references/`, deren Screenshot-Manifest enthält die Hashes.
+Die Einzelbefunde stehen in `visuals/VISUAL_VALIDATION.md`.
+
+Sichtprüfung: Die Bergform und das Seebecken sind erkennbar. Der See ist weitgehend
+gleichförmig und zeigt kaum Reflexionen; der Sonnenuntergang ist nicht überzeugend,
+die Waldkamera zeigt nur vereinzelte Kegel und die Wolkenansicht geometrische
+Scheiben. Dies sind offene Defizite, keine fertiggestellten Wald-, Wasser- oder
+Atmosphärensysteme. Nahe Bodenansicht zeigt geringe Texturdetails. Die sieben
+Ansichten dokumentieren den aktuellen Stand; Qualitätsverbesserungen und
+Streaming-/Hardware-Regressionsprüfungen stehen noch aus.
+
+Die sieben 960×540-Referenzbilder wurden anschließend erneut erzeugt und mit
+expliziter mittlerer RGB-Toleranz 1/255 verglichen: 7/7 bestanden und in dieser
+Software-Umgebung pixelgleich. Der optionale Pillow-Vergleich ist unabhängig
+von Benchmark-FPS.
+
+Die Ansichten `ground` und `high_altitude` wurden zusätzlich mit experimentellem
+Kachelterrain erzeugt und gegen das monolithische Referenzbild verglichen. Die
+Unterschiede umfassen erwartete LOD-Geometrie und Beleuchtung; sie sind kein
+Qualitätsscore. Eine feine Linie ist bodennah sichtbar und erscheint auch im monolithischen
+Referenzbild. Ein Lauf ohne Skirts unterschied sich vom Lauf mit Skirts um nur
+zwei Pixel oberhalb Schwellwert 2; die Skirts wurden wieder aktiviert. Die Linie
+ist damit nicht als Streaming-Fehler nachgewiesen; ihre Ursache bleibt offen. Bilder und Rohvergleiche: `visuals/streaming_references/`.
+Die aktuelle LOD-Wahl berücksichtigt horizontale Entfernung, nicht Flughöhe.

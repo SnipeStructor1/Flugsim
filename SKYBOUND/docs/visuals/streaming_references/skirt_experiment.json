@@ -1,0 +1,11 @@
+{
+  "mode": "software image comparison; not performance",
+  "compared": "ground camera, stitched LOD edges, with vs without skirts",
+  "resolution": [
+    960,
+    540
+  ],
+  "mean_absolute_rgb_difference_0_255": 1.6075102880658434e-05,
+  "changed_pixels_above_2": 2,
+  "result": "The fine line remains in both images and also appears in the monolithic baseline; skirts are restored. Cause not established."
+}

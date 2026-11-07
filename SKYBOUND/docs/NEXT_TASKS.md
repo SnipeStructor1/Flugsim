@@ -3,8 +3,8 @@
 | ID | Status | Aufgabe und Akzeptanzkriterien |
 | --- | --- | --- |
 | TERR-001 | ERLEDIGT | Deterministisches bergiges Terrain, nachvollziehbare Höhen-/Neigungsmaterialien, Tests und Vorher-/Nachher-Bild; alte Benchmarkrevision bewahren. |
-| TERR-002 | IN ARBEIT | Experimenteller Szenenmodus mit drei LODs, Kachel- und Objektverwaltung sowie verbundenen Rändern vorhanden. Ein 3-km-Kamerasprung mit Entladen und Rückladen besteht im isolierten Test. Als Nächstes Kamerabewegung und Objektzustand in der Szene, steile Übergänge und asynchronen Aufbau mit Zeit-/Speicherbudget prüfen; Standardbenchmark bleibt monolithisch. |
-| VIS-001 | OFFEN | Sieben feste Referenzansichten samt dokumentiertem Bildvergleich und Regres­sionsprüfung. |
+| TERR-002 | IN ARBEIT | Experimenteller Szenenmodus mit drei LODs, Kachel- und Objektverwaltung sowie verbundenen Rändern vorhanden. Ein 3-km-Kamerasprung mit Entladen und Rückladen besteht im isolierten Test und als integrierte Headless-Szenenreise mit 222 Objekten. Eine feine Linie ist in Kachel- und monolithischer Bodenansicht sichtbar; Kantennormalen und Skirt-Abschaltung sind untersucht, die Ursache bleibt offen. Als Nächstes bewegte Bilder und Objektzustand visuell prüfen, steile Übergänge, höhenabhängiges LOD und asynchronen Aufbau mit Zeit-/Speicherbudget untersuchen; Standardbenchmark bleibt monolithisch. |
+| VIS-001 | IN ARBEIT | Sieben feste Kameras, reproduzierbare Softwarebilder und automatisierter Pixelvergleich vorhanden. Wald-, Sonnenuntergangs-, Wolken- und Wasseransichten benötigen echte Inhalte; Streaming-Ansichten und Hardwareabweichungen prüfen. |
 | TERR-003 | OFFEN | Lizenzierte bzw. nachweisbar selbst erzeugte PBR-Texturen, Normalmaps und Variationsverfahren für Gelände; Nah-/Fernansicht prüfen. |
 | ATM-001 | OFFEN | Tageszeit und skalierbare Wolken mit nachvollziehbaren Grenzen und Vergleichsbildern. |
 | WATER-001 | OFFEN | Wasser mit Wellen, Fresnel und Tiefenfärbung; Ufer- und Tiefenfälle prüfen. |

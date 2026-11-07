@@ -27,3 +27,19 @@ beidseitige Skirts beseitigen die auffälligsten Spalten in dieser Ansicht.
 Bildprüfungen anderer Kamerapositionen, schneller LOD-Wechsel und großer
 Ladegrenzen stehen aus. Die grobe Randlinie verändert die Geometrie am
 Kachelrand; sanfte LOD-Morphs fehlen. Keine Performance-Aussage.
+
+## Bodennah und aus großer Höhe
+
+[Vorher, Boden](streaming_references/before_ground.png) ·
+[Nachher, Boden](streaming_references/after_ground.png) ·
+[Vorher, Höhe](streaming_references/before_high_altitude.png) ·
+[Nachher, Höhe](streaming_references/after_high_altitude.png).
+
+Die Nachherbilder verwenden angeglichene Kantennormalen. Die feine Linie in der
+Bodenansicht ist auch im monolithischen Referenzbild sichtbar; ihre Ursache ist
+nicht abschließend geklärt. [Ohne Skirts](streaming_references/without_skirts_ground.png)
+ändert sich die Ansicht um nur zwei Pixel über RGB-Schwellenwert 2; Skirts bleiben
+aktiv. Ein spezifischer Streaming-Riss ist für diese Linie nicht belegt. Der
+Vergleich gegen das monolithische Referenzgelände zeigt zahlreiche erwartete
+Pixelunterschiede durch LOD. Dies ist weder ein RTX-Performancewert noch ein
+automatisches Qualitätsurteil. Rohdaten stehen in `streaming_references/comparison_runs.json`.

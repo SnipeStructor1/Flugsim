@@ -11,6 +11,11 @@ func _initialize() -> void:
 		printerr("Too few cells unexpectedly accepted")
 		quit(1)
 		return
+	var no_skirt: ArrayMesh = builder.build(model, Vector2.ZERO, 256, 16, 0, 0)
+	if no_skirt == null or no_skirt.surface_get_arrays(0)[Mesh.ARRAY_VERTEX].size() != 16 * 16 * 6:
+		printerr("Skirt-free mesh generation failed")
+		quit(1)
+		return
 	var meshes: Array = []
 	for lod in range(3):
 		var mesh: ArrayMesh = builder.build(model, Vector2.ZERO, 256, 16, lod, 32)
@@ -37,6 +42,18 @@ func _initialize() -> void:
 					printerr("Object sampling differs from emitted triangle")
 					quit(1)
 					return
+		if lod == 0:
+			var normals: PackedVector3Array = mesh.surface_get_arrays(0)[Mesh.ARRAY_NORMAL]
+			for i in range(n * n * 6):
+				var v: Vector3 = vertices[i]
+				if absf(v.x - 256.0) < 0.001:
+					var lower := minf(floorf(v.z / 64.0), 3.0)
+					var t := (v.z - lower * 64.0) / 64.0
+					var expected: Vector3 = model.normal(256.0, lower * 64.0).lerp(model.normal(256.0, (lower + 1.0) * 64.0), t).normalized()
+					if normals[i].distance_to(expected) > 0.001:
+						printerr("Boundary shading normals do not match coarse edge")
+						quit(1)
+						return
 		meshes.append(vertices)
 	# At each coarse-grid boundary point, fine and coarse meshes share the exact
 	# same world-space height; the neighboring chunk must agree as well.

@@ -8,6 +8,9 @@ import sys
 
 root = Path(__file__).resolve().parents[1]
 scene = json.loads((root / 'assets/shared/scene.json').read_text())
+views = json.loads((root / 'assets/shared/visual_views.json').read_text())
+assert set(views['views']) == {'mountains', 'sunset', 'lake', 'forest', 'clouds', 'ground', 'high_altitude'}
+assert all(len(v['position_m']) == 3 and len(v['look_at_m']) == 3 and v['position_m'] != v['look_at_m'] for v in views['views'].values())
 assert scene['schema_version'] == 1
 assert scene['camera']['positions_m'][0] == scene['camera']['positions_m'][-1]
 assert scene['camera']['duration_s'] == 60
@@ -35,4 +38,10 @@ for test in ['test_terrain.gd', 'test_lod.gd', 'test_chunk_mesh.gd', 'test_strea
     result = subprocess.run([godot, '--headless', '--path', str(root / 'benchmarks/godot'), '--script', 'res://' + test], env=env, timeout=60)
     if result.returncode:
         raise SystemExit(result.returncode)
+journey = subprocess.run([godot, '--headless', '--path', str(root / 'benchmarks/godot'), '--rendering-method', 'gl_compatibility', '--', '--smoke=true', '--terrain-stream=true', '--stream-journey=true', '--profile=Medium', '--warmup=0', '--duration=20'], capture_output=True, text=True, env=env, timeout=60)
+output = journey.stdout + journey.stderr
+if journey.returncode != 0 or 'ERROR:' in output or 'STREAM_JOURNEY_PASS phases=3' not in output or output.count('STREAM_JOURNEY_PHASE ') != 3:
+    print(output, file=sys.stderr)
+    raise SystemExit(1)
+print('STREAM_JOURNEY_TEST_PASS: 64 loaded, 0 outside radius, 64 reloaded; object visibility and placement checked', flush=True)
 raise SystemExit(0)

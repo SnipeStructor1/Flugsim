@@ -1,7 +1,7 @@
 extends Node3D
 
 var settings: Dictionary
-var options := {"profile": "High", "width": "1920", "height": "1080", "warmup": "30", "duration": "60", "output": "", "smoke": "false", "interactive": "false", "render-check": "false", "capture": "", "terrain-stream": "false"}
+var options := {"profile": "High", "width": "1920", "height": "1080", "warmup": "30", "duration": "60", "output": "", "smoke": "false", "interactive": "false", "render-check": "false", "capture": "", "terrain-stream": "false", "view": "benchmark", "stream-journey": "false"}
 var camera: Camera3D
 var output: FileAccess
 var started_us: int
@@ -17,6 +17,10 @@ var render_check := false
 var streaming := false
 var stream_manager: Node3D
 var ground_objects: Array[Dictionary] = []
+var reference_view: Dictionary = {}
+var stream_journey := false
+var journey_phase := 0
+var journey_complete := false
 var terrain = preload("res://terrain_model.gd").new()
 
 func fail(message: String) -> void:
@@ -34,6 +38,10 @@ func _ready() -> void:
 	smoke = options.smoke == "true"
 	render_check = options["render-check"] == "true"
 	streaming = options["terrain-stream"] == "true"
+	stream_journey = options["stream-journey"] == "true"
+	if stream_journey and not (smoke and streaming):
+		fail("Stream journey is only available for streaming smoke tests")
+		return
 	if streaming and not smoke and not render_check and options.interactive != "true":
 		fail("Experimental terrain streaming is available only for render checks or interactive use")
 		return
@@ -50,6 +58,16 @@ func _ready() -> void:
 	if settings.is_empty() or not settings.profiles.has(options.profile):
 		fail("Missing scene manifest or unknown profile")
 		return
+	if options.view != "benchmark":
+		if not render_check:
+			fail("Reference views are only supported for render checks")
+			return
+		var views_path := ProjectSettings.globalize_path("res://../../assets/shared/visual_views.json")
+		var views = JSON.parse_string(FileAccess.get_file_as_string(views_path))
+		if not views is Dictionary or not views.has("views") or not views.views.has(options.view):
+			fail("Unknown or unavailable reference view")
+			return
+		reference_view = views.views[options.view]
 	if float(options.warmup) < 0.0 or float(options.duration) <= 0.0:
 		fail("Invalid timing")
 		return
@@ -98,7 +116,7 @@ func _ready() -> void:
 	started_us = Time.get_ticks_usec()
 	previous_us = started_us
 	set_process(true)
-	print("SKYBOUND_READY ", JSON.stringify({"smoke": smoke, "render_check": options["render-check"] == "true", "profile": options.profile, "renderer": RenderingServer.get_current_rendering_method(), "adapter": RenderingServer.get_video_adapter_name(), "engine": Engine.get_version_info().string, "width": resolution[0], "height": resolution[1], "upscaling": "native", "frame_generation": false, "terrain_stream": streaming}))
+	print("SKYBOUND_READY ", JSON.stringify({"smoke": smoke, "render_check": options["render-check"] == "true", "profile": options.profile, "renderer": RenderingServer.get_current_rendering_method(), "adapter": RenderingServer.get_video_adapter_name(), "engine": Engine.get_version_info().string, "width": resolution[0], "height": resolution[1], "upscaling": "native", "frame_generation": false, "terrain_stream": streaming, "view": options.view}))
 
 func terrain_height(x: float, z: float) -> float:
 	return terrain.height(x, z)
@@ -139,6 +157,22 @@ func sync_ground_objects() -> void:
 			var lod: int = stream_manager.resident[key]
 			var chunk_origin: Vector2 = stream_manager.origin + Vector2(key.x, key.y) * stream_manager.chunk_size
 			instance.position.y = stream_manager.builder.sample_height(terrain, chunk_origin, stream_manager.chunk_size, stream_manager.cells, lod, instance.position.x, instance.position.z) + float(entry.offset)
+
+func ground_objects_match_resident_chunks() -> bool:
+	var half := float(settings.terrain.size_m) / 2.0
+	for entry in ground_objects:
+		var instance: MeshInstance3D = entry.node
+		var key := Vector2i(floori((instance.position.x + half) / stream_manager.chunk_size), floori((instance.position.z + half) / stream_manager.chunk_size))
+		var expected_visible: bool = stream_manager.resident.has(key)
+		if instance.visible != expected_visible:
+			return false
+		if expected_visible:
+			var lod: int = stream_manager.resident[key]
+			var chunk_origin: Vector2 = stream_manager.origin + Vector2(key.x, key.y) * stream_manager.chunk_size
+			var expected_y: float = stream_manager.builder.sample_height(terrain, chunk_origin, stream_manager.chunk_size, stream_manager.cells, lod, instance.position.x, instance.position.z) + float(entry.offset)
+			if absf(instance.position.y - expected_y) > 0.001:
+				return false
+	return true
 
 func stream_is_settled() -> bool:
 	var camera_xz := Vector2(camera.position.x, camera.position.z)
@@ -271,12 +305,24 @@ func _process(delta: float) -> void:
 	var now := Time.get_ticks_usec()
 	var elapsed := (now-started_us)/1000000.0
 	var warmup := float(options.warmup)
-	sunlight.rotation_degrees.y = float(settings.sun.rotation_degrees[1]) + (0.0 if render_check else maxf(0.0,elapsed-warmup)) * 0.05
+	if not reference_view.is_empty():
+		sunlight.rotation_degrees = vector(reference_view.sun_rotation_deg)
+	else:
+		sunlight.rotation_degrees.y = float(settings.sun.rotation_degrees[1]) + (0.0 if render_check else maxf(0.0,elapsed-warmup)) * 0.05
 	if options.interactive == "true" and manual:
 		var movement := Vector3(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_E))-float(Input.is_physical_key_pressed(KEY_Q)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W)))
 		camera.position += camera.basis * movement * delta * 120.0
+	elif not reference_view.is_empty():
+		camera.position = vector(reference_view.position_m)
+		camera.look_at(vector(reference_view.look_at_m))
 	else:
 		set_camera(0.0 if render_check else maxf(0.0,elapsed-warmup))
+	if stream_journey:
+		if journey_phase == 1:
+			camera.position = Vector3(10000, 180, 0)
+			camera.look_at(camera.position + Vector3.FORWARD)
+		else:
+			set_camera(0.0)
 	if streaming:
 		var update: Dictionary = stream_manager.tick(Vector2(camera.position.x, camera.position.z))
 		if not update.valid or update.failed > 0:
@@ -284,13 +330,24 @@ func _process(delta: float) -> void:
 			return
 		if update.built > 0 or update.unloaded > 0:
 			sync_ground_objects()
+		if stream_journey and stream_is_settled():
+			var expected_chunks: int = 0 if journey_phase == 1 else stream_manager.grid_width * stream_manager.grid_height
+			if stream_manager.resident.size() != expected_chunks or not ground_objects_match_resident_chunks():
+				fail("Stream journey chunk/object state mismatch at phase %d" % journey_phase)
+				return
+			print("STREAM_JOURNEY_PHASE ", journey_phase, " chunks=", expected_chunks, " objects=", ground_objects.size())
+			journey_phase += 1
+			journey_complete = journey_phase == 3
+	if stream_journey and not journey_complete and elapsed >= float(options.duration):
+		fail("Stream journey did not complete within the smoke-test limit")
+		return
 	if elapsed >= warmup and previous_us >= started_us + int(warmup*1000000) and elapsed < warmup+float(options.duration):
 		if output != null:
 			output.store_csv_line([str(recorded),str(elapsed-warmup),str((now-previous_us)/1000.0)])
 		recorded += 1
 	previous_us = now
 	frame_index += 1
-	if options.interactive != "true" and ((render_check and frame_index >= 4 and (not streaming or stream_is_settled())) or (not render_check and elapsed >= warmup+float(options.duration))):
+	if options.interactive != "true" and ((stream_journey and journey_complete) or (not stream_journey and ((render_check and frame_index >= 4 and (not streaming or stream_is_settled())) or (not render_check and elapsed >= warmup+float(options.duration))))):
 		if options["render-check"] == "true" and not options.capture.is_empty():
 			set_process(false)
 			await RenderingServer.frame_post_draw
@@ -302,5 +359,7 @@ func _process(delta: float) -> void:
 		if not render_check and recorded < 2:
 			fail("Too few frames")
 		else:
+			if stream_journey:
+				print("STREAM_JOURNEY_PASS phases=3")
 			print("SKYBOUND_COMPLETE ", JSON.stringify({"smoke":smoke,"render_check":render_check,"frames":recorded,"total_frames":frame_index,"camera_end":str(camera.position), "terrain_stream":streaming, "resident_chunks":stream_manager.resident.size() if streaming else 0, "stream_settled":stream_is_settled() if streaming else false}))
 			get_tree().quit()

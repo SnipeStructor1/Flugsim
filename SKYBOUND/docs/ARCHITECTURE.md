@@ -73,7 +73,7 @@ einer Kachel. Drei LOD-Stufen und separate Lade-/Entladeschwellen besitzen 32 m
 Hysterese, damit Grenzbewegungen nicht ständig neue Netze erzeugen.
 `terrain_chunk_mesh.gd` berechnet aus derselben Höhenfunktion drei Rasterstufen
 mit weltweit identischen gemeinsamen Stützpunkten und vertikalen Skirts.
-Tests prüfen gemeinsame Randpunkte, nicht die tatsächliche Nahtfreiheit im Bild.
+Tests prüfen gemeinsame Randpunkte und interpolierte Kantennormalen. Bodennahe Bildprüfung zeigt eine feine Linie auch im monolithischen Bild; allgemeine Nahtfreiheit ist nicht belegt.
 Die Standard-Benchmarkszene benutzt weiterhin das monolithische Netz. Ein
 experimenteller Szenenmodus verbindet diese Bausteine mit einem Kachel-Lifecycle
 und ordnet Bodenobjekte den geladenen Kacheln zu. Ressourcenfreigabe und
@@ -106,3 +106,24 @@ Zeitbudget. Maximal 64 Kacheln sind kein belegtes Byte-Budget. Der 3-km-Radius
 umfasst den kurzen Benchmarkpfad; ein aussagekräftiger Entlade-/Nachladetest
 benötigt größere Kamerabewegungen. Harte Frametimes, Ressourcenfreigabe im
 Dauerlauf und visuelle Nahtfreiheit an steilen Übergängen sind noch offen.
+
+## Visuelle Referenzen
+
+`assets/shared/visual_views.json` definiert sieben feste Kamera-/Sonnenzustände.
+Referenzansichten sind auf Bildprüfungen beschränkt und verändern den regulären
+Kameraflug nicht. `render_check.py` speichert Szenen-/Kamerahashes und optionale
+Vergleiche mit gleichnamigen Referenzbildern. `compare_images.py` berechnet
+mittlere absolute RGB-Differenz und Anteil geänderter Pixel; Größenabweichungen
+werden abgewiesen. Pillow wird nur für den Bildvergleich benötigt. Ein
+Schwellwert muss bewusst gewählt werden, da Treiber und Renderer abweichen können.
+Keine Bildkennzahl ist ein Urteil über Realismus oder Leistung.
+
+Die LOD-Distanz ist derzeit nur horizontal. Große Flughöhe kann damit zu
+unnötig feinem Terrain direkt unter der Kamera führen; sichtbarkeits- und
+projektionsbasierte Auswahl muss erst untersucht und gemessen werden.
+
+Die integrierte Diagnose `--smoke=true --terrain-stream=true
+--stream-journey=true` setzt die Kamera in drei Phasen an Start, außerhalb des
+Laderadius und zurück. Erst nach jedem stabilen Zustand prüft sie Kachelbestand
+und Sichtbarkeit/Höhe der Bodenobjekte. Sie ist auf Headless-Smoke beschränkt
+und endet nach Abschluss selbst; kein Zeit-/Performance-Benchmark.
