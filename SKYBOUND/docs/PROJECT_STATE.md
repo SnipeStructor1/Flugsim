@@ -13,14 +13,14 @@ ist vorhanden. Die Modellannahmen stehen in `F22_APPROXIMATION.md`.
 Er bietet ein sichtbares Flugzeug, vereinfachte Kräfte und Steuerung, konstanten
 Wind, Kollision mit Boden und Wasser sowie Verfolger- und Cockpitkamera. Ein
 prozeduraler Himmel und ein animierter Wasser-Shader gelten nur in der Flugszene.
-Ein automatischer Flug aus 700 m Höhe überquerte mit den aktuellen Modellparametern etwa 1.450 m in 577 Schritten; Modell- und
+Ein automatischer Flug aus 700 m Höhe überquerte etwa 4.200 m in 1.447 Schritten; Modell- und
 Szenentests sowie echte X11-Tasteneingaben für S und C bestanden. Bildprüfungen
 verwenden Software-Vulkan und sind keine Hardware-Benchmarks.
 
 Einschränkungen: Das Flugmodell ist nicht real kalibriert, Start/Landung fehlen,
 das Cockpit ist nur ein Platzhalter, Wolken sind nicht volumetrisch und
 Wasser ist eine visuelle Näherung. Maus, Gamepad und Windows sind nicht vollständig
-geprüft. Der bestehende 2-km-Ausschnitt begrenzt den Flug. Der frühere Terrain-Freeze ist auf ausdrücklichen Nutzerwunsch aufgehoben;
+geprüft. Das frühere 2-km-Limit wurde im Flugmodus durch prozedurales Streaming ersetzt. Der frühere Terrain-Freeze ist auf ausdrücklichen Nutzerwunsch aufgehoben;
 die ältere feine Bodenlinie und fehlende RTX-Messungen bleiben offen.
 
 ## Historischer Stand: TERR-001
@@ -167,3 +167,20 @@ Das Flugmodell berücksichtigt eine einfache höhenabhängige Standardatmosphär
 Schubverzögerung und geschwindigkeitsabhängige Steuerautorität. Die Anzeige
 zeigt näherungsweise IAS. Tests für Atmosphäre und Schub sowie Modell-,
 Überflug- und X11-Tastaturtest bestanden. Dies ist keine validierte F-22-Simulation.
+
+## Prozedurales Flugterrain
+
+Der Flugmodus verwendet ein unbeschränktes Kachelkoordinatengitter mit
+maximal 100 geladenen Kacheln, distanzabhängigem LOD, Entladen hinter dem
+Flugzeug und Höhenabfrage der aktuell gerenderten Kachel. Ein Flug von 4,2 km
+und Planertests für negative Koordinaten und Rückkehr bestanden. Außerhalb des
+ursprünglichen Bereichs entstehen einfache deterministische Bäume pro Kachel.
+Ein Bild 5 km südlich des Ursprungs: `visuals/infinite_terrain_far.png`.
+
+Praktische Grenzen: Kein Floating Origin; sehr große Koordinaten verlieren
+Genauigkeit. Die Welt ist nicht global oder auf realen Geodaten aufgebaut,
+Vegetation und Formen sind einfach. Kacheln werden im Flugmodus synchron
+erzeugt, was zu Rucklern führen kann; falls die nächste Kachel noch fehlt,
+pausiert die Flugbewegung bis sie geladen ist. Eine Langzeit-/Hardwareprüfung
+und visuelle Übergangsprüfung fehlen. Das Flugzeug bleibt ein prozeduraler,
+nicht fotorealistischer Platzhalter.

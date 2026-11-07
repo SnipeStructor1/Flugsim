@@ -59,6 +59,12 @@ func build() -> void:
 		polygon([Vector3(side*1.4,0.22,5.0),Vector3(side*5.1,0.20,7.45),Vector3(side*4.7,0.20,8.25),Vector3(side*1.7,0.22,7.8)], skin)
 		# Distinctive outward-canted twin fins.
 		polygon([Vector3(side*1.15,0.55,4.1),Vector3(side*2.20,3.15,6.0),Vector3(side*2.20,3.15,7.4),Vector3(side*1.65,0.55,8.0)], edge)
+		# Narrow panel lines and contrasting control surfaces give the silhouette
+		# more structure; these remain procedural, not a photo-scanned asset.
+		var seam := Color(0.18, 0.21, 0.23)
+		polygon([Vector3(side*2.45,0.205,3.42), Vector3(side*6.0,0.065,1.83), Vector3(side*5.9,0.067,1.91), Vector3(side*2.45,0.207,3.50)], seam)
+		polygon([Vector3(side*1.8,0.60,7.96), Vector3(side*4.48,0.23,7.95), Vector3(side*4.37,0.23,8.08), Vector3(side*1.8,0.60,8.10)], seam)
+		polygon([Vector3(side*0.2,0.57,9.10), Vector3(side*1.52,0.57,9.10), Vector3(side*1.50,0.44,9.45), Vector3(side*0.2,0.44,9.45)], edge)
 		# Dark intake and paired rectangular exhausts.
 		polygon([Vector3(side*1.30,0.35,-2.0),Vector3(side*2.08,0.10,-0.6),Vector3(side*1.95,-0.62,0.15),Vector3(side*1.25,-0.45,-0.3)], dark)
 		polygon([Vector3(side*0.25,0.28,9.46),Vector3(side*1.48,0.28,9.46),Vector3(side*1.48,-0.40,9.46),Vector3(side*0.25,-0.40,9.46)], dark)

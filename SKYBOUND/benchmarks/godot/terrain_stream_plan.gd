@@ -3,14 +3,27 @@ extends RefCounted
 # Pure planning step. The caller owns loaded meshes and applies the returned
 # unload operations before build operations. This class never claims an operation
 # succeeded and never mutates the caller's resident-state dictionary.
+var infinite_grid := false
 var policy = preload("res://terrain_lod.gd").new()
 
 func plan(camera_xz: Vector2, grid_origin: Vector2, chunk_size: float, grid_width: int, grid_height: int, resident: Dictionary, max_resident: int, build_budget: int, camera_y: float = 0.0, height_bounds: Vector2 = Vector2(-252, 698)) -> Dictionary:
 	if chunk_size <= 0.0 or grid_width <= 0 or grid_height <= 0 or max_resident <= 0 or build_budget < 0 or not camera_xz.is_finite() or not is_finite(camera_y) or not height_bounds.is_finite() or height_bounds.x > height_bounds.y:
 		return {"valid": false, "unload": [], "build": []}
 	var candidates: Array[Dictionary] = []
-	for z in range(grid_height):
-		for x in range(grid_width):
+	var min_x := 0
+	var min_z := 0
+	var max_x := grid_width
+	var max_z := grid_height
+	if infinite_grid:
+		var radius: int = ceili((policy.load_distance + policy.HYSTERESIS) / chunk_size) + 1
+		var center_x := floori((camera_xz.x - grid_origin.x) / chunk_size)
+		var center_z := floori((camera_xz.y - grid_origin.y) / chunk_size)
+		min_x = center_x - radius
+		max_x = center_x + radius + 1
+		min_z = center_z - radius
+		max_z = center_z + radius + 1
+	for z in range(min_z, max_z):
+		for x in range(min_x, max_x):
 			var key := Vector2i(x, z)
 			var origin := grid_origin + Vector2(x * chunk_size, z * chunk_size)
 			var horizontal: float = policy.distance_to_chunk(camera_xz, origin, chunk_size)

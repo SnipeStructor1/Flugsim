@@ -13,6 +13,7 @@ var mouse_pitch := 0.0
 var mouse_roll := 0.0
 var wind := Vector3(2, 0, 0)
 var crashed := false
+var terrain_loading := false
 var physics_frames := 0
 var initial_position := Vector3.ZERO
 var capture_path := ""
@@ -37,15 +38,32 @@ func _ready() -> void:
 	world = load("res://main.tscn").instantiate()
 	# Configure the existing landscape without modifying its implementation.
 	world.options.interactive = "true"
+	world.options["terrain-stream"] = "true"
 	if DisplayServer.get_name() == "headless":
 		world.options.interactive = "false"
 		world.options.smoke = "true"
 	add_child(world)
+	world.process_mode = Node.PROCESS_MODE_DISABLED
 	if world.camera == null:
 		push_error("Landscape initialization failed")
 		get_tree().quit(2)
 		return
 	world.camera.current = false
+	var manager = world.stream_manager
+	manager.planner.infinite_grid = true
+	manager.flight_vegetation = true
+	manager.planner.policy.load_distance = 1000.0
+	manager.max_resident = 100
+	manager.build_budget = 8
+	# Populate the vicinity before enabling flight; then cap per-frame work.
+	for i in range(4):
+		var result: Dictionary = manager.tick(Vector2(0, 700), 300.0)
+		if not result.valid or result.failed:
+			push_error("Initial flight terrain build failed")
+			get_tree().quit(2)
+			return
+	manager.build_budget = 2
+	world.sync_ground_objects()
 	apply_flight_atmosphere()
 	build_aircraft()
 	add_child(aircraft)
@@ -72,6 +90,13 @@ func _ready() -> void:
 	hud.add_theme_constant_override("shadow_offset_y", 2)
 	layer.add_child(hud)
 	reset_flight()
+	if capture_view == "far" and not capture_path.is_empty():
+		model.position = Vector3(0, 350, -5000)
+		for i in range(4):
+			manager.tick(Vector2(model.position.x, model.position.z), model.position.y)
+		world.sync_ground_objects()
+		aircraft.position = model.position
+		update_camera()
 	if journey_test:
 		model.position.y = 700.0
 		initial_position = model.position
@@ -175,16 +200,35 @@ func _physics_process(delta: float) -> void:
 		pitch = 0.0 if journey_test else (0.1 if physics_frames > 60 and physics_frames < 120 else 0.0)
 		roll = 0.0 if journey_test else (0.2 if physics_frames > 120 and physics_frames < 180 else 0.0)
 		power = 0.0 if journey_test else 0.1
+	var manager = world.stream_manager
+	var terrain_update: Dictionary = manager.tick(Vector2(model.position.x, model.position.z), model.position.y)
+	if not terrain_update.valid or terrain_update.failed:
+		push_error("Flight terrain streaming failed")
+		get_tree().quit(2)
+		return
+	if terrain_update.built > 0 or terrain_update.unloaded > 0:
+		world.sync_ground_objects()
+	terrain_loading = false
 	if not crashed:
-		model.step(delta, pitch, roll, yaw, power, wind)
-		var half: float = float(world.settings.terrain.size_m) / 2.0
-		if absf(model.position.x) <= half and absf(model.position.z) <= half:
-			var floor_y: float = world.terrain.mesh_height(model.position.x, model.position.z, float(world.settings.terrain.size_m) / int(world.settings.terrain.grid_cells), half)
+		var predicted: Vector3 = model.position + model.velocity * delta
+		var predicted_key := Vector2i(floori((predicted.x - manager.origin.x) / manager.chunk_size), floori((predicted.z - manager.origin.y) / manager.chunk_size))
+		if manager.resident.has(predicted_key):
+			model.step(delta, pitch, roll, yaw, power, wind)
+		else:
+			terrain_loading = true
+		var key := Vector2i(floori((model.position.x - manager.origin.x) / manager.chunk_size), floori((model.position.z - manager.origin.y) / manager.chunk_size))
+		if manager.resident.has(key):
+			var chunk_origin: Vector2 = manager.origin + Vector2(key.x, key.y) * manager.chunk_size
+			var floor_y: float = manager.builder.sample_height(world.terrain, chunk_origin, manager.chunk_size, manager.cells, manager.resident[key], model.position.x, model.position.z)
 			var water_position: Vector3 = world.vector(world.settings.water.position_m)
 			var water_size := Vector2(world.settings.water.size_m[0], world.settings.water.size_m[1])
 			floor_y = collision_rules.surface_height(floor_y, model.position.x, model.position.z, water_position, water_size)
 			if model.position.y <= floor_y + 2.0:
 				crashed = true
+		else:
+			push_error("Flight outran loaded terrain at %s" % str(model.position))
+			get_tree().quit(2)
+			return
 		aircraft.position = model.position
 		aircraft.quaternion = model.attitude
 	physics_frames += 1
@@ -209,14 +253,13 @@ func _physics_process(delta: float) -> void:
 	var label_mode := "Cockpit" if camera_mode == 1 else "Verfolger"
 	hud.text = "SKYBOUND  |  F-22-inspiriert  |  %s\nIAS %.0f km/h    Höhe %.0f m    Schubhebel %.0f%%    Wind %.0f m/s%s\nW/S Nicken  A/D Rollen  Q/E Gieren  R/F Schub\nC Kamera  M Maussteuerung  Rücktaste Neustart  Esc Ende" % [label_mode, model.indicated_airspeed * 3.6, model.position.y, model.throttle * 100.0, wind.length(), "    STRÖMUNGSABRISS" if model.stalled else ""]
 	if crashed: hud.text += "\nAUFPRALL – Rücktaste zum Neustart"
-	if absf(model.position.x) > float(world.settings.terrain.size_m)/2.0 or absf(model.position.z) > float(world.settings.terrain.size_m)/2.0:
-		hud.text += "\nGeländeausschnitt verlassen – bitte wenden"
-	if journey_test and (model.position.z <= -750.0 or physics_frames >= 3600 or crashed):
-		if crashed or model.position.z > -750.0 or absf(model.position.x) > float(world.settings.terrain.size_m)/2.0:
+	if terrain_loading: hud.text += "\nGelände wird geladen …"
+	if journey_test and (model.position.z <= -3500.0 or physics_frames >= 3600 or crashed):
+		if crashed or model.position.z > -3500.0:
 			push_error("Flight-over-landscape test failed: %s" % str(model.position))
 			get_tree().quit(2)
 		else:
-			print("FLIGHT_JOURNEY_TEST_PASS ", JSON.stringify({"frames": physics_frames, "distance_m": model.position.distance_to(initial_position), "position": str(model.position), "start_altitude_m": 700.0}))
+			print("FLIGHT_JOURNEY_TEST_PASS ", JSON.stringify({"frames": physics_frames, "distance_m": model.position.distance_to(initial_position), "position": str(model.position), "start_altitude_m": 700.0, "resident_chunks": manager.resident.size(), "max_resident": manager.max_resident}))
 			get_tree().quit()
 	if test_mode and not journey_test and physics_frames >= 240:
 		if crashed or camera_test_count != 2 or not model.position.is_finite() or model.position.distance_to(initial_position) < 100.0:

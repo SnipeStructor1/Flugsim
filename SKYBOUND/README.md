@@ -35,7 +35,8 @@ Das Flugzeug ist ein selbst erzeugter, unbewaffneter F-22-inspirierter Prototyp.
 Das vereinfachte Flugmodell ist nicht an einer echten F-22 kalibriert; die
 Cockpitansicht besitzt einen einfachen Platzhalter-Innenraum. Wolken sind eine
 zweidimensionale Näherung, Wasser und Wind sind vereinfacht. Start und Landung
-sind noch nicht umgesetzt, die vorhandene Landschaft ist etwa 2 km breit.
+sind noch nicht umgesetzt. Das Gelände wird beim Flug prozedural nachgeladen;
+sehr große Entfernungen und Langzeitstabilität sind noch nicht validiert.
 Windows und RTX-Hardware sind nicht getestet. [F-22-inspirierter Flugzeug-Screenshot](docs/visuals/raptor_chase.png).
 
 Flugspezifische Prüfungen (ohne Terrain-Tests):

@@ -13,8 +13,9 @@ Luftdichte und Schub sind Näherungen; Nachbrenner,
 Schubvektorsteuerung, Überschall- und Fly-by-Wire-Verhalten fehlen.
 
 Der automatische Überflug startet in 700 m Höhe und erreicht rund 1,45 km;
-er validiert Funktion, nicht Flugleistungen. Die Geschwindigkeit bei Start ist
-130 m/s; die verfügbare Landschaft ist nur etwa 2 km breit. Der normale Start
+er validiert Funktion, nicht Flugleistungen. Der aktuelle Langstreckentest
+fliegt über 4,2 km. Die Geschwindigkeit bei Start ist 130 m/s; Gelände wird
+prozedural nachgeladen. Der normale Start
 erfolgt in der Luft. Start/Landung, echte Flugtests, Gamepad, Windows und RTX
 sind nicht validiert. Öffentliche Primärquellen und belastbare Flugvergleichsdaten
 müssen vor einer weitergehenden Kalibrierung recherchiert und überprüft werden.

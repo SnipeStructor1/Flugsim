@@ -44,5 +44,19 @@ func _initialize() -> void:
 		printerr("Terrain directly below a high-altitude camera disappeared")
 		quit(1)
 		return
-	print("STREAM_PLAN_TEST_PASS priority budget eviction purity invalid_input")
+	planner.infinite_grid = true
+	var far: Dictionary = planner.plan(Vector2(-10001, 14000), Vector2(-1024, -1024), 256, 1, 1, {}, 8, 8)
+	var expected := Vector2i(floori((-10001.0 + 1024.0) / 256.0), floori((14000.0 + 1024.0) / 256.0))
+	if not far.valid or far.build.is_empty() or far.build[0].key != expected:
+		printerr("Infinite grid failed far/negative coordinates: ", far)
+		quit(1)
+		return
+	var old_resident := {}
+	for operation in far.build: old_resident[operation.key] = operation.lod
+	var returned: Dictionary = planner.plan(Vector2(10, 10), Vector2(-1024, -1024), 256, 1, 1, old_resident, 8, 8)
+	if returned.unload.size() != old_resident.size() or returned.build.is_empty():
+		printerr("Infinite grid failed eviction on return")
+		quit(1)
+		return
+	print("STREAM_PLAN_TEST_PASS priority budget eviction purity invalid_input infinite_grid")
 	quit(0)

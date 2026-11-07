@@ -1,114 +1,34 @@
-# Entscheidungen
+# Priorisierte Aufgaben
 
-- 2026-11-07: Bestehenden leeren Checkout verwenden; kein Worktree und keine
-  Änderungen außerhalb des eigenen SKYBOUND-Projekts. Kein Commit/Push automatisch.
-- Godot 4.6.3 vorhanden; zunächst Funktionsfähigkeit statt ungetesteter Enginebreite.
-  Aktuell stabiler Release noch offiziell zu bestätigen.
-- Python-Standardbibliothek für Portabilität und keine Paketinstallation.
-  PowerShell ist nur der Windows-Einstieg; dieser Pfad hier nicht ausführbar.
-- Prozedurale Materialien/Geometrie ohne externe Assets. Das ist eine technische
-  Basisszene und noch kein Nachweis hochwertiger Produktionsgrafik.
-- Gemeinsamer JSON-Vertrag und Quellhashes vor einem zweiten Adapter.
-- Forward+ ist Pflicht für grafische Messung; Headless-Dummy ist nur Funktionsprüfung.
-- NVIDIA-Funktionen und Upscaling bleiben aus, bis Integrations-/Lizenznachweise stehen.
-- `BENCHMARK_RESULTS.md` und `NEXT_STEPS.md` liegen konsistent unter `docs/`.
-- Externe Downloads/Abrufe und systemweite Installationen benötigen gemäß Auftrag
-  vorherige Freigabe. Daher kein automatisches Nachinstallieren von O3DE/Tools.
+| ID | Status | Aufgabe und Akzeptanzkriterien |
+| --- | --- | --- |
+| TERR-001 | ERLEDIGT | Deterministisches bergiges Terrain, nachvollziehbare Höhen-/Neigungsmaterialien, Tests und Vorher-/Nachher-Bild; alte Benchmarkrevision bewahren. |
+| TERR-002 | IN ARBEIT – prozedurales Flugterrain mit 4,2-km-Test, weitere Skalierung offen | Experimenteller Szenenmodus mit drei LODs, Kachel- und Objektverwaltung sowie verbundenen Rändern vorhanden. Eine integrierte Headless-Szenenreise prüft Entladen, Rückladen, 1.250 m und 10.000 m sowie 222 Objekte. Die LOD-Wahl nutzt konservative 3D-Distanz, der Ladezustand horizontale Distanz. Eine feine Linie ist in Kachel- und monolithischer Bodenansicht sichtbar; Kantennormalen, Skirt- und Schattenabschaltung sind untersucht, die Ursache bleibt offen. Der Worker übernimmt jetzt die Rauschparameter als Snapshot. Als Nächstes bewegte Bilder und Objektzustand visuell prüfen, steile Übergänge, bildschirmfehlerbasiertes LOD und asynchronen Aufbau mit Zeit-/Speicherbudget untersuchen; Standardbenchmark bleibt monolithisch. |
+| VIS-001 | IN ARBEIT | Sieben feste Kameras, reproduzierbare Softwarebilder und automatisierter Pixelvergleich vorhanden. Wald-, Sonnenuntergangs-, Wolken- und Wasseransichten benötigen echte Inhalte; Streaming-Ansichten und Hardwareabweichungen prüfen. |
+| TERR-003 | OFFEN | Lizenzierte bzw. nachweisbar selbst erzeugte PBR-Texturen, Normalmaps und Variationsverfahren für Gelände; Nah-/Fernansicht prüfen. |
+| ATM-001 | IN ARBEIT – Flugszene mit prozeduralem Himmel und 2D-Wolken; volumetrische Wolken und Tageszeit fehlen. | Tageszeit und skalierbare Wolken mit nachvollziehbaren Grenzen und Vergleichsbildern. |
+| WATER-001 | IN ARBEIT – Flugszene mit animierter Oberfläche, Fresnel und Tiefenfärbung; Ufer und weitere Ansichten prüfen. | Wasser mit Wellen, Fresnel und Tiefenfärbung; Ufer- und Tiefenfälle prüfen. |
+| ENV-001 | OFFEN | Vegetation mit Instancing, Wind und LOD; Lizenznachweise und Anzahl/Performance messen. |
+| FLIGHT-001 | IN ARBEIT – spielbarer Flugprototyp, automatischer Überflug und Tastatureingabe S/C geprüft; F-22-inspirierte Form und einfacher Cockpitplatzhalter vorhanden; fotorealistisches Modell, Details, Start und Landung fehlen. | Sichtbares steuerbares 3D-Flugzeug und testbarer Flugphysikkern; spielbarer Flug mit Cockpit- und Verfolgerkamera. |
+| SIM-001 | IN ARBEIT – grobe Jet-Parameter vorhanden; belastbare Quellen und realistische Kalibrierung fehlen. | Flugphysik schrittweise kalibrieren: Auftrieb, Widerstand, Schub, Gravitation, Strömungsabriss, Wind und Zeitschritttests. |
+| PERF-001 | BLOCKIERT | Windows-/RTX-5070-Benchmarks: Zielhardware und Treiberzugang fehlen in der Cloud. |
+| O3DE-001 | BLOCKIERT | Vergleichsszene und Messung auf geeigneter Plattform mit genügend Speicher/GPU. |
 
-- 2026-11-07, Fortsetzung: Downloadfreigabe erteilt. Godot auf verifiziertes
-  4.7.2-stable festgelegt; O3DE-Release 2605.0 und offizielle Quelltexte geprüft.
-- Keine O3DE-Vollinstallation auf dieser Cloud: Quellbuildbedarf 100+ GB gegenüber
-  rund 60 GiB frei; keine Hardware-GPU und Debian statt primärer Ubuntu-Plattform.
-- Portable Xvfb-/Mesa-Pakete aus signiertem Debian-Index und SHA-256-geprüften
-  Artefakten, ausschließlich unter `.tools`; keine systemweiten Änderungen.
-- Grafikprüfung entdeckt und korrigiert Terrain-Winding. Bildprüfung verwendet
-  feste Framezahl statt der Benchmarkzeit und schreibt keine Performance-CSV.
-- Die Wasserfläche liegt jetzt im Tal statt unsichtbar unter dem zentralen Hügel;
-  gemeinsames Manifest `scene_revision=2` markiert diese Szenenänderung.
+Die Reihenfolge wird anhand von Testergebnissen und sichtbaren Regressionen angepasst.
 
-- 2026-11-07, Directive 002: Revision 3 erhält deterministische, weltkoordinatenbasierte
-  Höhen- und Hangmaterialien. Ein anfängliches Modell führte zu nadelartigen Bergen;
-  reduzierte Rauschfrequenz und geglättete Normalen verbessern das gerenderte Bild.
-- Objekte werden auf der tatsächlich triangulierten Oberfläche positioniert. Der
-  ursprüngliche Funktionswert allein verursachte Schweben zwischen Netzvertices.
-- Die frühere benchmarkfähige Revision 2 bleibt in Git und in gespeicherten
-  Ergebnissen erhalten. Gemessene Revision-2-Werte sind keine Revision-3-Messungen.
-- Geometrische Wolken werfen vorerst keine Schatten: ihre großen dunklen Scheiben
-  waren sichtbar unplausibel. Echtes Wolkenschattenmodell bleibt offen.
+## Flugterrain ohne feste Kachelgrenze
 
-- TERR-002 wird zunächst getrennt vom produktiven Szenenpfad entwickelt.
-  Gemeinsame Weltkoordinaten und Skirts sind eine Grundlage; sie ersetzen keine
-  geprüfte Übergangsgeometrie, insbesondere an steilen Kanten. Hysterese verhindert
-  Schwellenflattern, sagt aber nichts über Ladezeiten und Budgetierung aus.
+Der Flugmodus aktiviert beim bestehenden Kachelmanager eine separate Planung
+mit absoluten, auch negativen Kachelschlüsseln um das Flugzeug. Der vorhandene
+Benchmark behält seine feste Kachelgrenze. Maximal 100 Kacheln bleiben resident;
+zwei synchrone Aufbauten pro Physikschritt sind ein Mengen-, kein Zeitbudget.
+Kollision tastet die aktuell gerenderte Kachel ab. Vegetation wird außerhalb
+der ursprünglichen Szene deterministisch pro Kachel erzeugt und zusammen mit
+ihr freigegeben. Vor der ersten Bewegung werden Kacheln vorgeladen. Fehlende
+Kacheln können die Flugbewegung vorübergehend anhalten. Ohne Floating Origin
+und Langzeittests ist unbegrenzte Präzision nicht nachgewiesen.
 
-- Die Kachelplanung ist eine reine Funktion des beobachteten Bestands. Eine
-  fehlgeschlagene Mesh-Erzeugung darf keine Kachel als geladen markieren.
-  Die Anzahl von Aufbauvorgängen wird begrenzt; harte Zeit- und Byte-Budgets
-  werden erst nach Integration und Messung behauptet.
-
-- Experimentelles Terrainstreaming bleibt explizit wählbar und von
-  Performance-Messungen ausgeschlossen, bis Bild-/Bewegungs- und Budgettests
-  abgeschlossen sind. Eine anfängliche Kantenlösung mit Skirts zeigte im
-  1080p-Bild weiterhin Risse. Gemeinsame interpolierte Randlinien entfernten die
-  auffälligen Risse in der geprüften festen Ansicht; allgemeine Nahtfreiheit
-  ist damit nicht bewiesen.
-- Fenstergröße und interner Renderpuffer werden separat gesetzt und nach dem
-  ersten Bild verglichen. Die frühere Fenstereinstellung allein lieferte bei
-  angeforderten 960×540 einen 1920×1080-Puffer. Durch Vorprüfung des
-  Benchmark-GDScripts werden Parsefehler vor langen Bildläufen erkannt.
-
-- Sieben feste Referenzansichten erfassen auch unvollständige Systeme sichtbar.
-  Namen wie `forest` und `sunset` beschreiben die zu prüfende Absicht; sie
-  bedeuten nicht, dass Wald oder Sonnenuntergang bereits produktionsreif sind.
-- Pixelvergleiche benötigen übereinstimmende Auflösung und eine ausdrücklich
-  gesetzte Fehlertoleranz. Ohne Schwelle protokollieren sie Unterschiede,
-  entscheiden aber weder über Qualität noch über einen Regressionserfolg.
-
-- Eine bodennahe Kachelansicht zeigte trotz verbundener Randpositionen eine
-  helle Linie. Normalen an feinen Kanten werden nun aus groben Endpunkten
-  interpoliert. Die Linie blieb im Vergleich sichtbar; Ursache und Abhilfe sind
-  offen. Veränderte Pixel allein belegen weder Verbesserung noch Regression.
-- Ursprünglich wurde LOD nur über horizontale Kacheldistanz gewählt; diese
-  Entscheidung wurde durch konservative 3D-Distanz ersetzt (siehe unten).
-
-- Ein gezielter Lauf ohne Skirts änderte an der Bodenansicht nur zwei Pixel über
-  dem RGB-Schwellenwert 2; die fragliche Linie erschien auch im monolithischen
-  Referenzbild. Die Skirts sind wieder eingeschaltet. Eine Streaming-spezifische
-  Ursache für diese Linie ist daher nicht belegt.
-
-- Experimentelles LOD berücksichtigt Flughöhe über den 3D-Abstand zu einem
-  konservativen globalen Höhenintervall, einschließlich Skirts und Objektüberstand.
-  Laden/Entladen bleibt horizontal, damit große Flughöhe Gelände nicht ausblendet.
-  Die angenommene Schranke muss zur Höhenfunktion passen; bildschirmbezogene
-  Fehlermetriken und tatsächliche Leistungswirkung sind weiterhin offen.
-- Der experimentelle Kameramodus erweitert die Fernsicht bei großer Höhe. Der
-  Boden-Nebel wird oberhalb 2.000 m als einfache Näherung reduziert, da der
-  ursprüngliche konstante Nebel den 2-km-Ausschnitt in 10 km Höhe verdeckte.
-  Dies ist weder ein physikalisch vollständiges Atmosphärenmodell noch eine
-  globale Welt.
-
-- Terrain-Freeze auf ausdrückliche Nutzeranweisung: aktueller asynchroner Test
-  wird gesichert; keine weiteren Terrainänderungen oder neuen Terrain-Tests ohne
-  neue Freigabe. Offene Terrainprobleme bleiben dokumentiert.
-- Die beiden 960×540-Ansichten von synchronem und asynchronem Kachelaufbau
-  erfüllen eine explizite Bildtoleranz von 1/255 mittlerer RGB-Abweichung,
-  sind aber nicht pixelgleich. Dies ist kein Leistungsnachweis.
-
-- Flugprototyp als separate Szene über der bestehenden Landschaft; Terraincode
-  bleibt während des Freeze unverändert. Die vereinfachte Flugphysik verwendet
-  Godot-Datentypen und ist kein kalibrierter, engineunabhängiger Simulationskern.
-- Cockpit vorerst als Ansicht ohne Innenraum; Wolken als 2D-Schicht, Wasser als
-  visuelle Wellen-/Fresnel-Näherung. Softwarebilder sind keine GPU-Benchmarks.
-  Automatischer Überflug und reale X11-Eingabe für Nicken und Kamera sind geprüft.
-
-- Auf Nutzerwunsch wurde das Flugzeug durch eine eigenständig erzeugte,
-  unbewaffnete F-22-inspirierte Außenform ersetzt. Masse, Fläche und Schub sind
-  grobe Modellannahmen, kein validierter F-22-Datensatz; Details und fehlende
-  Quellenprüfung stehen in `F22_APPROXIMATION.md`. Das Cockpit ist ein Platzhalter.
-
-- Der Nutzer hat den Terrain-Freeze ausdrücklich aufgehoben. Der Worker erhält
-  jetzt einen Snapshot der Rauschkonfiguration; Änderung während des Betriebs
-  erfordert weiterhin einen neuen Manager. Die bekannte Bodenlinie bleibt auch
-  ohne Schatten sichtbar; keine unbelegte Korrektur behaupten.
-- Höhenabhängige Standardatmosphäre, vereinfachte Schubverzögerung und IAS
-  verbessern die Grundlage, sind jedoch keine F-22-Kalibrierung.
+- Höchste Nutzerpriorität: prozedural nachladendes Flugterrain. Das Kachelgrid
+  ist nicht mehr auf die alte Szene beschränkt, der Residentbestand bleibt
+  begrenzt; Benchmarks behalten ihr bisheriges festes Raster. Ein 4,2-km-Flug
+  ist geprüft. Floating Origin, längere Flüge und Performance bleiben offen.
