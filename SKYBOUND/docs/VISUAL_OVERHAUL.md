@@ -102,3 +102,7 @@ Vorher `visuals/visual_low_flight.png`, nachher
 `visuals/visual_low_flight_trees.png`: Stamm und Blattkrone sind erkennbar.
 Die Platzierung bleibt spärlich und gleichförmig; Artenvielfalt, realistische
 Nadelbäume, Wind, LOD und Leistungsprüfung sind offen.
+
+Eine 2560×1440-Tiefflugaufnahme in Medium wurde mit Software-Vulkan
+erfolgreich erstellt: `visuals/visual_1440p_software.png`. Das beweist die
+Ausgabeauflösung, aber weder Echtzeitfähigkeit noch RTX-Performance.

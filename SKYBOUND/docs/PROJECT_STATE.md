@@ -213,3 +213,6 @@ zusätzlich mit Software-Vulkan gerendert. Keine RTX-/Windows-Leistungswerte.
 Die Flugansicht verwendet statt der Kegel ein CC-BY-4.0-Baummodell mit
 beigelegtem Urheberhinweis. Die Vegetation bleibt spärlich und ohne LOD/Wind;
 Benchmarkobjekte bleiben unverändert.
+
+Die tatsächliche Ausgabe in 2560×1440 wurde als Medium-Softwarebild bestätigt;
+keine Aussage über FPS oder Leistung auf der Ziel-GPU.
