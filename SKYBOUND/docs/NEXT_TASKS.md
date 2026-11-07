@@ -9,8 +9,8 @@
 | ATM-001 | IN ARBEIT – Flugszene mit prozeduralem Himmel und 2D-Wolken; volumetrische Wolken und Tageszeit fehlen. | Tageszeit und skalierbare Wolken mit nachvollziehbaren Grenzen und Vergleichsbildern. |
 | WATER-001 | IN ARBEIT – Flugszene mit animierter Oberfläche, Fresnel und Tiefenfärbung; Ufer und weitere Ansichten prüfen. | Wasser mit Wellen, Fresnel und Tiefenfärbung; Ufer- und Tiefenfälle prüfen. |
 | ENV-001 | OFFEN | Vegetation mit Instancing, Wind und LOD; Lizenznachweise und Anzahl/Performance messen. |
-| FLIGHT-001 | IN ARBEIT – spielbarer Flugprototyp, automatischer Überflug und Tastatureingabe S/C geprüft; Cockpitinnenraum, Start und Landung fehlen. | Sichtbares steuerbares 3D-Flugzeug und testbarer Flugphysikkern; spielbarer Flug mit Cockpit- und Verfolgerkamera. |
-| SIM-001 | IN ARBEIT – vereinfachtes Modell vorhanden, realistische Kalibrierung fehlt. | Flugphysik schrittweise kalibrieren: Auftrieb, Widerstand, Schub, Gravitation, Strömungsabriss, Wind und Zeitschritttests. |
+| FLIGHT-001 | IN ARBEIT – spielbarer Flugprototyp, automatischer Überflug und Tastatureingabe S/C geprüft; F-22-inspirierte Form und einfacher Cockpitplatzhalter vorhanden; Details, Start und Landung fehlen. | Sichtbares steuerbares 3D-Flugzeug und testbarer Flugphysikkern; spielbarer Flug mit Cockpit- und Verfolgerkamera. |
+| SIM-001 | IN ARBEIT – grobe Jet-Parameter vorhanden; belastbare Quellen und realistische Kalibrierung fehlen. | Flugphysik schrittweise kalibrieren: Auftrieb, Widerstand, Schub, Gravitation, Strömungsabriss, Wind und Zeitschritttests. |
 | PERF-001 | BLOCKIERT | Windows-/RTX-5070-Benchmarks: Zielhardware und Treiberzugang fehlen in der Cloud. |
 | O3DE-001 | BLOCKIERT | Vergleichsszene und Messung auf geeigneter Plattform mit genügend Speicher/GPU. |
 

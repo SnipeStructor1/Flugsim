@@ -158,3 +158,7 @@ werden für die Kollision nur gelesen. Ein eigener Sky- und Wasser-Shader ersetz
 die Darstellung ausschließlich in der Fluginstanz. Wolken sind eine 2D-Näherung,
 Wasser keine hydrodynamische Simulation; das Flugmodell nutzt Godot-Mathematik
 und ist nicht an ein reales Flugzeug kalibriert. Terrainentwicklung bleibt gesperrt.
+
+`raptor_visual.gd` erzeugt die F-22-inspirierte Außenform selbst; der einfache
+Cockpitplatzhalter gehört zur Flugkamera. Die Parameter des Flugmodells und ihre
+Grenzen sind in `F22_APPROXIMATION.md` dokumentiert.

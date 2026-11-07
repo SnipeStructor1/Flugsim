@@ -31,11 +31,12 @@ Gieren und R/F den Schub. C wechselt zwischen Verfolger- und Cockpitkamera,
 M schaltet Maussteuerung um, Rücktaste setzt zurück und Esc beendet. Bei einer
 Kollision hilft die Rücktaste. Ein Gamepad ist vorgesehen, aber nicht geprüft.
 
-Das vereinfachte Flugmodell ist nicht an einem realen Flugzeug kalibriert; die
-Cockpitansicht hat noch keinen ausmodellierten Innenraum. Wolken sind eine
+Das Flugzeug ist ein selbst erzeugter, unbewaffneter F-22-inspirierter Prototyp.
+Das vereinfachte Flugmodell ist nicht an einer echten F-22 kalibriert; die
+Cockpitansicht besitzt einen einfachen Platzhalter-Innenraum. Wolken sind eine
 zweidimensionale Näherung, Wasser und Wind sind vereinfacht. Start und Landung
 sind noch nicht umgesetzt, die vorhandene Landschaft ist etwa 2 km breit.
-Windows und RTX-Hardware sind nicht getestet. [Erster Flugzeug-Screenshot](docs/visuals/flight_first.png).
+Windows und RTX-Hardware sind nicht getestet. [F-22-inspirierter Flugzeug-Screenshot](docs/visuals/raptor_chase.png).
 
 Flugspezifische Prüfungen (ohne Terrain-Tests):
 

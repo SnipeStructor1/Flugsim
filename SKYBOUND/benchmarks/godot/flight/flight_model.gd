@@ -1,15 +1,15 @@
 extends RefCounted
 
 # SI units, +Y up, aircraft forward is local -Z. This is an intentionally simple
-# fixed-wing model, not a certified aerodynamic model or real aircraft data.
-const MASS_KG := 1200.0
-const WING_AREA_M2 := 16.0
+# fighter-like model, not a validated F-22 aerodynamic or propulsion model.
+const MASS_KG := 26000.0 # Assumed representative flight mass, not a fixed F-22 mass.
+const WING_AREA_M2 := 78.0 # Approximate planform reference area.
 const AIR_DENSITY := 1.225
 const GRAVITY := 9.80665
-const MAX_THRUST_N := 3000.0
+const MAX_THRUST_N := 230000.0 # Simplified combined dry-thrust approximation.
 
 var position := Vector3.ZERO
-var velocity := Vector3(0, 0, -55)
+var velocity := Vector3(0, 0, -130)
 var attitude := Quaternion.IDENTITY
 var angular_rates := Vector3.ZERO
 var throttle := 0.65
@@ -17,7 +17,7 @@ var stalled := false
 
 func lift_coefficient(alpha: float) -> float:
 	var degrees := absf(rad_to_deg(alpha))
-	var linear := clampf(0.24 + 4.2 * alpha, -1.2, 1.45)
+	var linear := clampf(0.30 + 4.2 * alpha, -1.2, 1.45)
 	if degrees <= 15.0:
 		return linear
 	# Lift falls beyond the critical angle; residual lift remains at deep stall.

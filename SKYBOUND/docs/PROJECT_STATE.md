@@ -7,15 +7,18 @@ Die Benchmark-Basis wurde in Commit `2eb0373` gesichert und auf GitHub `main` ve
 ## Aktueller Schwerpunkt: FLIGHT-001
 
 Ein separat startbarer Flugprototyp nutzt die bestehende Landschaft unverändert.
+Das selbst erzeugte Flugzeug ist nun an die F-22 angelehnt: gepfeilte Flächen,
+zwei schräg stehende Leitwerke und zwei Auslässe. Ein einfacher Cockpitplatzhalter
+ist vorhanden. Die Modellannahmen stehen in `F22_APPROXIMATION.md`.
 Er bietet ein sichtbares Flugzeug, vereinfachte Kräfte und Steuerung, konstanten
 Wind, Kollision mit Boden und Wasser sowie Verfolger- und Cockpitkamera. Ein
 prozeduraler Himmel und ein animierter Wasser-Shader gelten nur in der Flugszene.
-Ein automatischer Flug aus 700 m Höhe überquerte etwa 1.450 m; Modell- und
+Ein automatischer Flug aus 700 m Höhe überquerte mit den aktuellen Modellparametern etwa 1.450 m in 577 Schritten; Modell- und
 Szenentests sowie echte X11-Tasteneingaben für S und C bestanden. Bildprüfungen
 verwenden Software-Vulkan und sind keine Hardware-Benchmarks.
 
 Einschränkungen: Das Flugmodell ist nicht real kalibriert, Start/Landung fehlen,
-die Cockpitkamera besitzt keinen Innenraum, Wolken sind nicht volumetrisch und
+das Cockpit ist nur ein Platzhalter, Wolken sind nicht volumetrisch und
 Wasser ist eine visuelle Näherung. Maus, Gamepad und Windows sind nicht vollständig
 geprüft. Der bestehende 2-km-Ausschnitt begrenzt den Flug. Terrain-Freeze bleibt
 aktiv; die ältere feine Bodenlinie und fehlende RTX-Messungen bleiben offen.

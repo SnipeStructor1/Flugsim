@@ -5,6 +5,7 @@ var collision_rules = preload("res://flight/collision_rules.gd").new()
 var world: Node3D
 var aircraft := Node3D.new()
 var camera := Camera3D.new()
+var cockpit := Node3D.new()
 var hud := Label.new()
 var camera_mode := 0
 var mouse_enabled := false
@@ -49,6 +50,8 @@ func _ready() -> void:
 	build_aircraft()
 	add_child(aircraft)
 	add_child(camera)
+	camera.add_child(cockpit)
+	build_cockpit()
 	camera.fov = 70
 	camera.near = 0.2
 	camera.far = 5000
@@ -100,36 +103,34 @@ func apply_flight_atmosphere() -> void:
 			# Hide only the benchmark's geometric cloud discs in the flight scene.
 			child.visible = false
 
-func part(mesh: Mesh, pos: Vector3, scale_value: Vector3, color: Color, roughness := 0.45) -> MeshInstance3D:
+func build_aircraft() -> void:
+	preload("res://flight/raptor_visual.gd").new(aircraft).build()
+
+func cockpit_box(position_value: Vector3, dimensions: Vector3, color: Color) -> void:
 	var node := MeshInstance3D.new()
-	node.mesh = mesh
-	node.position = pos
-	node.scale = scale_value
+	var shape := BoxMesh.new()
+	shape.size = dimensions
+	node.mesh = shape
+	node.position = position_value
 	var surface := StandardMaterial3D.new()
 	surface.albedo_color = color
-	surface.roughness = roughness
-	surface.metallic = 0.15
+	surface.roughness = 0.8
 	node.material_override = surface
-	aircraft.add_child(node)
-	return node
+	cockpit.add_child(node)
 
-func build_aircraft() -> void:
-	var white := Color(0.78, 0.82, 0.84)
-	var blue := Color(0.06, 0.18, 0.30)
-	var body := part(CapsuleMesh.new(), Vector3.ZERO, Vector3(2.1, 5.8, 2.1), white)
-	body.rotation_degrees.x = 90
-	part(BoxMesh.new(), Vector3(0, 0, 0.4), Vector3(14, 0.28, 2.4), white)
-	part(BoxMesh.new(), Vector3(0, 0.16, 0.9), Vector3(13.4, 0.12, 0.3), blue)
-	part(BoxMesh.new(), Vector3(0, 0.5, 4.3), Vector3(5.0, 0.20, 1.1), white)
-	part(BoxMesh.new(), Vector3(0, 1.25, 4.3), Vector3(0.20, 2.1, 1.4), blue)
-	part(SphereMesh.new(), Vector3(0, 0.9, -1.1), Vector3(1.65, 1.0, 2.6), Color(0.06, 0.15, 0.20), 0.15)
-	part(BoxMesh.new(), Vector3(0, 0, -5.7), Vector3(3.0, 0.10, 0.13), Color(0.10, 0.10, 0.10))
+func build_cockpit() -> void:
+	# Simple placeholder panel and canopy frame; not a replica of actual avionics.
+	var frame := Color(0.06, 0.08, 0.09)
+	cockpit_box(Vector3(0, -0.95, -2.2), Vector3(3.8, 0.55, 0.35), frame)
+	cockpit_box(Vector3(-1.95, 0.1, -2.7), Vector3(0.12, 2.4, 0.12), frame)
+	cockpit_box(Vector3(1.95, 0.1, -2.7), Vector3(0.12, 2.4, 0.12), frame)
+	cockpit_box(Vector3(0, -0.72, -2.39), Vector3(0.75, 0.24, 0.05), Color(0.08, 0.27, 0.22))
 
 func reset_flight() -> void:
 	model = preload("res://flight/flight_model.gd").new()
 	var ground: float = world.terrain.mesh_height(0.0, 700.0, float(world.settings.terrain.size_m) / int(world.settings.terrain.grid_cells), float(world.settings.terrain.size_m) / 2.0)
-	model.position = Vector3(0, ground + 180, 700)
-	model.velocity = Vector3(0, 0, -55)
+	model.position = Vector3(0, ground + 300, 700)
+	model.velocity = Vector3(0, 0, -130)
 	initial_position = model.position
 	aircraft.position = model.position
 	aircraft.quaternion = model.attitude
@@ -206,7 +207,7 @@ func _physics_process(delta: float) -> void:
 		camera_test_count += 1
 	update_camera()
 	var label_mode := "Cockpit" if camera_mode == 1 else "Verfolger"
-	hud.text = "SKYBOUND  |  %s\nGeschwindigkeit %.0f km/h    Höhe %.0f m    Schub %.0f%%    Wind %.0f m/s%s\nW/S Nicken  A/D Rollen  Q/E Gieren  R/F Schub\nC Kamera  M Maussteuerung  Rücktaste Neustart  Esc Ende" % [label_mode, model.velocity.length() * 3.6, model.position.y, model.throttle * 100.0, wind.length(), "    STRÖMUNGSABRISS" if model.stalled else ""]
+	hud.text = "SKYBOUND  |  F-22-inspiriert  |  %s\nGeschwindigkeit %.0f km/h    Höhe %.0f m    Schub %.0f%%    Wind %.0f m/s%s\nW/S Nicken  A/D Rollen  Q/E Gieren  R/F Schub\nC Kamera  M Maussteuerung  Rücktaste Neustart  Esc Ende" % [label_mode, model.velocity.length() * 3.6, model.position.y, model.throttle * 100.0, wind.length(), "    STRÖMUNGSABRISS" if model.stalled else ""]
 	if crashed: hud.text += "\nAUFPRALL – Rücktaste zum Neustart"
 	if absf(model.position.x) > float(world.settings.terrain.size_m)/2.0 or absf(model.position.z) > float(world.settings.terrain.size_m)/2.0:
 		hud.text += "\nGeländeausschnitt verlassen – bitte wenden"
@@ -231,13 +232,14 @@ func update_camera() -> void:
 		camera.look_at(Vector3(-400, 8, -400), Vector3.UP)
 		return
 	var orientation := Basis(model.attitude)
+	cockpit.visible = camera_mode == 1
 	if camera_mode == 0:
 		aircraft.visible = true
-		camera.position = model.position + orientation * Vector3(0, 7, 25)
+		camera.position = model.position + orientation * Vector3(0, 9, 33)
 		camera.look_at(model.position + orientation * Vector3(0, 0.7, -7), Vector3.UP)
 	else:
 		aircraft.visible = false
-		camera.position = model.position + orientation * Vector3(0, 1.4, -0.4)
+		camera.position = model.position + orientation * Vector3(0, 1.4, -3.8)
 		camera.quaternion = model.attitude
 
 func _process(_delta: float) -> void:

@@ -100,3 +100,8 @@
 - Cockpit vorerst als Ansicht ohne Innenraum; Wolken als 2D-Schicht, Wasser als
   visuelle Wellen-/Fresnel-Näherung. Softwarebilder sind keine GPU-Benchmarks.
   Automatischer Überflug und reale X11-Eingabe für Nicken und Kamera sind geprüft.
+
+- Auf Nutzerwunsch wurde das Flugzeug durch eine eigenständig erzeugte,
+  unbewaffnete F-22-inspirierte Außenform ersetzt. Masse, Fläche und Schub sind
+  grobe Modellannahmen, kein validierter F-22-Datensatz; Details und fehlende
+  Quellenprüfung stehen in `F22_APPROXIMATION.md`. Das Cockpit ist ein Platzhalter.
