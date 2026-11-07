@@ -192,3 +192,9 @@ mit separaten Materialien, Düsen und beweglichen Steuerflächen ersetzt den
 vorigen prozeduralen Flugzeugrumpf. Das Cockpit ist weiterhin ein Platzhalter.
 Bilder und Flugtests sind dokumentiert; PBR-Assets, echte Beleuchtungsqualität,
 Wasser, Vegetation, Presets und hochwertige Flugzeugdetails bleiben offen.
+
+Flugterrain nutzt inzwischen ein separat zugewiesenes Felsmaterial mit
+lizenzierten Godot-Demo-Texturen (Albedo, Rauheit, Höhe und Normale),
+triplanarer Projektion und prozeduraler Mischung. Vergleich und Rechte stehen
+in `VISUAL_OVERHAUL.md` und `assets/licenses/README.md`. Vegetation,
+Flugzeugdetails und hochwertige Atmosphäre sind weiterhin unfertig.

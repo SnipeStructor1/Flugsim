@@ -53,6 +53,15 @@ func _ready() -> void:
 		return
 	world.camera.current = false
 	var manager = world.stream_manager
+	manager.terrain_material.shader = load("res://flight/terrain_look.gdshader")
+	for entry in [["rock_albedo", "rock_albedo.jpg"], ["rock_roughness", "rock_rough.jpg"], ["rock_height", "rock_depth.jpg"], ["rock_normal", "rock_normal.jpg"]]:
+		var image := Image.new()
+		var path := ProjectSettings.globalize_path("res://flight/assets/rock/" + entry[1])
+		if image.load(path) != OK or image.generate_mipmaps() != OK:
+			push_error("Could not load terrain material texture: " + path)
+			get_tree().quit(2)
+			return
+		manager.terrain_material.set_shader_parameter(entry[0], ImageTexture.create_from_image(image))
 	manager.planner.infinite_grid = true
 	manager.flight_vegetation = true
 	manager.planner.policy.load_distance = 1000.0

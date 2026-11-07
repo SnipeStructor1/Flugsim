@@ -48,3 +48,14 @@ eine eigenständige, unbewaffnete Annäherung, nicht vermessenes F-22-Modell.
 
 Validierung: Flugmodell, Kameraund Kontrollflächen, 4,2-km-Überflug headless;
 Bilder mit Software-Vulkan, kein Windows- oder GPU-Performance-Nachweis.
+
+## Landschaftsmaterial – erster Schritt
+
+Eine Fels-Albedo, Rauheits-, Höhen- und Normalkarte aus den offiziellen Godot
+Demo Projects (MIT, konkrete Herkunft in `assets/licenses/README.md`) werden
+im Flugmodus triplanar auf steile Flächen projiziert und mit prozeduralen
+Gras-, Ufer- und Schneefarben gemischt. Die ursprüngliche Benchmarkmaterialdatei
+bleibt erhalten. `visuals/visual_terrain_pbr.png` zeigt die neue Ansicht;
+`visuals/raptor_atmosphere.png` dient als ältere Orientierung. Die Änderung ist
+aus großer Flughöhe eher subtil; Nahdetail, Grastexturen, Baummodelle und
+realistische Landschaft bleiben offen. Keine 1440p-/RTX-Performance gemessen.
