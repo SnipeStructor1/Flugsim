@@ -37,6 +37,16 @@ func _initialize() -> void:
 		printerr("Failed to establish replacement fixture")
 		quit(1)
 		return
+	var high: Dictionary = manager.tick(Vector2.ZERO, 1250.0)
+	if high.built != 1 or manager.resident[Vector2i.ZERO] != 1:
+		printerr("Altitude-aware lifecycle did not replace fine mesh")
+		quit(1)
+		return
+	var low: Dictionary = manager.tick(Vector2.ZERO, 200.0)
+	if low.built != 1 or manager.resident[Vector2i.ZERO] != 0:
+		printerr("Returning to low altitude did not restore fine mesh")
+		quit(1)
+		return
 	var original: Node = manager.nodes[Vector2i.ZERO]
 	manager.builder = FailingBuilder.new()
 	var failed: Dictionary = manager.tick(Vector2(700, 0))

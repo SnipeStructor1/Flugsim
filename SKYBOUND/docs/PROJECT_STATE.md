@@ -54,8 +54,9 @@ die Ladegrenze in der Szene, morphende LOD-Wechsel, mehrere Referenzkameras, hö
 Material-/Normalmaps, Wasser, Wolken und Flugmodell. RTX-5070-/Windows-Tests
 und O3DE bleiben mangels passender Hardware bzw. Speicher ungetestet.
 
-Ein integrierter Headless-Szenentest prüft Laden → Sprung über 3 km → Rückkehr:
-64 → 0 → 64 Kacheln und Sichtbarkeit/Position aller 222 Bodenobjekte bestehen.
+Ein integrierter Headless-Szenentest prüft Laden → Sprung über 3 km → 1.250 m →
+10.000 m → Rückkehr: 64 → 0 → 64 → 64 → 64 Kacheln, passende Detailstufen
+und Sichtbarkeit/Position aller 222 Bodenobjekte bestehen.
 Dies ersetzt keine visuelle oder zeitliche Prüfung des bewegten Bildes.
 
 Nächster Schritt: schnelle Kamerabewegungen und Wechsel über Ladegrenzen samt
@@ -95,4 +96,17 @@ Qualitätsscore. Eine feine Linie ist bodennah sichtbar und erscheint auch im mo
 Referenzbild. Ein Lauf ohne Skirts unterschied sich vom Lauf mit Skirts um nur
 zwei Pixel oberhalb Schwellwert 2; die Skirts wurden wieder aktiviert. Die Linie
 ist damit nicht als Streaming-Fehler nachgewiesen; ihre Ursache bleibt offen. Bilder und Rohvergleiche: `visuals/streaming_references/`.
-Die aktuelle LOD-Wahl berücksichtigt horizontale Entfernung, nicht Flughöhe.
+Die experimentelle LOD-Wahl berücksichtigt jetzt eine konservative 3D-Distanz
+zum Höhenintervall. Kacheln werden weiterhin anhand horizontaler Entfernung
+geladen, damit das Gelände unter einer Kamera in großer Höhe erhalten bleibt.
+Bei 1.250 m ergab ein Software-Bild 0/12/52 Kacheln in LOD 0/1/2. Bei
+10.000 m bleiben 64 Kacheln in LOD 2 mit 6.144 Geländedreiecken geladen.
+Dies ist keine FPS- oder GPU-Leistungsbewertung.
+
+Eine feste 5-km-Fernsicht und gleichförmiger Bodennebel verdeckten zuvor das
+Gelände in 10 km Höhe. Der experimentelle Modus passt seine Fernsicht und den
+Nebel heuristisch an die Flughöhe an. [Vorher](visuals/altitude/extreme_before.png)
+und [nachher](visuals/altitude/extreme_after.png): Der kleine quadratische
+2-km-Ausschnitt ist wieder erkennbar, eine globale Welt und physikalisch korrekte
+Atmosphäre existieren aber weiterhin nicht. Die Nähe-/Höhen-/Extremhöhen- und
+Rückkehrzustände bestehen im integrierten Headless-Szenentest.

@@ -10,7 +10,7 @@ func _initialize() -> void:
 	for x in range(-1000, 1001, 100):
 		for z in range(-1000, 1001, 100):
 			var value: float = model.height(x, z)
-			if not is_finite(value):
+			if not is_finite(value) or value < model.conservative_bounds().x or value > model.conservative_bounds().y:
 				quit(1)
 				return
 			if not is_equal_approx(value, same.height(x, z)):

@@ -5,16 +5,17 @@ extends RefCounted
 # succeeded and never mutates the caller's resident-state dictionary.
 var policy = preload("res://terrain_lod.gd").new()
 
-func plan(camera_xz: Vector2, grid_origin: Vector2, chunk_size: float, grid_width: int, grid_height: int, resident: Dictionary, max_resident: int, build_budget: int) -> Dictionary:
-	if chunk_size <= 0.0 or grid_width <= 0 or grid_height <= 0 or max_resident <= 0 or build_budget < 0 or not camera_xz.is_finite():
+func plan(camera_xz: Vector2, grid_origin: Vector2, chunk_size: float, grid_width: int, grid_height: int, resident: Dictionary, max_resident: int, build_budget: int, camera_y: float = 0.0, height_bounds: Vector2 = Vector2(-252, 698)) -> Dictionary:
+	if chunk_size <= 0.0 or grid_width <= 0 or grid_height <= 0 or max_resident <= 0 or build_budget < 0 or not camera_xz.is_finite() or not is_finite(camera_y) or not height_bounds.is_finite() or height_bounds.x > height_bounds.y:
 		return {"valid": false, "unload": [], "build": []}
 	var candidates: Array[Dictionary] = []
 	for z in range(grid_height):
 		for x in range(grid_width):
 			var key := Vector2i(x, z)
 			var origin := grid_origin + Vector2(x * chunk_size, z * chunk_size)
-			var distance: float = policy.distance_to_chunk(camera_xz, origin, chunk_size)
-			var lod: int = policy.choose(distance, int(resident.get(key, -1)))
+			var horizontal: float = policy.distance_to_chunk(camera_xz, origin, chunk_size)
+			var distance: float = policy.distance_to_chunk_3d(Vector3(camera_xz.x, camera_y, camera_xz.y), origin, chunk_size, height_bounds)
+			var lod: int = policy.choose(distance, int(resident.get(key, -1)), horizontal)
 			if lod >= 0:
 				candidates.append({"key": key, "origin": origin, "distance": distance, "lod": lod})
 	candidates.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:

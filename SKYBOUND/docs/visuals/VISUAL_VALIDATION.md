@@ -25,3 +25,9 @@ Für die experimentelle Kachelansicht liegen [Boden- und Höhenvergleiche](strea
 vor. Sie zeigen erwartete Geometrieunterschiede durch LOD; automatische Differenzen
 sind weder ein Qualitätsurteil noch eine Leistungsmessung. Die Ursache der auch
 im monolithischen Gelände sichtbaren feinen Linie bleibt offen.
+
+Die ergänzende [10-km-Ansicht](altitude/extreme_after.png) prüft das
+experimentelle Streaming nach Höhen-/Sichtweitenanpassung: 64 Kacheln verbleiben
+in LOD 2. Der sichtbare kleine quadratische Ausschnitt zeigt gleichzeitig die
+Grenze der heutigen Weltgröße. Vergleich und unveränderte Vorheransicht liegen
+unter `altitude/`; Hardwareleistung bleibt ungemessen.

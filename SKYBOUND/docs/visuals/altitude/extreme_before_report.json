@@ -1,0 +1,54 @@
+{
+  "mode": "SOFTWARE_RENDER_CHECK",
+  "performance_measured": false,
+  "resolution": [
+    960,
+    540
+  ],
+  "code_sha256": "b3068469e4e154111877e59c1d6eb8d11c6024dffa7ca717a5790c9f08a5979e",
+  "scene_sha256": "05feeb00a4fa6c73c69896e9e905d87013ad50479c1d968b41a2fad26f7ecce2",
+  "views_sha256": "bb1dcc3ef4df16b6fef190bb80d2e917e163289b826ee2637412a18686834940",
+  "runs": [
+    {
+      "profile": "Medium",
+      "view": "high_altitude",
+      "view_altitude_override_m": 10000.0,
+      "status": "PASS",
+      "wall_seconds_including_shader_compilation": 16.477120612999897,
+      "engine_settings": {
+        "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 540,
+        "profile": "Medium",
+        "render_check": true,
+        "renderer": "forward_plus",
+        "smoke": false,
+        "terrain_stream": true,
+        "upscaling": "native",
+        "view": "high_altitude",
+        "width": 960
+      },
+      "completion": {
+        "camera_end": "(0.0, 10000.0, 700.0)",
+        "camera_far_m": 10812.6396484375,
+        "frames": 8,
+        "lod_counts": [
+          0,
+          0,
+          64
+        ],
+        "render_check": true,
+        "resident_chunks": 64,
+        "smoke": false,
+        "stream_settled": true,
+        "terrain_stream": true,
+        "terrain_triangles": 6144,
+        "total_frames": 8
+      },
+      "screenshot": "Medium_high_altitude.png",
+      "sha256": "795ba79171c57e76c706f7aca371d59f47cdcf4cf76d6e16a02d43ce06f42ee1"
+    }
+  ],
+  "status": "PASS"
+}

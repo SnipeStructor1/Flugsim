@@ -32,5 +32,17 @@ func _initialize() -> void:
 		printerr("Zero budget or invalid configuration mishandled")
 		quit(1)
 		return
+	var high: Dictionary = planner.plan(Vector2(100, 100), Vector2.ZERO, 256, 1, 1, {}, 1, 1, 1250.0, Vector2(-252, 698))
+	var low: Dictionary = planner.plan(Vector2(100, 100), Vector2.ZERO, 256, 1, 1, {}, 1, 1, 200.0, Vector2(-252, 698))
+	var bad_bounds: Dictionary = planner.plan(Vector2.ZERO, Vector2.ZERO, 256, 1, 1, {}, 1, 1, 0.0, Vector2(5, -5))
+	if not high.valid or high.build.size() != 1 or high.build[0].lod != 1 or low.build[0].lod != 0 or bad_bounds.valid:
+		printerr("Altitude-aware planning or invalid bounds failed")
+		quit(1)
+		return
+	var extreme: Dictionary = planner.plan(Vector2(100, 100), Vector2.ZERO, 256, 1, 1, {}, 1, 1, 10000.0, Vector2(-252, 698))
+	if not extreme.valid or extreme.build.size() != 1 or extreme.build[0].lod != 2:
+		printerr("Terrain directly below a high-altitude camera disappeared")
+		quit(1)
+		return
 	print("STREAM_PLAN_TEST_PASS priority budget eviction purity invalid_input")
 	quit(0)

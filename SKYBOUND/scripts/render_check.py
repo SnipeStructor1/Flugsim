@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import selectors
@@ -18,6 +19,7 @@ def main():
     parser.add_argument('--compare-dir', type=Path, help='Compare against same-named reference PNGs')
     parser.add_argument('--max-mean-difference', type=float, help='Optional explicit comparison failure threshold (0–255)')
     parser.add_argument('--preview', action='store_true', help='Use 960x540 for quicker visual diagnostics; not a benchmark resolution')
+    parser.add_argument('--view-altitude', type=float, help='Override reference camera altitude for experimental streaming visual checks')
     parser.add_argument('--views', nargs='+', choices=['benchmark', 'mountains', 'sunset', 'lake', 'forest', 'clouds', 'ground', 'high_altitude'], default=['benchmark'])
     parser.add_argument('--profiles', nargs='+', choices=['Medium', 'High', 'Ultra'], default=['Medium', 'High', 'Ultra'])
     parser.add_argument('--terrain-stream', action='store_true', help='Exercise experimental chunk streaming instead of the baseline mesh')
@@ -26,6 +28,8 @@ def main():
     args = parser.parse_args()
     if args.max_mean_difference is not None and (args.compare_dir is None or not 0 <= args.max_mean_difference <= 255):
         parser.error('--max-mean-difference requires --compare-dir and a value between 0 and 255')
+    if args.view_altitude is not None and (not math.isfinite(args.view_altitude) or not args.terrain_stream or 'benchmark' in args.views):
+        parser.error('--view-altitude requires a finite value, --terrain-stream and named reference views')
     if args.pipeline_check and (args.terrain_stream or args.views != ['benchmark']):
         parser.error('Performance pipeline checks require the baseline terrain and benchmark view')
     if args.preview and args.resolution != '1920x1080':
@@ -76,6 +80,8 @@ def main():
                 command = [str(binary), '--display-driver', 'x11', '--audio-driver', 'Dummy', '--path', str(ROOT / 'benchmarks/godot'), '--rendering-method', 'forward_plus', '--rendering-driver', 'vulkan', '--', '--render-check=true', f'--profile={profile}', '--warmup=0', f'--capture={image}', f'--view={view}']
                 if args.terrain_stream:
                     command.append('--terrain-stream=true')
+                if args.view_altitude is not None:
+                    command.append(f'--view-altitude={args.view_altitude}')
                 command.extend([f'--width={width}', f'--height={height}'])
                 start = time.monotonic()
                 result = subprocess.run(command, capture_output=True, text=True, env=env, timeout=300)
@@ -90,7 +96,7 @@ def main():
                 complete = json.loads(next(line.split('SKYBOUND_COMPLETE ', 1)[1] for line in text.splitlines() if line.startswith('SKYBOUND_COMPLETE ')))
                 if not ready['render_check'] or not complete['render_check'] or complete['total_frames'] < 4 or ready['view'] != view or ready['terrain_stream'] != args.terrain_stream or (args.terrain_stream and complete['resident_chunks'] == 0):
                     raise RuntimeError('Not a valid render-check run')
-                run = {'profile': profile, 'view': view, 'status': 'PASS', 'wall_seconds_including_shader_compilation': time.monotonic()-start,
+                run = {'profile': profile, 'view': view, 'view_altitude_override_m': args.view_altitude, 'status': 'PASS', 'wall_seconds_including_shader_compilation': time.monotonic()-start,
                        'engine_settings': ready, 'completion': complete, 'screenshot': image.name, 'sha256': hashlib.sha256(data).hexdigest()}
                 if compare is not None:
                     comparison = compare(args.compare_dir / image.name, image)

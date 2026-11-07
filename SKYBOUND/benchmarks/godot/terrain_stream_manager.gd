@@ -12,15 +12,16 @@ var grid_width := 1
 var grid_height := 1
 var cells := 16
 var skirt_depth := 32.0
+var height_bounds := Vector2(-252, 698)
 var max_resident := 16
 var build_budget := 1
 var resident := {}
 var nodes := {}
 
-func tick(camera_xz: Vector2) -> Dictionary:
+func tick(camera_xz: Vector2, camera_y: float = 0.0) -> Dictionary:
 	if model == null:
 		return {"valid": false, "unloaded": 0, "built": 0, "failed": 0}
-	var plan: Dictionary = planner.plan(camera_xz, origin, chunk_size, grid_width, grid_height, resident, max_resident, build_budget)
+	var plan: Dictionary = planner.plan(camera_xz, origin, chunk_size, grid_width, grid_height, resident, max_resident, build_budget, camera_y, height_bounds)
 	if not plan.valid:
 		return {"valid": false, "unloaded": 0, "built": 0, "failed": 0}
 	var result := {"valid": true, "unloaded": 0, "built": 0, "failed": 0}

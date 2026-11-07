@@ -1,0 +1,12 @@
+{
+  "width": 960,
+  "height": 540,
+  "mean_absolute_rgb_difference_0_255": 0.5109143518518519,
+  "changed_pixels": 42110,
+  "changed_fraction": 0.08123070987654321,
+  "channel_threshold": 2,
+  "interpretation": "Pixel difference only; lighting, renderer and driver changes require human review.",
+  "reference": "SKYBOUND/docs/visuals/streaming_references/after_high_altitude.png",
+  "candidate": "SKYBOUND/docs/visuals/altitude/high_altitude.png",
+  "within_limit": null
+}

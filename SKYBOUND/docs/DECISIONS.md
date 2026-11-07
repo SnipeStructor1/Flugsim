@@ -68,10 +68,21 @@
   helle Linie. Normalen an feinen Kanten werden nun aus groben Endpunkten
   interpoliert. Die Linie blieb im Vergleich sichtbar; Ursache und Abhilfe sind
   offen. Veränderte Pixel allein belegen weder Verbesserung noch Regression.
-- LOD wird gegenwärtig über horizontale Kacheldistanz gewählt; die Flughöhe bleibt
-  ausdrücklich eine offene Effizienzfrage, bis projizierte Fehler gemessen sind.
+- Ursprünglich wurde LOD nur über horizontale Kacheldistanz gewählt; diese
+  Entscheidung wurde durch konservative 3D-Distanz ersetzt (siehe unten).
 
 - Ein gezielter Lauf ohne Skirts änderte an der Bodenansicht nur zwei Pixel über
   dem RGB-Schwellenwert 2; die fragliche Linie erschien auch im monolithischen
   Referenzbild. Die Skirts sind wieder eingeschaltet. Eine Streaming-spezifische
   Ursache für diese Linie ist daher nicht belegt.
+
+- Experimentelles LOD berücksichtigt Flughöhe über den 3D-Abstand zu einem
+  konservativen globalen Höhenintervall, einschließlich Skirts und Objektüberstand.
+  Laden/Entladen bleibt horizontal, damit große Flughöhe Gelände nicht ausblendet.
+  Die angenommene Schranke muss zur Höhenfunktion passen; bildschirmbezogene
+  Fehlermetriken und tatsächliche Leistungswirkung sind weiterhin offen.
+- Der experimentelle Kameramodus erweitert die Fernsicht bei großer Höhe. Der
+  Boden-Nebel wird oberhalb 2.000 m als einfache Näherung reduziert, da der
+  ursprüngliche konstante Nebel den 2-km-Ausschnitt in 10 km Höhe verdeckte.
+  Dies ist weder ein physikalisch vollständiges Atmosphärenmodell noch eine
+  globale Welt.

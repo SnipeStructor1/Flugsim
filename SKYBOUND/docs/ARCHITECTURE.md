@@ -38,8 +38,8 @@ Bitweise Deterministik über Plattformen wird ohne Nachweis nicht versprochen.
 
 Aerodynamik, Integrator, Atmosphäre, Flugzeugkonfiguration, Eingaben, Telemetrie,
 Missionen und Speicherstände erhalten eigene Module mit expliziten Abhängigkeiten.
-Streaming lädt Kacheln asynchron; Budgetierung, Hysterese und Cache-Eviction
-müssen vor globalem Terrain implementiert werden. Ein Floating Origin gehört zum
+Für globales Terrain sind asynchrones Streaming, Budgetierung und Cache-Eviction
+noch zu implementieren; der experimentelle Kachelaufbau ist derzeit synchron. Ein Floating Origin gehört zum
 Renderadapter und verändert keine absolute Simulationsposition.
 
 Zielbudgets, keine Messwerte: 16,7 ms Gesamtframetime bei 60 Hz, maximal 10 GB VRAM
@@ -68,8 +68,9 @@ LOD-Wechsel sind nächste Architekturaufgabe.
 
 ## Vorbereitete Kacheln und Detailstufen
 
-`terrain_lod.gd` entscheidet anhand der horizontalen Distanz zum nächsten Punkt
-einer Kachel. Drei LOD-Stufen und separate Lade-/Entladeschwellen besitzen 32 m
+`terrain_lod.gd` verwendet für den Ladezustand die horizontale Distanz zur
+nächsten Kachel. Die Detailstufe verwendet zusätzlich eine konservative
+3D-Distanz zum globalen Höhenintervall des Geländes. Drei LOD-Stufen und separate Lade-/Entladeschwellen besitzen 32 m
 Hysterese, damit Grenzbewegungen nicht ständig neue Netze erzeugen.
 `terrain_chunk_mesh.gd` berechnet aus derselben Höhenfunktion drei Rasterstufen
 mit weltweit identischen gemeinsamen Stützpunkten und vertikalen Skirts.
@@ -118,9 +119,15 @@ werden abgewiesen. Pillow wird nur für den Bildvergleich benötigt. Ein
 Schwellwert muss bewusst gewählt werden, da Treiber und Renderer abweichen können.
 Keine Bildkennzahl ist ein Urteil über Realismus oder Leistung.
 
-Die LOD-Distanz ist derzeit nur horizontal. Große Flughöhe kann damit zu
-unnötig feinem Terrain direkt unter der Kamera führen; sichtbarkeits- und
-projektionsbasierte Auswahl muss erst untersucht und gemessen werden.
+Die Höhenabschätzung verwendet für die aktuelle Höhenfunktion das globale
+Intervall −252 bis 698 m, erweitert um 32 m Skirt und 15 m Objektüberstand.
+Daraus wird ein konservativer 3D-Abstand berechnet; die Ladeentscheidung bleibt
+horizontal, damit das Gelände bei großem Höhenabstand nicht verschwindet. Das
+Intervall muss bei Änderungen des Geländemodells oder größerer Objekte angepasst
+werden. Projizierter Bildschirmfehler, Sichtbarkeit und GPU-Kosten werden noch
+nicht berücksichtigt. Die experimentelle Kamera erweitert ihre Fernsicht und
+verringert die konstante Nebeldichte oberhalb 2.000 m heuristisch; das ist kein
+physikalisch vollständiges Atmosphärenmodell.
 
 Die integrierte Diagnose `--smoke=true --terrain-stream=true
 --stream-journey=true` setzt die Kamera in drei Phasen an Start, außerhalb des

@@ -1,0 +1,12 @@
+{
+  "width": 960,
+  "height": 540,
+  "mean_absolute_rgb_difference_0_255": 0.3729333847736626,
+  "changed_pixels": 7841,
+  "changed_fraction": 0.015125385802469136,
+  "channel_threshold": 2,
+  "interpretation": "Pixel difference only; lighting, renderer and driver changes require human review.",
+  "reference": "SKYBOUND/docs/visuals/altitude/extreme_before.png",
+  "candidate": "SKYBOUND/docs/visuals/altitude/extreme_after.png",
+  "within_limit": null
+}

@@ -1,0 +1,62 @@
+{
+  "mode": "SOFTWARE_RENDER_CHECK",
+  "performance_measured": false,
+  "resolution": [
+    960,
+    540
+  ],
+  "code_sha256": "948d11ee1a8bad742f82a78f518c5f7ddc95695d4c3260c5bb132cf7eca413cb",
+  "scene_sha256": "05feeb00a4fa6c73c69896e9e905d87013ad50479c1d968b41a2fad26f7ecce2",
+  "views_sha256": "bb1dcc3ef4df16b6fef190bb80d2e917e163289b826ee2637412a18686834940",
+  "runs": [
+    {
+      "profile": "Medium",
+      "view": "high_altitude",
+      "status": "PASS",
+      "wall_seconds_including_shader_compilation": 15.940833400999963,
+      "engine_settings": {
+        "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 540,
+        "profile": "Medium",
+        "render_check": true,
+        "renderer": "forward_plus",
+        "smoke": false,
+        "terrain_stream": true,
+        "upscaling": "native",
+        "view": "high_altitude",
+        "width": 960
+      },
+      "completion": {
+        "camera_end": "(0.0, 1250.0, 700.0)",
+        "frames": 8,
+        "lod_counts": [
+          0,
+          12,
+          52
+        ],
+        "render_check": true,
+        "resident_chunks": 64,
+        "smoke": false,
+        "stream_settled": true,
+        "terrain_stream": true,
+        "total_frames": 8
+      },
+      "screenshot": "Medium_high_altitude.png",
+      "sha256": "28524346b2d569e1bdf6f33332b422ffc06f072d4369bdd4fc7e6c4efecec753",
+      "comparison": {
+        "width": 960,
+        "height": 540,
+        "mean_absolute_rgb_difference_0_255": 2.115695730452675,
+        "changed_pixels": 154698,
+        "changed_fraction": 0.29841435185185183,
+        "channel_threshold": 2,
+        "interpretation": "Pixel difference only; lighting, renderer and driver changes require human review.",
+        "max_mean_difference": null,
+        "within_limit": null
+      }
+    }
+  ],
+  "status": "PASS"
+}

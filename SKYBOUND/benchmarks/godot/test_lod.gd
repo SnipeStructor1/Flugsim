@@ -21,5 +21,20 @@ func _initialize() -> void:
 		printerr("Chunk bounding-box distance failed")
 		quit(1)
 		return
+	var high: float = policy.distance_to_chunk_3d(Vector3(100, 1250, 100), Vector2.ZERO, 256, Vector2(-252, 698))
+	var inside: float = policy.distance_to_chunk_3d(Vector3(100, 200, 100), Vector2.ZERO, 256, Vector2(-252, 698))
+	var outside: float = policy.distance_to_chunk_3d(Vector3(356, 1250, 100), Vector2.ZERO, 256, Vector2(-252, 698))
+	if not is_equal_approx(high, 552.0) or inside != 0.0 or not is_equal_approx(outside, sqrt(552.0*552.0 + 100.0*100.0)):
+		printerr("3D conservative chunk distance failed")
+		quit(1)
+		return
+	if policy.choose(inside, -1) != 0 or policy.choose(high, -1) != 1:
+		printerr("Altitude did not change LOD as expected")
+		quit(1)
+		return
+	if policy.choose(10000.0, -1, 0.0) != 2 or policy.choose(10000.0, 2, 0.0) != 2 or policy.choose(200.0, -1, 4000.0) != -1:
+		printerr("High-altitude residency is not independent of LOD distance")
+		quit(1)
+		return
 	print("LOD_TEST_PASS cases=20 bounding_box_cases=3")
 	quit(0)

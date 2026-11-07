@@ -43,3 +43,16 @@ aktiv. Ein spezifischer Streaming-Riss ist für diese Linie nicht belegt. Der
 Vergleich gegen das monolithische Referenzgelände zeigt zahlreiche erwartete
 Pixelunterschiede durch LOD. Dies ist weder ein RTX-Performancewert noch ein
 automatisches Qualitätsurteil. Rohdaten stehen in `streaming_references/comparison_runs.json`.
+
+## Höhe und Sichtbarkeit
+
+[Höhenabhängiges LOD bei 1.250 m](altitude/high_altitude.png): 12 Kacheln
+in LOD 1, 52 in LOD 2, keine in LOD 0. Ein Vergleichsplan auf gleicher
+horizontaler Position und niedriger Höhe ergab 12/10/42 für LOD 0/1/2.
+Dies sind Geometriezählungen, kein Leistungsnachweis.
+
+[10 km vor der Nebelkorrektur](altitude/extreme_before.png) ·
+[10 km nach der Nebelkorrektur](altitude/extreme_after.png): Der geladene
+2-km-Ausschnitt wird wieder sichtbar, zeigt aber deutlich seine quadratische
+Grenze. Der Nebel ist eine Höhenheuristik; eine globale Landschaft und
+physikalische Atmosphäre fehlen.

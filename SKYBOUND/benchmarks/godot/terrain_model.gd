@@ -1,6 +1,14 @@
 extends RefCounted
 
 # Shared continuous height function: sample world coordinates, never chunk-local coordinates.
+# Conservative bounds for this specific height formula, assuming FastNoiseLite
+# returns [-1, 1]: 18 - 90 - 180 <= h <= 18 + 90 + 420 + 170.
+const MIN_HEIGHT := -252.0
+const MAX_HEIGHT := 698.0
+
+func conservative_bounds() -> Vector2:
+	return Vector2(MIN_HEIGHT, MAX_HEIGHT)
+
 var terrain_noise := FastNoiseLite.new()
 var ridge_noise := FastNoiseLite.new()
 

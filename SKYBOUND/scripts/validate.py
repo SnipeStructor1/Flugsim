@@ -40,8 +40,8 @@ for test in ['test_terrain.gd', 'test_lod.gd', 'test_chunk_mesh.gd', 'test_strea
         raise SystemExit(result.returncode)
 journey = subprocess.run([godot, '--headless', '--path', str(root / 'benchmarks/godot'), '--rendering-method', 'gl_compatibility', '--', '--smoke=true', '--terrain-stream=true', '--stream-journey=true', '--profile=Medium', '--warmup=0', '--duration=20'], capture_output=True, text=True, env=env, timeout=60)
 output = journey.stdout + journey.stderr
-if journey.returncode != 0 or 'ERROR:' in output or 'STREAM_JOURNEY_PASS phases=3' not in output or output.count('STREAM_JOURNEY_PHASE ') != 3:
+if journey.returncode != 0 or 'ERROR:' in output or 'STREAM_JOURNEY_PASS phases=5' not in output or output.count('STREAM_JOURNEY_PHASE ') != 5:
     print(output, file=sys.stderr)
     raise SystemExit(1)
-print('STREAM_JOURNEY_TEST_PASS: 64 loaded, 0 outside radius, 64 reloaded; object visibility and placement checked', flush=True)
+print('STREAM_JOURNEY_TEST_PASS: 64 loaded, 0 outside radius, high- and extreme-altitude LOD plus low-altitude return; LOD, object visibility and placement checked', flush=True)
 raise SystemExit(0)

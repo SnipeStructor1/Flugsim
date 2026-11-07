@@ -1,7 +1,7 @@
 extends Node3D
 
 var settings: Dictionary
-var options := {"profile": "High", "width": "1920", "height": "1080", "warmup": "30", "duration": "60", "output": "", "smoke": "false", "interactive": "false", "render-check": "false", "capture": "", "terrain-stream": "false", "view": "benchmark", "stream-journey": "false"}
+var options := {"profile": "High", "width": "1920", "height": "1080", "warmup": "30", "duration": "60", "output": "", "smoke": "false", "interactive": "false", "render-check": "false", "capture": "", "terrain-stream": "false", "view": "benchmark", "stream-journey": "false", "view-altitude": ""}
 var camera: Camera3D
 var output: FileAccess
 var started_us: int
@@ -13,6 +13,7 @@ var yaw := 0.0
 var pitch := 0.0
 var smoke := false
 var sunlight: DirectionalLight3D
+var scene_environment: Environment
 var render_check := false
 var streaming := false
 var stream_manager: Node3D
@@ -57,6 +58,9 @@ func _ready() -> void:
 		terrain = preload("res://terrain_model.gd").new(int(settings.seed))
 	if settings.is_empty() or not settings.profiles.has(options.profile):
 		fail("Missing scene manifest or unknown profile")
+		return
+	if not options["view-altitude"].is_empty() and (not streaming or not render_check or options.view == "benchmark" or not options["view-altitude"].is_valid_float() or not is_finite(float(options["view-altitude"]))):
+		fail("View altitude requires a finite number, streaming and a reference render check")
 		return
 	if options.view != "benchmark":
 		if not render_check:
@@ -174,13 +178,28 @@ func ground_objects_match_resident_chunks() -> bool:
 				return false
 	return true
 
+func stream_lod_counts() -> Array[int]:
+	var counts: Array[int] = [0, 0, 0]
+	if streaming:
+		for lod in stream_manager.resident.values():
+			counts[int(lod)] += 1
+	return counts
+
+func stream_triangle_count() -> int:
+	var vertices := 0
+	if streaming:
+		for node in stream_manager.nodes.values():
+			vertices += node.mesh.surface_get_array_len(0)
+	return vertices / 3
+
 func stream_is_settled() -> bool:
 	var camera_xz := Vector2(camera.position.x, camera.position.z)
-	var plan: Dictionary = stream_manager.planner.plan(camera_xz, stream_manager.origin, stream_manager.chunk_size, stream_manager.grid_width, stream_manager.grid_height, stream_manager.resident, stream_manager.max_resident, 1)
+	var plan: Dictionary = stream_manager.planner.plan(camera_xz, stream_manager.origin, stream_manager.chunk_size, stream_manager.grid_width, stream_manager.grid_height, stream_manager.resident, stream_manager.max_resident, 1, camera.position.y, stream_manager.height_bounds)
 	return plan.valid and plan.unload.is_empty() and plan.build.is_empty()
 
 func build_scene(profile: Dictionary) -> void:
 	var environment := Environment.new()
+	scene_environment = environment
 	environment.background_mode = Environment.BG_SKY
 	var sky := Sky.new()
 	var atmosphere := PhysicalSkyMaterial.new()
@@ -265,6 +284,9 @@ func build_scene(profile: Dictionary) -> void:
 		stream_manager = load("res://terrain_stream_manager.gd").new()
 		stream_manager.model = terrain
 		stream_manager.terrain_material = terrain_material
+		var ground_bounds: Vector2 = terrain.conservative_bounds()
+		# Include 32 m skirts and the tallest 15 m ground object.
+		stream_manager.height_bounds = Vector2(ground_bounds.x - stream_manager.skirt_depth, ground_bounds.y + 15.0)
 		stream_manager.chunk_size = 256.0
 		stream_manager.origin = Vector2(-float(settings.terrain.size_m)/2.0, -float(settings.terrain.size_m)/2.0)
 		stream_manager.grid_width = int(float(settings.terrain.size_m) / stream_manager.chunk_size)
@@ -314,6 +336,8 @@ func _process(delta: float) -> void:
 		camera.position += camera.basis * movement * delta * 120.0
 	elif not reference_view.is_empty():
 		camera.position = vector(reference_view.position_m)
+		if not options["view-altitude"].is_empty():
+			camera.position.y = float(options["view-altitude"])
 		camera.look_at(vector(reference_view.look_at_m))
 	else:
 		set_camera(0.0 if render_check else maxf(0.0,elapsed-warmup))
@@ -323,8 +347,22 @@ func _process(delta: float) -> void:
 			camera.look_at(camera.position + Vector3.FORWARD)
 		else:
 			set_camera(0.0)
+			if journey_phase == 2:
+				camera.position.y = 1250.0
+			elif journey_phase == 3:
+				camera.position.y = 10000.0
 	if streaming:
-		var update: Dictionary = stream_manager.tick(Vector2(camera.position.x, camera.position.z))
+		# Experimental camera must be able to see the loaded terrain from above.
+		# Use the farthest vertical bound and horizontal residency radius, with
+		# margin. The default benchmark's fixed clip distance remains unchanged.
+		# A bounded-height haze approximation avoids a constant ground-level fog
+		# density across the whole viewing ray at flight altitude. This is not a
+		# physically complete atmosphere; ground-level baseline remains unchanged.
+		scene_environment.fog_density = 0.00035 / (1.0 + maxf(0.0, camera.position.y - 2000.0) / 1000.0)
+		var vertical: float = maxf(absf(camera.position.y - stream_manager.height_bounds.x), absf(camera.position.y - stream_manager.height_bounds.y))
+		var radius: float = stream_manager.planner.policy.load_distance
+		camera.far = maxf(float(settings.camera.far_m), sqrt(vertical * vertical + radius * radius) + 100.0)
+		var update: Dictionary = stream_manager.tick(Vector2(camera.position.x, camera.position.z), camera.position.y)
 		if not update.valid or update.failed > 0:
 			fail("Terrain streaming update failed")
 			return
@@ -335,9 +373,13 @@ func _process(delta: float) -> void:
 			if stream_manager.resident.size() != expected_chunks or not ground_objects_match_resident_chunks():
 				fail("Stream journey chunk/object state mismatch at phase %d" % journey_phase)
 				return
-			print("STREAM_JOURNEY_PHASE ", journey_phase, " chunks=", expected_chunks, " objects=", ground_objects.size())
+			var lods := stream_lod_counts()
+			if (journey_phase == 2 and (lods[0] != 0 or lods[1] == 0)) or (journey_phase == 3 and (lods[2] != expected_chunks or camera.far <= camera.position.y - stream_manager.height_bounds.x or scene_environment.fog_density >= 0.0001)) or (journey_phase == 4 and lods[0] == 0):
+				fail("Stream journey altitude LOD state mismatch")
+				return
+			print("STREAM_JOURNEY_PHASE ", journey_phase, " chunks=", expected_chunks, " objects=", ground_objects.size(), " lods=", lods)
 			journey_phase += 1
-			journey_complete = journey_phase == 3
+			journey_complete = journey_phase == 5
 	if stream_journey and not journey_complete and elapsed >= float(options.duration):
 		fail("Stream journey did not complete within the smoke-test limit")
 		return
@@ -360,6 +402,6 @@ func _process(delta: float) -> void:
 			fail("Too few frames")
 		else:
 			if stream_journey:
-				print("STREAM_JOURNEY_PASS phases=3")
-			print("SKYBOUND_COMPLETE ", JSON.stringify({"smoke":smoke,"render_check":render_check,"frames":recorded,"total_frames":frame_index,"camera_end":str(camera.position), "terrain_stream":streaming, "resident_chunks":stream_manager.resident.size() if streaming else 0, "stream_settled":stream_is_settled() if streaming else false}))
+				print("STREAM_JOURNEY_PASS phases=5")
+			print("SKYBOUND_COMPLETE ", JSON.stringify({"smoke":smoke,"render_check":render_check,"frames":recorded,"total_frames":frame_index,"camera_end":str(camera.position), "terrain_stream":streaming, "resident_chunks":stream_manager.resident.size() if streaming else 0, "stream_settled":stream_is_settled() if streaming else false, "lod_counts":stream_lod_counts(), "terrain_triangles":stream_triangle_count() if streaming else int(settings.terrain.grid_cells)*int(settings.terrain.grid_cells)*2, "camera_far_m":camera.far, "fog_density":scene_environment.fog_density}))
 			get_tree().quit()
