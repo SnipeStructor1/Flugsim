@@ -67,3 +67,11 @@ Sky-Shader färbt Horizont und Wolken bei tiefem Sonnenstand. Beispiel:
 `visuals/visual_sunset.png`. Die Phase ist keine geografische/astronomische
 Simulation und hat keine echte Nacht. Die Wolken bleiben zweidimensional;
 das Bild wirkt wärmer, aber Terrain und Cockpit weiterhin stilisiert.
+
+## Wasser
+
+`visuals/visual_jet_lake.png` zeigt den Jet über dem See. Ein kleinskaliges
+Muster variiert Wasserfarbe und Rauheit, ein dezenter Rand reagiert auf
+Tiefendifferenz. Bestehende Wellen, Tiefenfarbe und Fresnel bleiben erhalten.
+Die Aufnahme zeigt allerdings weiterhin eine relativ flache Wasserfläche und
+steile künstliche Ufer; realistische Spiegelungen und Wellen sind nicht belegt.

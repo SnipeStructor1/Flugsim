@@ -1,10 +1,12 @@
 shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, cull_disabled;
 
+varying vec3 surface_world;
 uniform sampler2D depth_texture : hint_depth_texture, filter_nearest;
 
 void vertex() {
 	vec3 world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	surface_world = world_pos;
 	float a = world_pos.x * 0.040 + world_pos.z * 0.016 + TIME * 1.05;
 	float b = world_pos.x * -0.021 + world_pos.z * 0.052 + TIME * 0.72;
 	VERTEX.y += 0.32 * sin(a) + 0.18 * sin(b);
@@ -25,10 +27,13 @@ void fragment() {
 	float thickness = max(scene_distance + VERTEX.z, 0.0);
 	float deep = smoothstep(0.0, 30.0, thickness);
 	float fresnel = pow(1.0 - clamp(dot(normalize(NORMAL), normalize(VIEW)), 0.0, 1.0), 5.0);
-	vec3 shallow = vec3(0.075, 0.30, 0.27);
+	float ripple = sin(surface_world.x * 0.21 + surface_world.z * 0.13 + TIME * 1.1) * sin(surface_world.z * 0.19 - TIME * 0.8);
+	vec3 shallow = vec3(0.055, 0.22, 0.20);
 	vec3 deep_water = vec3(0.012, 0.070, 0.12);
-	ALBEDO = mix(mix(shallow, deep_water, deep), vec3(0.27, 0.41, 0.51), fresnel * 0.55);
-	ROUGHNESS = 0.13;
+	vec3 base = mix(mix(shallow, deep_water, deep), vec3(0.27, 0.41, 0.51), fresnel * 0.55);
+	float shore = (1.0 - smoothstep(0.2, 2.5, thickness)) * 0.17;
+	ALBEDO = mix(base * (1.0 + ripple * 0.035), vec3(0.48, 0.53, 0.48), shore);
+	ROUGHNESS = mix(0.11, 0.17, abs(ripple));
 	SPECULAR = 0.85;
 	METALLIC = 0.05;
 	ALPHA = mix(0.42, 0.86, deep);

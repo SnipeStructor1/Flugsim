@@ -201,3 +201,7 @@ Flugzeugdetails und hochwertige Atmosphäre sind weiterhin unfertig.
 
 Die Flugansicht besitzt eine einfache dynamische Tageslichtschleife und eine
 Sonnenuntergangsreferenz; weder astronomisch kalibriert noch echte Nacht.
+
+Der Wasser-Shader enthält zusätzliche Oberflächenvariation und einen einfachen
+Tiefenrand. Die Jet-über-See-Ansicht zeigt weiterhin flaches Wasser und
+künstliche Ufer; weitere visuelle Arbeit nötig.

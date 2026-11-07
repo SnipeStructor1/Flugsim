@@ -106,8 +106,8 @@ func _ready() -> void:
 	hud.add_theme_constant_override("shadow_offset_y", 2)
 	layer.add_child(hud)
 	reset_flight()
-	if capture_view == "far" and not capture_path.is_empty():
-		model.position = Vector3(0, 350, -5000)
+	if capture_view in ["far", "lake_jet"] and not capture_path.is_empty():
+		model.position = Vector3(0, 350, -5000) if capture_view == "far" else Vector3(-400, 140, -230)
 		for i in range(4):
 			manager.tick(Vector2(model.position.x, model.position.z), model.position.y)
 		world.sync_ground_objects()
