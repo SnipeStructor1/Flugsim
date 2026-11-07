@@ -132,3 +132,22 @@ Hangneigung und Bodenkontakt für 1.483 Instanzen im Testgebiet. Die gleich
 getesteten Flugfunktionen und 4,2-km-Reise funktionieren weiter. Softwarebilder
 sind keine GPU-Leistungsmessung. Es fehlen echte Alpen-Nadelbäume, dedizierte
 Sträucher und ein hochwertiges Erdmaterial; der Jet bleibt vorerst unverändert.
+
+## Bodenmaterial-Vielfalt
+
+Neben dem vorhandenen Gras und Fels wurden die zwei CC0-Materialien
+ambientCG Ground037 (Waldboden) und Rock023 (Klippen) eingebunden. Jeweils
+Albedo/Höhe und Normale/Rauheit sind in zwei 1024×1024-RGBA-Karten gepackt.
+Das Flugmaterial mischt die vier unabhängigen Albedobilder anhand von
+Geländeneigung, Höhenlage und weichen großräumigen Masken; gedrehte und
+versetzte Abtastungen reduzieren Kachelwiederholung. Der Schnee ist weiterhin
+prozedural. Die Normalkartenwirkung bleibt eine vereinfachte Näherung.
+
+Gleiche Bodenansicht (Medium): `visuals/alpine_ground_after.png` vorher,
+`visuals/terrain_detail_after.png` nachher; `visuals/terrain_detail_air.png`
+zeigt einen Flugblick aus gleicher Position wie `visuals/alpine_light_after.png`.
+Im Nahbild sind Äste und Blätter sichtbar. Die Texturdateien sind 1K, nicht
+höher aufgelöst, und es gibt noch keine zehn unabhängigen Bodentexturen.
+Flug-, Preset-, Vegetations- und X11-Eingabetests bestehen. Zusätzliche
+Texturzugriffe und Speicherbedarf sind auf RTX 5070/Windows nicht gemessen.
+Lizenzzuordnung steht in `assets/licenses/README.md`.

@@ -45,3 +45,16 @@ Die Textur selbst ist unverändert, die Darstellung im Shader ist abgetönt.
 `flight/assets/vegetation/alpine_fir.glb` ist eine konisch umgeformte Variante
 des oben genannten CC-BY-4.0-Baumes von Ricardo Sanchez; reproduzierbar über
 `tools/vegetation/build_conifer.py`. Die gleichen Namensnennungen gelten.
+
+## Wald- und Felsboden – ambientCG, CC0
+
+`flight/assets/ambientcg/ground037_alb_ht.png` und
+`ground037_nrm_rgh.png`: ambientCG Ground037; `rock023_alb_ht.png` und
+`rock023_nrm_rgh.png`: ambientCG Rock023. Bezogen über
+[Terrain3D](https://github.com/TokisanGames/Terrain3D/tree/852b6c9742bcfebab30d06857c547e2d8daa2f60/project/demo/assets/textures)
+Commit `852b6c9742bcfebab30d06857c547e2d8daa2f60`. Der
+[beigelegte Herkunfts- und Lizenzhinweis](terrain3d-ambientcg-asset-licenses.txt)
+kennzeichnet diese ambientCG-Assets als CC0 1.0. Jeweils 1024×1024 Pixel;
+RGB/Alpha packen Albedo/Höhe und Normale/Rauheit. Die direkten ambientCG-Seiten
+waren in dieser Umgebung nicht erreichbar; die Quellenzuordnung stammt aus
+dem mit den Bildern veröffentlichten Terrain3D-Hinweis.

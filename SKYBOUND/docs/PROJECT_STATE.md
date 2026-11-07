@@ -225,3 +225,8 @@ vor/nachher und Grenzen stehen in `VISUAL_OVERHAUL.md`. Vegetations-, Flug-,
 Terrain- und Eingabetests bestanden; GPU-/Windows-Performance offen. Der
 Jet ist unverändert, ein detailliertes Modell und echtes Alpenvegetations-
 Asset fehlen. Keine Terrainhöhen oder Streamingplanung geändert.
+
+Der Flugterrain-Shader mischt jetzt vier unabhängige Gras-, Wald- und
+Fels-Albedos, darunter zwei CC0-Materialien mit Höhen-, Normal- und
+Rauheitskarten (1K). Boden- und Flugansichten in `VISUAL_OVERHAUL.md`.
+Zehn unabhängige hochauflösende Materialien und GPU-Messung bleiben offen.

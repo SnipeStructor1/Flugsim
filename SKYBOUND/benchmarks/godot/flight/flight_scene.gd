@@ -95,6 +95,14 @@ func _ready() -> void:
 		get_tree().quit(2)
 		return
 	manager.terrain_material.set_shader_parameter("grass_albedo", ImageTexture.create_from_image(grass_image))
+	for entry in [["forest_ground_albedo", "ground037_alb_ht.png"], ["forest_ground_normal", "ground037_nrm_rgh.png"], ["cliff_albedo", "rock023_alb_ht.png"], ["cliff_normal", "rock023_nrm_rgh.png"]]:
+		var image := Image.new()
+		var path := ProjectSettings.globalize_path("res://flight/assets/ambientcg/" + entry[1])
+		if image.load(path) != OK or image.generate_mipmaps() != OK:
+			push_error("Could not load CC0 terrain material: " + path)
+			get_tree().quit(2)
+			return
+		manager.terrain_material.set_shader_parameter(entry[0], ImageTexture.create_from_image(image))
 	manager.planner.infinite_grid = true
 	manager.flight_vegetation = true
 	if not manager.load_flight_tree():
