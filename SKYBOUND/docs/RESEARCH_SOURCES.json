@@ -1,0 +1,119 @@
+{
+  "retrieved_date": "2026-11-07",
+  "godot_stable_release": "4.7.2-stable",
+  "o3de_stable_release": "2605.0",
+  "sources": [
+    {
+      "name": "godot_renderers_47",
+      "sha256": "74b0168d740fdd75cd92f644f37dca748a098f660a4d037d4514a81967560d65",
+      "cache_path": ".tools/research/godot_renderers_47.txt",
+      "url": "https://raw.githubusercontent.com/godotengine/godot-docs/4.7/tutorials/rendering/renderers.rst"
+    },
+    {
+      "name": "godot_large_worlds_47",
+      "sha256": "de122fcfebed608389f1f624d07a301683d8b8c031312349ca7f9a8e78945e95",
+      "cache_path": ".tools/research/godot_large_worlds_47.txt",
+      "url": "https://raw.githubusercontent.com/godotengine/godot-docs/4.7/tutorials/physics/large_world_coordinates.rst"
+    },
+    {
+      "name": "godot_features",
+      "sha256": "590990cd35912360eae6a4a33788824273de8253147ee1b6a03a9570b518403d",
+      "cache_path": ".tools/research/godot_features.txt",
+      "url": "https://raw.githubusercontent.com/godotengine/godot-docs/4.7/about/list_of_features.rst"
+    },
+    {
+      "name": "godot_license",
+      "sha256": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80",
+      "cache_path": ".tools/research/godot_license.txt",
+      "url": "https://raw.githubusercontent.com/godotengine/godot/master/LICENSE.txt"
+    },
+    {
+      "name": "nvidia_streamline",
+      "sha256": "7f470fd7f75ca1aa9f365a15a47d5054ccad5b7a6faf98ab501c42e0b276c0cc",
+      "cache_path": ".tools/research/nvidia_streamline.txt",
+      "url": "https://raw.githubusercontent.com/NVIDIAGameWorks/Streamline/main/README.md"
+    },
+    {
+      "name": "streamline_dlss",
+      "sha256": "3153a3efdc3e637df2fdb4d5f6ba69f90f03f5d2c5e7dda28f46c980b817db9e",
+      "cache_path": ".tools/research/streamline_dlss.txt",
+      "url": "https://raw.githubusercontent.com/NVIDIA-RTX/Streamline/main/docs/ProgrammingGuideDLSS.md"
+    },
+    {
+      "name": "streamline_fg",
+      "sha256": "5e323485c64e7142c5622c7771644c268f7a366b379f4d276e99b426ebee5282",
+      "cache_path": ".tools/research/streamline_fg.txt",
+      "url": "https://raw.githubusercontent.com/NVIDIA-RTX/Streamline/main/docs/ProgrammingGuideDLSS_G.md"
+    },
+    {
+      "name": "streamline_rr",
+      "sha256": "8c7b001ed95887a1c59f7a04dfbf99c09cc438fb417c54675b178c43d4eafca3",
+      "cache_path": ".tools/research/streamline_rr.txt",
+      "url": "https://raw.githubusercontent.com/NVIDIA-RTX/Streamline/main/docs/ProgrammingGuideDLSS_RR.md"
+    },
+    {
+      "name": "streamline_reflex",
+      "sha256": "d182a66c902836c1d0a898f3ed326e1cdebcf15e4ebe4ffed33e5c7322225f7b",
+      "cache_path": ".tools/research/streamline_reflex.txt",
+      "url": "https://raw.githubusercontent.com/NVIDIA-RTX/Streamline/main/docs/ProgrammingGuideReflex.md"
+    },
+    {
+      "name": "streamline_license",
+      "sha256": "7b6f23e7d6f3ad6292f9308d2b42cdc3d82ae4e9b2abb55f230279d83bedd43d",
+      "cache_path": ".tools/research/streamline_license.txt",
+      "url": "https://raw.githubusercontent.com/NVIDIA-RTX/Streamline/main/license.txt"
+    },
+    {
+      "name": "terrain3d",
+      "sha256": "7363c83730920dc7963d02cfcb8e211ceca12bb91b145e37e3fe9bf40b03120c",
+      "cache_path": ".tools/research/terrain3d.txt",
+      "url": "https://raw.githubusercontent.com/TokisanGames/Terrain3D/master/README.md"
+    },
+    {
+      "name": "o3de_docs/welcome-guide/requirements.md",
+      "url": "https://github.com/o3de/o3de.org/blob/f3ffad05f5f4b5a86e1cbdc31ff64b80590deed6/content/docs/welcome-guide/requirements.md",
+      "sha256": "ef2c37a2949a31af2606229ea1c3069dcbdcd983f77bf353386056085da73de8"
+    },
+    {
+      "name": "o3de_docs/atom-guide/what-is-atom.md",
+      "url": "https://github.com/o3de/o3de.org/blob/f3ffad05f5f4b5a86e1cbdc31ff64b80590deed6/content/docs/atom-guide/what-is-atom.md",
+      "sha256": "c5ef18770b3de1b2b9d3ecd6ae0702a0f0ffaacd20996243cb93b19c144e2312"
+    },
+    {
+      "name": "o3de_docs/atom-guide/dev-guide/rhi/_index.md",
+      "url": "https://github.com/o3de/o3de.org/blob/f3ffad05f5f4b5a86e1cbdc31ff64b80590deed6/content/docs/atom-guide/dev-guide/rhi/_index.md",
+      "sha256": "7d83cea3d55ae3335f0300966a3fe59e92a61776365c1ef59564b9932bbd13d5"
+    },
+    {
+      "name": "o3de_docs/atom-guide/features/_index.md",
+      "url": "https://github.com/o3de/o3de.org/blob/f3ffad05f5f4b5a86e1cbdc31ff64b80590deed6/content/docs/atom-guide/features/_index.md",
+      "sha256": "143c37beb7ff17695c619dfb928e86427d577ee45c41c3503326788352c75d8b"
+    },
+    {
+      "name": "o3de_docs/atom-guide/features/taa.md",
+      "url": "https://github.com/o3de/o3de.org/blob/f3ffad05f5f4b5a86e1cbdc31ff64b80590deed6/content/docs/atom-guide/features/taa.md",
+      "sha256": "99c62288ed7b94e4bb6e84476f055fccda341dd427752fd55b362230af27f75f"
+    },
+    {
+      "name": "o3de_docs/user-guide/visualization/environments/terrain/terrain-developer-guide/architecture.md",
+      "url": "https://github.com/o3de/o3de.org/blob/f3ffad05f5f4b5a86e1cbdc31ff64b80590deed6/content/docs/user-guide/visualization/environments/terrain/terrain-developer-guide/architecture.md",
+      "sha256": "b49a9273d347d901c39a633668831ca7a7b5e115617e5b77724c9ec053ac7762"
+    },
+    {
+      "name": "o3de_docs/user-guide/components/reference/terrain/world-renderer.md",
+      "url": "https://github.com/o3de/o3de.org/blob/f3ffad05f5f4b5a86e1cbdc31ff64b80590deed6/content/docs/user-guide/components/reference/terrain/world-renderer.md",
+      "sha256": "5bc4ebff7f1b8819674e724a51582fa750c429754287b06b58cc5561b3309a3d"
+    },
+    {
+      "name": "o3de_docs/user-guide/profiling/_index.md",
+      "url": "https://github.com/o3de/o3de.org/blob/f3ffad05f5f4b5a86e1cbdc31ff64b80590deed6/content/docs/user-guide/profiling/_index.md",
+      "sha256": "d9fba581cd728ceb3e04bb351aa8fb76a713c1e607064de765c8765dea8f320e"
+    }
+  ],
+  "artifact_integrity": {
+    "version": "4.7.2-stable",
+    "sha512": "9aa00f7a605200940bce3027a567b782f49bd8e940dd06ae9e987bd65aee1b1467edd56ed84fcdcbdd44354bf613bdbb4e5d2913e925850368e150c59ed54c65",
+    "verified": true,
+    "download": "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip"
+  }
+}

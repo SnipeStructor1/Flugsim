@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.305 - Forward+ - Using Device #0: Unknown - llvmpipe (LLVM 19.1.7, 256 bits)
+
+SCENE_CHECK {"camera_start":"(0.0, 180.0, 700.0)","children":207,"terrain_triangles":32768}
+SKYBOUND_READY {"adapter":"llvmpipe (LLVM 19.1.7, 256 bits)","engine":"4.7.2-stable (official)","frame_generation":false,"height":1080,"profile":"Medium","render_check":false,"renderer":"forward_plus","smoke":false,"upscaling":"native","width":1920}
+SKYBOUND_COMPLETE {"camera_end":"(5.479543, 180.4215, 696.4594)","frames":79,"render_check":false,"smoke":false,"total_frames":111}

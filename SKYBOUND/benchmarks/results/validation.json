@@ -1,0 +1,2441 @@
+{
+  "schema_version": 1,
+  "created_utc": "20261107T161901197439Z",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "mode": "smoke",
+  "hardware": {
+    "os": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+    "logical_cpus": 5,
+    "ram_bytes": 35743748096,
+    "gpu_target": "RTX 5070 Desktop 12 GB (user target, not detected hardware)"
+  },
+  "gpu_observation": null,
+  "scene_sha256": "e35d83d249a32ae3dadef93686075b467af314d72a32fc9a41f37f63cad09b0d",
+  "source_sha256": "1f9c5c012018c18285489f6a1d93b35c7d29b7c75f0836b22a76ff8b5d8a3968",
+  "frame_generation": false,
+  "upscaling": "native",
+  "render_scale": 1.0,
+  "warmup_s": 0.1,
+  "duration_s": 0.5,
+  "status": "FUNCTIONAL_PASS_NOT_A_GPU_BENCHMARK",
+  "runs": [
+    {
+      "profile": "Medium",
+      "width": 1920,
+      "height": 1080,
+      "repeat": 1,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Medium",
+        "--width=1920",
+        "--height=1080",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0010542410000198288,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.2513502960000551,
+          "process": {
+            "process_rss_bytes": 109101056,
+            "process_cpu_normalized_percent": 17.580870957509482
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5017007430005833,
+          "process": {
+            "process_rss_bytes": 109010944,
+            "process_cpu_normalized_percent": 10.385510468118943
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7553338170000643,
+          "process": {
+            "process_rss_bytes": 109010944,
+            "process_cpu_normalized_percent": 0.7885395242621156
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0062204140003814,
+          "process": {
+            "process_rss_bytes": 109535232,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1080,
+        "profile": "Medium",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 1920
+      },
+      "completion": {
+        "camera_end": "(21.98348, 181.691, 685.7953)",
+        "frames": 58,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 74
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Medium",
+      "width": 1920,
+      "height": 1080,
+      "repeat": 2,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Medium",
+        "--width=1920",
+        "--height=1080",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0017694369998935144,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.253147397000248,
+          "process": {
+            "process_rss_bytes": 82509824,
+            "process_cpu_normalized_percent": 11.938412357091128
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5034629609999683,
+          "process": {
+            "process_rss_bytes": 120553472,
+            "process_cpu_normalized_percent": 18.37205265400134
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7537502440000026,
+          "process": {
+            "process_rss_bytes": 108929024,
+            "process_cpu_normalized_percent": 4.794474425744384
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.004051091999827,
+          "process": {
+            "process_rss_bytes": 108929024,
+            "process_cpu_normalized_percent": 0.7990274972425286
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.2583684530000028,
+          "process": {
+            "process_rss_bytes": 111058944,
+            "process_cpu_normalized_percent": 3.146033829161213
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1080,
+        "profile": "Medium",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 1920
+      },
+      "completion": {
+        "camera_end": "(21.73938, 181.6723, 685.953)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Medium",
+      "width": 1920,
+      "height": 1080,
+      "repeat": 3,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Medium",
+        "--width=1920",
+        "--height=1080",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0009932720004144358,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.25770989200009353,
+          "process": {
+            "process_rss_bytes": 97042432,
+            "process_cpu_normalized_percent": 16.36187467845578
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5081569180001679,
+          "process": {
+            "process_rss_bytes": 122359808,
+            "process_cpu_normalized_percent": 14.374521276036228
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.758665261000715,
+          "process": {
+            "process_rss_bytes": 108941312,
+            "process_cpu_normalized_percent": 3.1935199775176066
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0122189070007153,
+          "process": {
+            "process_rss_bytes": 108941312,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.2625621520001005,
+          "process": {
+            "process_rss_bytes": 109858816,
+            "process_cpu_normalized_percent": 0.7988934654458113
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1080,
+        "profile": "Medium",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 1920
+      },
+      "completion": {
+        "camera_end": "(21.71845, 181.6707, 685.9666)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Medium",
+      "width": 2560,
+      "height": 1440,
+      "repeat": 1,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Medium",
+        "--width=2560",
+        "--height=1440",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0014165310003591003,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.2541327500002808,
+          "process": {
+            "process_rss_bytes": 111005696,
+            "process_cpu_normalized_percent": 16.62097580206369
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5053224450002745,
+          "process": {
+            "process_rss_bytes": 108953600,
+            "process_cpu_normalized_percent": 11.179872696303537
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7559770280004159,
+          "process": {
+            "process_rss_bytes": 108953600,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.00634043700029,
+          "process": {
+            "process_rss_bytes": 108953600,
+            "process_cpu_normalized_percent": 0.7988144156204163
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1440,
+        "profile": "Medium",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 2560
+      },
+      "completion": {
+        "camera_end": "(21.86054, 181.6816, 685.8748)",
+        "frames": 58,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 73
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Medium",
+      "width": 2560,
+      "height": 1440,
+      "repeat": 2,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Medium",
+        "--width=2560",
+        "--height=1440",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0007342310000240104,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.25193473899980745,
+          "process": {
+            "process_rss_bytes": 106745856,
+            "process_cpu_normalized_percent": 15.927051365282784
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5028436149996196,
+          "process": {
+            "process_rss_bytes": 109010944,
+            "process_cpu_normalized_percent": 8.767335677738188
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7563665899997432,
+          "process": {
+            "process_rss_bytes": 109010944,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0066986279998673,
+          "process": {
+            "process_rss_bytes": 109948928,
+            "process_cpu_normalized_percent": 0.798923721919125
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1440,
+        "profile": "Medium",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 2560
+      },
+      "completion": {
+        "camera_end": "(22.57489, 181.7365, 685.4131)",
+        "frames": 58,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 74
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Medium",
+      "width": 2560,
+      "height": 1440,
+      "repeat": 3,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Medium",
+        "--width=2560",
+        "--height=1440",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.003450336999776482,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.25374672100042517,
+          "process": {
+            "process_rss_bytes": 110198784,
+            "process_cpu_normalized_percent": 19.97603890109965
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5040518369996789,
+          "process": {
+            "process_rss_bytes": 108929024,
+            "process_cpu_normalized_percent": 11.985490365370069
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7543954590000794,
+          "process": {
+            "process_rss_bytes": 108929024,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.004783168999893,
+          "process": {
+            "process_rss_bytes": 108929024,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1440,
+        "profile": "Medium",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 2560
+      },
+      "completion": {
+        "camera_end": "(21.72499, 181.6712, 685.9623)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Medium",
+      "width": 3840,
+      "height": 2160,
+      "repeat": 1,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Medium",
+        "--width=3840",
+        "--height=2160",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.002404396000201814,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.2527282870005365,
+          "process": {
+            "process_rss_bytes": 121872384,
+            "process_cpu_normalized_percent": 19.176936741969392
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5032206129999395,
+          "process": {
+            "process_rss_bytes": 109039616,
+            "process_cpu_normalized_percent": 3.992187592276095
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7535433319999356,
+          "process": {
+            "process_rss_bytes": 109039616,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0038628590000371,
+          "process": {
+            "process_rss_bytes": 110907392,
+            "process_cpu_normalized_percent": 0.7989741906470116
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 2160,
+        "profile": "Medium",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 3840
+      },
+      "completion": {
+        "camera_end": "(21.7529, 181.6733, 685.9443)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Medium",
+      "width": 3840,
+      "height": 2160,
+      "repeat": 2,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Medium",
+        "--width=3840",
+        "--height=2160",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0009318239999629441,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.25133807900056127,
+          "process": {
+            "process_rss_bytes": 115699712,
+            "process_cpu_normalized_percent": 19.171351788938374
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5018772550001813,
+          "process": {
+            "process_rss_bytes": 108933120,
+            "process_cpu_normalized_percent": 5.588211109832311
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7566043000006175,
+          "process": {
+            "process_rss_bytes": 108933120,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0088156159999926,
+          "process": {
+            "process_rss_bytes": 111063040,
+            "process_cpu_normalized_percent": 0.7935097976650003
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 2160,
+        "profile": "Medium",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 3840
+      },
+      "completion": {
+        "camera_end": "(21.71867, 181.6707, 685.9664)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Medium",
+      "width": 3840,
+      "height": 2160,
+      "repeat": 3,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Medium",
+        "--width=3840",
+        "--height=2160",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0016683570001987391,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.2520247720003681,
+          "process": {
+            "process_rss_bytes": 119504896,
+            "process_cpu_normalized_percent": 19.174846742859977
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.502815732000272,
+          "process": {
+            "process_rss_bytes": 108924928,
+            "process_cpu_normalized_percent": 3.99024777059914
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7531568560007145,
+          "process": {
+            "process_rss_bytes": 108924928,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0035312340005476,
+          "process": {
+            "process_rss_bytes": 110104576,
+            "process_cpu_normalized_percent": 0.7988046208360158
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 2160,
+        "profile": "Medium",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 3840
+      },
+      "completion": {
+        "camera_end": "(21.7103, 181.67, 685.9718)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "High",
+      "width": 1920,
+      "height": 1080,
+      "repeat": 1,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=High",
+        "--width=1920",
+        "--height=1080",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.001194239000142261,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.2516124080002555,
+          "process": {
+            "process_rss_bytes": 121077760,
+            "process_cpu_normalized_percent": 19.16984368885135
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5019440690002739,
+          "process": {
+            "process_rss_bytes": 108994560,
+            "process_cpu_normalized_percent": 3.1957904153781778
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7524589450003987,
+          "process": {
+            "process_rss_bytes": 108994560,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0047740690006322,
+          "process": {
+            "process_rss_bytes": 110206976,
+            "process_cpu_normalized_percent": 0.7926590450776168
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1080,
+        "profile": "High",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 1920
+      },
+      "completion": {
+        "camera_end": "(21.7077, 181.6698, 685.9735)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "High",
+      "width": 1920,
+      "height": 1080,
+      "repeat": 2,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=High",
+        "--width=1920",
+        "--height=1080",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0007084139997459715,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.25116318599975784,
+          "process": {
+            "process_rss_bytes": 114917376,
+            "process_cpu_normalized_percent": 19.167396718174942
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5015096650004125,
+          "process": {
+            "process_rss_bytes": 108924928,
+            "process_cpu_normalized_percent": 5.592185815083103
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7518640700000105,
+          "process": {
+            "process_rss_bytes": 108924928,
+            "process_cpu_normalized_percent": 0.7989594639549402
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0030456989998129,
+          "process": {
+            "process_rss_bytes": 109953024,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1080,
+        "profile": "High",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 1920
+      },
+      "completion": {
+        "camera_end": "(21.72252, 181.671, 685.9639)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "High",
+      "width": 1920,
+      "height": 1080,
+      "repeat": 3,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=High",
+        "--width=1920",
+        "--height=1080",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0014368379997904412,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.25185607699950197,
+          "process": {
+            "process_rss_bytes": 117800960,
+            "process_cpu_normalized_percent": 19.16962909648447
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5021749400002591,
+          "process": {
+            "process_rss_bytes": 108933120,
+            "process_cpu_normalized_percent": 4.79392075240583
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7525345389994982,
+          "process": {
+            "process_rss_bytes": 108933120,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.00283140800002,
+          "process": {
+            "process_rss_bytes": 110407680,
+            "process_cpu_normalized_percent": 0.7990471841767367
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1080,
+        "profile": "High",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 1920
+      },
+      "completion": {
+        "camera_end": "(21.69917, 181.6692, 685.979)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "High",
+      "width": 2560,
+      "height": 1440,
+      "repeat": 1,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=High",
+        "--width=2560",
+        "--height=1440",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0008261550001407159,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.2513541530006478,
+          "process": {
+            "process_rss_bytes": 111517696,
+            "process_cpu_normalized_percent": 19.16140655122249
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.501715202000014,
+          "process": {
+            "process_rss_bytes": 108998656,
+            "process_cpu_normalized_percent": 7.189675941686777
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7521180540006753,
+          "process": {
+            "process_rss_bytes": 108998656,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.002447299000778,
+          "process": {
+            "process_rss_bytes": 110047232,
+            "process_cpu_normalized_percent": 0.7990320621481163
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1440,
+        "profile": "High",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 2560
+      },
+      "completion": {
+        "camera_end": "(21.71733, 181.6706, 685.9673)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "High",
+      "width": 2560,
+      "height": 1440,
+      "repeat": 2,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=High",
+        "--width=2560",
+        "--height=1440",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.006914377999237331,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.2572713499994279,
+          "process": {
+            "process_rss_bytes": 101969920,
+            "process_cpu_normalized_percent": 18.375752459621417
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5110676399999647,
+          "process": {
+            "process_rss_bytes": 108953600,
+            "process_cpu_normalized_percent": 16.614135539135773
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7628748139995878,
+          "process": {
+            "process_rss_bytes": 108953600,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0136628719992586,
+          "process": {
+            "process_rss_bytes": 108953600,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1440,
+        "profile": "High",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 2560
+      },
+      "completion": {
+        "camera_end": "(21.95002, 181.6885, 685.8169)",
+        "frames": 58,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 74
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "High",
+      "width": 2560,
+      "height": 1440,
+      "repeat": 3,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=High",
+        "--width=2560",
+        "--height=1440",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0019423769999775686,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.25228094900012366,
+          "process": {
+            "process_rss_bytes": 82505728,
+            "process_cpu_normalized_percent": 19.176064895978985
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5026087759997608,
+          "process": {
+            "process_rss_bytes": 118845440,
+            "process_cpu_normalized_percent": 19.973671904135117
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7536619900001824,
+          "process": {
+            "process_rss_bytes": 108929024,
+            "process_cpu_normalized_percent": 7.966694754566814
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0041692579998198,
+          "process": {
+            "process_rss_bytes": 108929024,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.258824008999909,
+          "process": {
+            "process_rss_bytes": 109977600,
+            "process_cpu_normalized_percent": 0.786460466485365
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1440,
+        "profile": "High",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 2560
+      },
+      "completion": {
+        "camera_end": "(21.9443, 181.688, 685.8206)",
+        "frames": 58,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 74
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "High",
+      "width": 3840,
+      "height": 2160,
+      "repeat": 1,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=High",
+        "--width=3840",
+        "--height=2160",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0019879470000887522,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.25257120599962946,
+          "process": {
+            "process_rss_bytes": 115834880,
+            "process_cpu_normalized_percent": 18.359426035635614
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.9928597620000801,
+          "process": {
+            "process_rss_bytes": 108998656,
+            "process_cpu_normalized_percent": 5.474989608263981
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 2160,
+        "profile": "High",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 3840
+      },
+      "completion": {
+        "camera_end": "(25.28296, 181.9448, 683.6633)",
+        "frames": 3,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 19
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "High",
+      "width": 3840,
+      "height": 2160,
+      "repeat": 2,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=High",
+        "--width=3840",
+        "--height=2160",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0010968530004902277,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.2546088380004221,
+          "process": {
+            "process_rss_bytes": 98516992,
+            "process_cpu_normalized_percent": 17.478762201565807
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5050276940000913,
+          "process": {
+            "process_rss_bytes": 108933120,
+            "process_cpu_normalized_percent": 13.483232028556639
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7910384220003834,
+          "process": {
+            "process_rss_bytes": 108933120,
+            "process_cpu_normalized_percent": 0.699278359070158
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0414828540006056,
+          "process": {
+            "process_rss_bytes": 108933120,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 2160,
+        "profile": "High",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 3840
+      },
+      "completion": {
+        "camera_end": "(21.76668, 181.6744, 685.9354)",
+        "frames": 54,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 70
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "High",
+      "width": 3840,
+      "height": 2160,
+      "repeat": 3,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=High",
+        "--width=3840",
+        "--height=2160",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0026607999998304876,
+          "process": {
+            "process_rss_bytes": 524288,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.252953178000098,
+          "process": {
+            "process_rss_bytes": 82382848,
+            "process_cpu_normalized_percent": 10.388805189766394
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5034541089999038,
+          "process": {
+            "process_rss_bytes": 114135040,
+            "process_cpu_normalized_percent": 11.177566846876582
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7696949360006329,
+          "process": {
+            "process_rss_bytes": 108838912,
+            "process_cpu_normalized_percent": 6.009779669391984
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0200163179997617,
+          "process": {
+            "process_rss_bytes": 108838912,
+            "process_cpu_normalized_percent": 0.7989550211600588
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.2725150579999536,
+          "process": {
+            "process_rss_bytes": 109867008,
+            "process_cpu_normalized_percent": 0.7921012926475983
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 2160,
+        "profile": "High",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 3840
+      },
+      "completion": {
+        "camera_end": "(21.81396, 181.678, 685.9048)",
+        "frames": 58,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 74
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Ultra",
+      "width": 1920,
+      "height": 1080,
+      "repeat": 1,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Ultra",
+        "--width=1920",
+        "--height=1080",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.002282922999256698,
+          "process": {
+            "process_rss_bytes": 262144,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.25285587099915574,
+          "process": {
+            "process_rss_bytes": 108371968,
+            "process_cpu_normalized_percent": 18.36005886693671
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5059883389994866,
+          "process": {
+            "process_rss_bytes": 109027328,
+            "process_cpu_normalized_percent": 10.27111529267154
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7563196080000125,
+          "process": {
+            "process_rss_bytes": 109027328,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0089965979996123,
+          "process": {
+            "process_rss_bytes": 109158400,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1080,
+        "profile": "Ultra",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 1920
+      },
+      "completion": {
+        "camera_end": "(21.86994, 181.6823, 685.8687)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Ultra",
+      "width": 1920,
+      "height": 1080,
+      "repeat": 2,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Ultra",
+        "--width=1920",
+        "--height=1080",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.004536735999863595,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.254887547999715,
+          "process": {
+            "process_rss_bytes": 95072256,
+            "process_cpu_normalized_percent": 11.984501977594617
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.505215247999331,
+          "process": {
+            "process_rss_bytes": 108871680,
+            "process_cpu_normalized_percent": 18.375855375596423
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7555852959994809,
+          "process": {
+            "process_rss_bytes": 108871680,
+            "process_cpu_normalized_percent": 0.7988444682809817
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.005920579999838,
+          "process": {
+            "process_rss_bytes": 108871680,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.2725364589996389,
+          "process": {
+            "process_rss_bytes": 110870528,
+            "process_cpu_normalized_percent": 3.0005769847044452
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1080,
+        "profile": "Ultra",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 1920
+      },
+      "completion": {
+        "camera_end": "(21.82496, 181.6788, 685.8977)",
+        "frames": 58,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 74
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Ultra",
+      "width": 1920,
+      "height": 1080,
+      "repeat": 3,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Ultra",
+        "--width=1920",
+        "--height=1080",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.000900883999747748,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.2512811809992854,
+          "process": {
+            "process_rss_bytes": 106295296,
+            "process_cpu_normalized_percent": 18.37439403245859
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5040033139994193,
+          "process": {
+            "process_rss_bytes": 125849600,
+            "process_cpu_normalized_percent": 11.079180429498876
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7544414589992812,
+          "process": {
+            "process_rss_bytes": 108953600,
+            "process_cpu_normalized_percent": 3.1944307144994677
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.004743810999571,
+          "process": {
+            "process_rss_bytes": 108953600,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.2564466859994354,
+          "process": {
+            "process_rss_bytes": 111083520,
+            "process_cpu_normalized_percent": 1.5893756089493192
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1080,
+        "profile": "Ultra",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 1920
+      },
+      "completion": {
+        "camera_end": "(21.80018, 181.6769, 685.9138)",
+        "frames": 58,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 74
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Ultra",
+      "width": 2560,
+      "height": 1440,
+      "repeat": 1,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Ultra",
+        "--width=2560",
+        "--height=1440",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0008004250003068591,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.2511615820003499,
+          "process": {
+            "process_rss_bytes": 82538496,
+            "process_cpu_normalized_percent": 10.386110861644198
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5015284279998014,
+          "process": {
+            "process_rss_bytes": 109060096,
+            "process_cpu_normalized_percent": 15.177666125038396
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7567775830002574,
+          "process": {
+            "process_rss_bytes": 109060096,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0071479389998785,
+          "process": {
+            "process_rss_bytes": 109060096,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1440,
+        "profile": "Ultra",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 2560
+      },
+      "completion": {
+        "camera_end": "(21.89889, 181.6845, 685.85)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Ultra",
+      "width": 2560,
+      "height": 1440,
+      "repeat": 2,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Ultra",
+        "--width=2560",
+        "--height=1440",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.002510922000510618,
+          "process": {
+            "process_rss_bytes": 917504,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.2708302230003028,
+          "process": {
+            "process_rss_bytes": 97128448,
+            "process_cpu_normalized_percent": 14.909247614767509
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5211333490005927,
+          "process": {
+            "process_rss_bytes": 108908544,
+            "process_cpu_normalized_percent": 12.784454359201586
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7714282169999933,
+          "process": {
+            "process_rss_bytes": 108908544,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0217774590000772,
+          "process": {
+            "process_rss_bytes": 108908544,
+            "process_cpu_normalized_percent": 0.7988877182174605
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1440,
+        "profile": "Ultra",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 2560
+      },
+      "completion": {
+        "camera_end": "(21.71139, 181.6701, 685.9711)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Ultra",
+      "width": 2560,
+      "height": 1440,
+      "repeat": 3,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Ultra",
+        "--width=2560",
+        "--height=1440",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0011789109994424507,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.25151240899958793,
+          "process": {
+            "process_rss_bytes": 113848320,
+            "process_cpu_normalized_percent": 19.176050034002127
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5018449549997968,
+          "process": {
+            "process_rss_bytes": 108912640,
+            "process_cpu_normalized_percent": 7.1905128660841955
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7521760599993286,
+          "process": {
+            "process_rss_bytes": 108912640,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0062425369997072,
+          "process": {
+            "process_rss_bytes": 109998080,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1440,
+        "profile": "Ultra",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 2560
+      },
+      "completion": {
+        "camera_end": "(21.70588, 181.6697, 685.9747)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Ultra",
+      "width": 3840,
+      "height": 2160,
+      "repeat": 1,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Ultra",
+        "--width=3840",
+        "--height=2160",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0008908799991331762,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.25127974699989863,
+          "process": {
+            "process_rss_bytes": 118849536,
+            "process_cpu_normalized_percent": 19.172530059072052
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.501617374999114,
+          "process": {
+            "process_rss_bytes": 108990464,
+            "process_cpu_normalized_percent": 3.9945702764905158
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7521969519993945,
+          "process": {
+            "process_rss_bytes": 108990464,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0025577249998605,
+          "process": {
+            "process_rss_bytes": 110465024,
+            "process_cpu_normalized_percent": 0.7988538268979519
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 2160,
+        "profile": "Ultra",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 3840
+      },
+      "completion": {
+        "camera_end": "(21.74155, 181.6724, 685.9516)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Ultra",
+      "width": 3840,
+      "height": 2160,
+      "repeat": 2,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Ultra",
+        "--width=3840",
+        "--height=2160",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.0009064099995157449,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.2511982469995928,
+          "process": {
+            "process_rss_bytes": 111067136,
+            "process_cpu_normalized_percent": 19.178688871047125
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5015274870002031,
+          "process": {
+            "process_rss_bytes": 108986368,
+            "process_cpu_normalized_percent": 7.190800291438106
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7518855640000766,
+          "process": {
+            "process_rss_bytes": 108986368,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.0021882040000492,
+          "process": {
+            "process_rss_bytes": 110014464,
+            "process_cpu_normalized_percent": 0.7990280814182542
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 2160,
+        "profile": "Ultra",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 3840
+      },
+      "completion": {
+        "camera_end": "(21.71217, 181.6702, 685.9706)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    },
+    {
+      "profile": "Ultra",
+      "width": 3840,
+      "height": 2160,
+      "repeat": 3,
+      "command": [
+        "/workspace/Flugsim/SKYBOUND/.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "/workspace/Flugsim/SKYBOUND/benchmarks/godot",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--profile=Ultra",
+        "--width=3840",
+        "--height=2160",
+        "--warmup=0.1",
+        "--duration=0.5",
+        "--smoke=true"
+      ],
+      "metrics": null,
+      "telemetry": [
+        {
+          "since_launch_s": 0.001410142999702657,
+          "process": {
+            "process_rss_bytes": 0,
+            "process_cpu_normalized_percent": null
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.2518296449998161,
+          "process": {
+            "process_rss_bytes": 113995776,
+            "process_cpu_normalized_percent": 18.37154908421351
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.5021702240001105,
+          "process": {
+            "process_rss_bytes": 109096960,
+            "process_cpu_normalized_percent": 6.391191174594299
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 0.7525690390002637,
+          "process": {
+            "process_rss_bytes": 109096960,
+            "process_cpu_normalized_percent": 0
+          },
+          "gpus": null
+        },
+        {
+          "since_launch_s": 1.002930636000201,
+          "process": {
+            "process_rss_bytes": 110125056,
+            "process_cpu_normalized_percent": 0.7987709535018557
+          },
+          "gpus": null
+        }
+      ],
+      "engine_settings": {
+        "adapter": "",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 2160,
+        "profile": "Ultra",
+        "render_check": false,
+        "renderer": "gl_compatibility",
+        "smoke": true,
+        "upscaling": "native",
+        "width": 3840
+      },
+      "completion": {
+        "camera_end": "(21.71412, 181.6703, 685.9694)",
+        "frames": 59,
+        "render_check": false,
+        "smoke": true,
+        "total_frames": 75
+      },
+      "status": "PASS"
+    }
+  ],
+  "analysis_tests": {
+    "passed": 5,
+    "failed": 0,
+    "command": "python scripts/validate.py"
+  },
+  "notes": [
+    "Godot 4.7.2; 27 successful headless functional runs; no performance measurements.",
+    "Final Godot source hash verified."
+  ]
+}

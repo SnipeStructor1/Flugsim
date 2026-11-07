@@ -1,0 +1,85 @@
+{
+  "mode": "SOFTWARE_RENDER_CHECK",
+  "performance_measured": false,
+  "runs": [
+    {
+      "profile": "Medium",
+      "status": "PASS",
+      "wall_seconds_including_shader_compilation": 22.60333445299966,
+      "engine_settings": {
+        "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1080,
+        "profile": "Medium",
+        "render_check": true,
+        "renderer": "forward_plus",
+        "smoke": false,
+        "upscaling": "native",
+        "width": 1920
+      },
+      "completion": {
+        "camera_end": "(0.0, 180.0, 700.0)",
+        "frames": 4,
+        "render_check": true,
+        "smoke": false,
+        "total_frames": 4
+      },
+      "screenshot": "Medium.png",
+      "sha256": "f7f273c6d6d9a47c4b92c862e161c721e41c2365ecf363193d3b4b9cd5851166"
+    },
+    {
+      "profile": "High",
+      "status": "PASS",
+      "wall_seconds_including_shader_compilation": 23.088266187000045,
+      "engine_settings": {
+        "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1080,
+        "profile": "High",
+        "render_check": true,
+        "renderer": "forward_plus",
+        "smoke": false,
+        "upscaling": "native",
+        "width": 1920
+      },
+      "completion": {
+        "camera_end": "(0.0, 180.0, 700.0)",
+        "frames": 4,
+        "render_check": true,
+        "smoke": false,
+        "total_frames": 4
+      },
+      "screenshot": "High.png",
+      "sha256": "8b68104c4e4e6ae4f3bd7c989bc244083c861a3b14c548a3b31eb74a53ff003a"
+    },
+    {
+      "profile": "Ultra",
+      "status": "PASS",
+      "wall_seconds_including_shader_compilation": 22.392495166000117,
+      "engine_settings": {
+        "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 1080,
+        "profile": "Ultra",
+        "render_check": true,
+        "renderer": "forward_plus",
+        "smoke": false,
+        "upscaling": "native",
+        "width": 1920
+      },
+      "completion": {
+        "camera_end": "(0.0, 180.0, 700.0)",
+        "frames": 4,
+        "render_check": true,
+        "smoke": false,
+        "total_frames": 4
+      },
+      "screenshot": "Ultra.png",
+      "sha256": "00c253fa7c8cf5cf390d19acc89106b61f02d03ff9da3ae0167fa33da14e4ca7"
+    }
+  ],
+  "status": "PASS"
+}

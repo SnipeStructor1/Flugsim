@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "seed": 41017,
+  "world_units": "meters",
+  "coordinates": "right-handed Y-up, camera looks -Z",
+  "terrain": {
+    "size_m": 2048,
+    "grid_cells": 128,
+    "height_formula": "32*sin(x*0.004)*cos(z*0.003)+110*exp(-((x-350)^2+(z+300)^2)/180000)+65*exp(-((x+430)^2+(z-260)^2)/130000)"
+  },
+  "camera": {
+    "duration_s": 60,
+    "fov_y_deg": 65,
+    "near_m": 0.5,
+    "far_m": 5000,
+    "positions_m": [
+      [
+        0,
+        180,
+        700
+      ],
+      [
+        650,
+        230,
+        280
+      ],
+      [
+        300,
+        190,
+        -650
+      ],
+      [
+        -600,
+        210,
+        -250
+      ],
+      [
+        0,
+        180,
+        700
+      ]
+    ],
+    "look_at_m": [
+      0,
+      50,
+      0
+    ]
+  },
+  "sun": {
+    "rotation_degrees": [
+      -35,
+      -25,
+      0
+    ],
+    "energy": 1.2
+  },
+  "profiles": {
+    "Medium": {
+      "shadow_atlas": 2048,
+      "ssao": false,
+      "ssr": false,
+      "volumetric_fog": false,
+      "taa": true
+    },
+    "High": {
+      "shadow_atlas": 4096,
+      "ssao": true,
+      "ssr": true,
+      "volumetric_fog": true,
+      "taa": true
+    },
+    "Ultra": {
+      "shadow_atlas": 8192,
+      "ssao": true,
+      "ssr": true,
+      "volumetric_fog": true,
+      "taa": true
+    }
+  },
+  "resolutions": [
+    [
+      1920,
+      1080
+    ],
+    [
+      2560,
+      1440
+    ],
+    [
+      3840,
+      2160
+    ]
+  ],
+  "scene_revision": 2,
+  "water": {
+    "position_m": [
+      -400,
+      8,
+      -400
+    ],
+    "size_m": [
+      440,
+      320
+    ]
+  }
+}

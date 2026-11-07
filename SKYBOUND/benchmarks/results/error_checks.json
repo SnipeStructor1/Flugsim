@@ -1,0 +1,29 @@
+{
+  "engine": "4.7.2-stable",
+  "checks": [
+    {
+      "name": "reject_headless_measurement",
+      "passed": true,
+      "exit_code": 2,
+      "expected_error": "Headless renderer cannot produce"
+    },
+    {
+      "name": "reject_unknown_profile",
+      "passed": true,
+      "exit_code": 2,
+      "expected_error": "unknown profile"
+    },
+    {
+      "name": "reject_invalid_duration",
+      "passed": true,
+      "exit_code": 2,
+      "expected_error": "Invalid timing"
+    },
+    {
+      "name": "reject_mixed_modes",
+      "passed": true,
+      "exit_code": 2,
+      "expected_error": "Smoke and render-check are separate"
+    }
+  ]
+}
