@@ -92,3 +92,13 @@ Sonnenuntergang `visuals/visual_sunset.png`, Tiefflug
 `visuals/visual_low_flight.png`. Einen Flughafen gibt es nicht; ein sechstes
 Bild wäre irreführend. Der Tiefflug zeigt besonders deutlich, dass die
 Baumkegel durch echte Vegetationsassets ersetzt werden müssen.
+
+## Vegetation – erstes lizenziertes Modell
+
+Die Kegelbäume der Flugansicht wurden durch ein instanziertes Modell von
+Ricardo Sanchez ersetzt (CC BY 4.0, vollständiger Quell- und Urheberhinweis
+in `assets/licenses/README.md`). Der Benchmark behält seine Referenzobjekte.
+Vorher `visuals/visual_low_flight.png`, nachher
+`visuals/visual_low_flight_trees.png`: Stamm und Blattkrone sind erkennbar.
+Die Platzierung bleibt spärlich und gleichförmig; Artenvielfalt, realistische
+Nadelbäume, Wind, LOD und Leistungsprüfung sind offen.

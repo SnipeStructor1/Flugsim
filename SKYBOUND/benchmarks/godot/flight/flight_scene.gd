@@ -90,6 +90,18 @@ func _ready() -> void:
 		manager.terrain_material.set_shader_parameter(entry[0], ImageTexture.create_from_image(image))
 	manager.planner.infinite_grid = true
 	manager.flight_vegetation = true
+	if not manager.load_flight_tree():
+		push_error("Could not load flight vegetation asset")
+		get_tree().quit(2)
+		return
+	# The original scene places tree placeholders at half their height. Replace
+	# only those cylinders and retain rocks, buildings and their placement.
+	for entry in world.ground_objects:
+		var node: MeshInstance3D = entry.node
+		if node.mesh is CylinderMesh:
+			node.mesh = manager.tree_mesh
+			node.material_override = null
+			entry.offset = 0.0
 	manager.planner.policy.load_distance = 1000.0
 	manager.max_resident = 100
 	manager.build_budget = 8

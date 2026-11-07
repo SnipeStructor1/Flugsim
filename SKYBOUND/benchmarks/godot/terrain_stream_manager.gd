@@ -19,8 +19,7 @@ var resident := {}
 var nodes := {}
 var async_enabled := false
 var flight_vegetation := false
-var tree_mesh: CylinderMesh
-var tree_material: StandardMaterial3D
+var tree_mesh: Mesh
 var job = null
 var pending: Dictionary = {}
 var geometry_config: Dictionary = {}
@@ -49,6 +48,25 @@ func _install_mesh(operation: Dictionary, mesh: ArrayMesh) -> void:
 	nodes[operation.key] = instance
 	resident[operation.key] = operation.lod
 
+# Load the licensed tree as a shared mesh once; per-chunk instances own no
+# independent textures and are released with their parent chunk.
+func load_flight_tree() -> bool:
+	var document := GLTFDocument.new()
+	var state := GLTFState.new()
+	var path := ProjectSettings.globalize_path("res://flight/assets/vegetation/tree.glb")
+	if document.append_from_file(path, state) != OK:
+		return false
+	var scene := document.generate_scene(state)
+	if scene == null:
+		return false
+	var meshes := scene.find_children("*", "MeshInstance3D", true, false)
+	if meshes.is_empty():
+		scene.free()
+		return false
+	tree_mesh = (meshes[0] as MeshInstance3D).mesh
+	scene.free()
+	return tree_mesh != null
+
 # Flight-only decorative trees outside the original authored 2 km area. Their
 # seed and transforms depend only on chunk identity, so reloads are repeatable.
 func _add_flight_trees(parent: MeshInstance3D, operation: Dictionary) -> void:
@@ -56,14 +74,7 @@ func _add_flight_trees(parent: MeshInstance3D, operation: Dictionary) -> void:
 	if chunk_origin.x >= -1024.0 and chunk_origin.x < 1024.0 and chunk_origin.y >= -1024.0 and chunk_origin.y < 1024.0:
 		return
 	if tree_mesh == null:
-		tree_mesh = CylinderMesh.new()
-		tree_mesh.top_radius = 0.0
-		tree_mesh.bottom_radius = 4.0
-		tree_mesh.height = 15.0
-		tree_mesh.radial_segments = 6
-		tree_material = StandardMaterial3D.new()
-		tree_material.albedo_color = Color(0.14, 0.23, 0.07)
-		tree_material.roughness = 0.95
+		return
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(operation.key) ^ int(model.seed_value)
 	var transforms: Array[Transform3D] = []
@@ -72,7 +83,7 @@ func _add_flight_trees(parent: MeshInstance3D, operation: Dictionary) -> void:
 		var z := chunk_origin.y + rng.randf_range(1.0, chunk_size - 1.0)
 		var y: float = builder.sample_height(model, chunk_origin, chunk_size, cells, operation.lod, x, z)
 		if y > 10.0 and y < 350.0:
-			transforms.append(Transform3D(Basis.IDENTITY, Vector3(x, y + 7.5, z)))
+			transforms.append(Transform3D(Basis.IDENTITY, Vector3(x, y, z)))
 	if transforms.is_empty():
 		return
 	var multi := MultiMesh.new()
@@ -83,7 +94,6 @@ func _add_flight_trees(parent: MeshInstance3D, operation: Dictionary) -> void:
 		multi.set_instance_transform(i, transforms[i])
 	var node := MultiMeshInstance3D.new()
 	node.multimesh = multi
-	node.material_override = tree_material
 	parent.add_child(node)
 
 func _tick_async(camera_xz: Vector2, camera_y: float) -> Dictionary:

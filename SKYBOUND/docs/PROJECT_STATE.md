@@ -209,3 +209,7 @@ künstliche Ufer; weitere visuelle Arbeit nötig.
 Vier Flug-Grafikstufen und drei Auflösungen sind per Umgebungsvariable
 auswählbar. Headless-Funktionsprüfung aller Stufen bestanden; Medium wurde
 zusätzlich mit Software-Vulkan gerendert. Keine RTX-/Windows-Leistungswerte.
+
+Die Flugansicht verwendet statt der Kegel ein CC-BY-4.0-Baummodell mit
+beigelegtem Urheberhinweis. Die Vegetation bleibt spärlich und ohne LOD/Wind;
+Benchmarkobjekte bleiben unverändert.
