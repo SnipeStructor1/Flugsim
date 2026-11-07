@@ -78,3 +78,11 @@ Tests prüfen gemeinsame Randpunkte, nicht die tatsächliche Nahtfreiheit im Bil
 Die Bausteine sind noch nicht mit der Szene verbunden: Streaming, Objektzuordnung,
 Ressourcenfreigabe, Arbeitsbudget und LOD-Übergänge müssen erst implementiert und
 visuell validiert werden. Die Bildszene benutzt weiterhin das monolithische Netz.
+
+`terrain_stream_plan.gd` berechnet aus Kamera und tatsächlichem Bestand einen
+reproduzierbar sortierten Plan. Zu entladende Kacheln stehen getrennt vor
+Aufbauvorgängen; ein Höchstbestand und eine maximale Zahl von Aufbauten pro
+Schritt begrenzen die geplante Arbeit. Der Planer verändert den Bestand nicht:
+Aufrufer müssen Erfolg/Fehler beim Aufbau selbst behandeln und erst danach den
+Zustand aktualisieren. Eine feste Anzahl Aufbauten begrenzt weder einzelne
+Aufbauzeit noch Bytes; echte Zeit-/Speicherbudgets bleiben offen.

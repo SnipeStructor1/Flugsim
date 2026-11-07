@@ -40,3 +40,8 @@
   Gemeinsame Weltkoordinaten und Skirts sind eine Grundlage; sie ersetzen keine
   geprüfte Übergangsgeometrie, insbesondere an steilen Kanten. Hysterese verhindert
   Schwellenflattern, sagt aber nichts über Ladezeiten und Budgetierung aus.
+
+- Die Kachelplanung ist eine reine Funktion des beobachteten Bestands. Eine
+  fehlgeschlagene Mesh-Erzeugung darf keine Kachel als geladen markieren.
+  Die Anzahl von Aufbauvorgängen wird begrenzt; harte Zeit- und Byte-Budgets
+  werden erst nach Integration und Messung behauptet.
