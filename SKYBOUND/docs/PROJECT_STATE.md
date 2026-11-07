@@ -20,8 +20,8 @@ verwenden Software-Vulkan und sind keine Hardware-Benchmarks.
 Einschränkungen: Das Flugmodell ist nicht real kalibriert, Start/Landung fehlen,
 das Cockpit ist nur ein Platzhalter, Wolken sind nicht volumetrisch und
 Wasser ist eine visuelle Näherung. Maus, Gamepad und Windows sind nicht vollständig
-geprüft. Der bestehende 2-km-Ausschnitt begrenzt den Flug. Terrain-Freeze bleibt
-aktiv; die ältere feine Bodenlinie und fehlende RTX-Messungen bleiben offen.
+geprüft. Der bestehende 2-km-Ausschnitt begrenzt den Flug. Der frühere Terrain-Freeze ist auf ausdrücklichen Nutzerwunsch aufgehoben;
+die ältere feine Bodenlinie und fehlende RTX-Messungen bleiben offen.
 
 ## Historischer Stand: TERR-001
 
@@ -130,7 +130,7 @@ und [nachher](visuals/altitude/extreme_after.png): Der kleine quadratische
 Atmosphäre existieren aber weiterhin nicht. Die Nähe-/Höhen-/Extremhöhen- und
 Rückkehrzustände bestehen im integrierten Headless-Szenentest.
 
-## Nutzeranweisung: Terrain-Freeze
+## Historisch: Terrain-Freeze (inzwischen aufgehoben)
 
 Ab sofort keine weitere Terrain-Entwicklung, LOD-Optimierungen, Kachelverwaltung,
 Threading, Terrain-Streaming, Höhenalgorithmen oder neue Terrain-Tests ohne
@@ -151,4 +151,19 @@ keine Performance-Messung. Daten: `visuals/async_streaming/`.
 Bekannte Terrain-Einschränkungen bleiben bestehen: nur 2 km Ausschnitt,
 experimentelles LOD/Streaming, offene allgemeine feine Darstellungslinie,
 keine nachgewiesenen harten Zeit-/Byte-Budgets oder RTX-5070-Messungen.
-Terrainarbeiten sind pausiert, auch wenn diese Punkte offen sind.
+Diese frühere Pause wurde inzwischen ausdrücklich aufgehoben.
+
+## Aktuelle Fortsetzung: Terrain und Flugdynamik
+
+Der asynchrone Terrain-Worker übernimmt nun sämtliche Rauschparameter als
+Wertesnapshot und erzeugt eine eigene Kopie. Änderungen der Konfiguration
+während ein Manager Kacheln besitzt werden erkannt und abgewiesen. Ein Test
+prüft identische Worker-/Hauptthreadgeometrie mit geänderten Parametern; die
+Terrain-, Lifecycle- und synchronen/asynchronen Szenenreise-Tests bestanden.
+Die Bodenlinie bleibt auch bei abgeschalteten Schatten sichtbar; ihre Ursache
+ist weiterhin ungeklärt.
+
+Das Flugmodell berücksichtigt eine einfache höhenabhängige Standardatmosphäre,
+Schubverzögerung und geschwindigkeitsabhängige Steuerautorität. Die Anzeige
+zeigt näherungsweise IAS. Tests für Atmosphäre und Schub sowie Modell-,
+Überflug- und X11-Tastaturtest bestanden. Dies ist keine validierte F-22-Simulation.

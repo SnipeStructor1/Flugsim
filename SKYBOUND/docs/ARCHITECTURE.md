@@ -141,11 +141,12 @@ Erzeugung/Änderung von Meshes und des aktiven Scene Tree erfolgt auf dem
 Hauptthread. Veraltete Ergebnisse werden anhand des aktuellen Kameraplans
 verworfen; erfolglose Mesh-Ersetzung erhält das alte Netz. Ein Manager verwendet
 eine unveränderliche Geometriekonfiguration und wird für Änderungen neu erstellt.
-Der Worker rekonstruiert die heutige Modellkonfiguration aus dem Seed; zukünftige
-konfigurierbare Modellparameter müssen explizit übertragen werden.
+Der Worker rekonstruiert die Rauschparameter aus einem Wertesnapshot und besitzt
+eigene Rauschobjekte. Der Manager weist Änderungen dieses Snapshots ab, solange
+er seinen Bestand verwaltet. Künftige Modellparameter müssen ergänzt werden.
 
 Godot-Dokumentation: https://github.com/godotengine/godot-docs/blob/4.7/tutorials/performance/thread_safe_apis.rst
-Der Worker ist experimentell und gemäß Terrain-Freeze pausiert. Er beweist kein
+Der Worker ist experimentell; der Terrain-Freeze wurde aufgehoben. Er beweist kein
 Zeit-/Byte-Budget und keinen Leistungsgewinn auf einer RTX 5070.
 
 ## Flugprototyp und Terrain-Freeze
@@ -157,7 +158,7 @@ Szenenadapter aktualisiert Modell, Kameras und HUD. Bodenhöhen und Wassergrenze
 werden für die Kollision nur gelesen. Ein eigener Sky- und Wasser-Shader ersetzt
 die Darstellung ausschließlich in der Fluginstanz. Wolken sind eine 2D-Näherung,
 Wasser keine hydrodynamische Simulation; das Flugmodell nutzt Godot-Mathematik
-und ist nicht an ein reales Flugzeug kalibriert. Terrainentwicklung bleibt gesperrt.
+und ist nicht an ein reales Flugzeug kalibriert. Der frühere Terrain-Freeze wurde aufgehoben.
 
 `raptor_visual.gd` erzeugt die F-22-inspirierte Außenform selbst; der einfache
 Cockpitplatzhalter gehört zur Flugkamera. Die Parameter des Flugmodells und ihre

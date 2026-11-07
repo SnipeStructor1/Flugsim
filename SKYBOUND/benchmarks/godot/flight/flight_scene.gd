@@ -207,7 +207,7 @@ func _physics_process(delta: float) -> void:
 		camera_test_count += 1
 	update_camera()
 	var label_mode := "Cockpit" if camera_mode == 1 else "Verfolger"
-	hud.text = "SKYBOUND  |  F-22-inspiriert  |  %s\nGeschwindigkeit %.0f km/h    Höhe %.0f m    Schub %.0f%%    Wind %.0f m/s%s\nW/S Nicken  A/D Rollen  Q/E Gieren  R/F Schub\nC Kamera  M Maussteuerung  Rücktaste Neustart  Esc Ende" % [label_mode, model.velocity.length() * 3.6, model.position.y, model.throttle * 100.0, wind.length(), "    STRÖMUNGSABRISS" if model.stalled else ""]
+	hud.text = "SKYBOUND  |  F-22-inspiriert  |  %s\nIAS %.0f km/h    Höhe %.0f m    Schubhebel %.0f%%    Wind %.0f m/s%s\nW/S Nicken  A/D Rollen  Q/E Gieren  R/F Schub\nC Kamera  M Maussteuerung  Rücktaste Neustart  Esc Ende" % [label_mode, model.indicated_airspeed * 3.6, model.position.y, model.throttle * 100.0, wind.length(), "    STRÖMUNGSABRISS" if model.stalled else ""]
 	if crashed: hud.text += "\nAUFPRALL – Rücktaste zum Neustart"
 	if absf(model.position.x) > float(world.settings.terrain.size_m)/2.0 or absf(model.position.z) > float(world.settings.terrain.size_m)/2.0:
 		hud.text += "\nGeländeausschnitt verlassen – bitte wenden"

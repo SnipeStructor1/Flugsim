@@ -11,17 +11,19 @@ var mutex := Mutex.new()
 var started := false
 var result: Dictionary = {}
 
-func start(seed_value: int, origin: Vector2, size_m: float, cells: int, lod: int, skirt_depth: float) -> Error:
+func start(seed_value: int, origin: Vector2, size_m: float, cells: int, lod: int, skirt_depth: float, config: Dictionary = {}) -> Error:
 	if started:
 		return ERR_ALREADY_IN_USE
 	result = {}
-	var status := worker.start(_run.bind(seed_value, origin, size_m, cells, lod, skirt_depth))
+	var status := worker.start(_run.bind(seed_value, origin, size_m, cells, lod, skirt_depth, config.duplicate(true)))
 	if status == OK:
 		started = true
 	return status
 
-func _run(seed_value: int, origin: Vector2, size_m: float, cells: int, lod: int, skirt_depth: float) -> void:
+func _run(seed_value: int, origin: Vector2, size_m: float, cells: int, lod: int, skirt_depth: float, config: Dictionary) -> void:
 	var local_model = TerrainModel.new(seed_value)
+	if not config.is_empty():
+		local_model.apply_noise_config(config)
 	var local_builder = ChunkBuilder.new()
 	var data: Dictionary = local_builder.build_data(local_model, origin, size_m, cells, lod, skirt_depth)
 	mutex.lock()

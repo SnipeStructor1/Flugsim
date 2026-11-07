@@ -10,13 +10,7 @@
 - Keine erfundenen Messwerte, keine ungeprüften NVIDIA-Integrationen. Windows-/RTX-5070-Ergebnisse nur auf der tatsächlichen Hardware als solche ausweisen.
 - `assets/shared/scene.json` trägt eine Szenenrevision. Änderungen an Geometrie, Kameras oder Materialien machen alte Benchmarkwerte nicht vergleichbar; historische Ergebnisse erhalten und getrennt ausweisen.
 
-- **Terrain-Freeze (Nutzeranweisung):** Keine weitere Terrain-Entwicklung,
-  LOD-Optimierung, Kachelverwaltung, Threading, Terrain-Streaming,
-  Höhenalgorithmen oder neue Terrain-Tests ohne ausdrückliche neue Freigabe.
-  Bekannte Einschränkungen dokumentieren. Aktueller Schwerpunkt: spielbarer
-  Flugsimulator mit Flugzeug, Flugmodell und Cockpit-/Verfolgerkamera.
-
-- Während des Terrain-Freeze für Flugänderungen `python3 scripts/test_flight.py`
-  und bei Eingabeänderungen unter Linux `python3 scripts/test_flight_input.py`
-  verwenden. `scripts/validate.py` enthält Terrain-Tests; keine neuen Terrain-Tests
-  erstellen oder Terraincode ändern. Screenshots mit `scripts/flight_check.py`.
+- Der frühere Terrain-Freeze wurde am 2026-11-07 durch den Nutzer aufgehoben.
+  Terrainprobleme dürfen wieder behoben und gezielt getestet werden.
+- Flugtests: `python3 scripts/test_flight.py`, Eingabeprüfung unter Linux:
+  `python3 scripts/test_flight_input.py`; Screenshots: `scripts/flight_check.py`.

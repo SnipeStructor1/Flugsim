@@ -27,6 +27,23 @@ func _init(initial_seed: int = 41017) -> void:
 	ridge_noise.fractal_type = FastNoiseLite.FRACTAL_FBM
 	ridge_noise.fractal_octaves = 3
 
+# Snapshot all noise parameters used by height(), using value types only.
+# A worker reconstructs independent resources from this immutable snapshot.
+const NOISE_PROPERTIES := ["seed", "noise_type", "frequency", "fractal_type", "fractal_octaves", "fractal_lacunarity", "fractal_gain", "fractal_weighted_strength", "fractal_ping_pong_strength", "cellular_distance_function", "cellular_jitter", "cellular_return_type", "domain_warp_enabled", "domain_warp_type", "domain_warp_amplitude", "domain_warp_frequency", "domain_warp_fractal_type", "domain_warp_fractal_octaves", "domain_warp_fractal_lacunarity", "domain_warp_fractal_gain"]
+
+func noise_config() -> Dictionary:
+	var result := {"seed_value": seed_value, "terrain": {}, "ridge": {}}
+	for property in NOISE_PROPERTIES:
+		result.terrain[property] = terrain_noise.get(property)
+		result.ridge[property] = ridge_noise.get(property)
+	return result
+
+func apply_noise_config(config: Dictionary) -> void:
+	seed_value = config.seed_value
+	for property in NOISE_PROPERTIES:
+		terrain_noise.set(property, config.terrain[property])
+		ridge_noise.set(property, config.ridge[property])
+
 func height(x: float, z: float) -> float:
 	var broad := terrain_noise.get_noise_2d(x, z)
 	var ridge: float = pow(1.0 - absf(ridge_noise.get_noise_2d(x, z)), 3.0)

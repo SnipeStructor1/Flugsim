@@ -25,6 +25,13 @@ func _initialize() -> void:
 		printerr("Async manager did not start its worker")
 		quit(1)
 		return
+	manager.model.terrain_noise.frequency = 0.004
+	if manager.tick(Vector2.ZERO).valid:
+		printerr("Noise configuration changed while a worker was active")
+		manager.free()
+		quit(1)
+		return
+	manager.model.terrain_noise.frequency = 0.0018
 	manager.chunk_size = 512
 	if manager.tick(Vector2.ZERO).valid:
 		printerr("Geometry configuration changed while a worker was active")

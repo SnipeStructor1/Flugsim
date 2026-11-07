@@ -105,3 +105,10 @@
   unbewaffnete F-22-inspirierte Außenform ersetzt. Masse, Fläche und Schub sind
   grobe Modellannahmen, kein validierter F-22-Datensatz; Details und fehlende
   Quellenprüfung stehen in `F22_APPROXIMATION.md`. Das Cockpit ist ein Platzhalter.
+
+- Der Nutzer hat den Terrain-Freeze ausdrücklich aufgehoben. Der Worker erhält
+  jetzt einen Snapshot der Rauschkonfiguration; Änderung während des Betriebs
+  erfordert weiterhin einen neuen Manager. Die bekannte Bodenlinie bleibt auch
+  ohne Schatten sichtbar; keine unbelegte Korrektur behaupten.
+- Höhenabhängige Standardatmosphäre, vereinfachte Schubverzögerung und IAS
+  verbessern die Grundlage, sind jedoch keine F-22-Kalibrierung.

@@ -86,7 +86,7 @@ func _tick_async(camera_xz: Vector2, camera_y: float) -> Dictionary:
 				result.failed += 1
 			else:
 				var operation: Dictionary = plan.build[0]
-				var error: Error = job.start(int(model_seed), operation.origin, chunk_size, cells, operation.lod, skirt_depth)
+				var error: Error = job.start(int(model_seed), operation.origin, chunk_size, cells, operation.lod, skirt_depth, model.noise_config())
 				if error == OK:
 					pending = operation
 					result.started += 1
@@ -99,7 +99,7 @@ func tick(camera_xz: Vector2, camera_y: float = 0.0) -> Dictionary:
 		return {"valid": false, "unloaded": 0, "built": 0, "failed": 0}
 	# Mesh identity must remain stable while the manager owns chunks or jobs.
 	# Recreate the manager to change geometry configuration.
-	var current_config := {"model_id": model.get_instance_id(), "seed": model.get("seed_value"), "origin": origin, "chunk_size": chunk_size, "grid_width": grid_width, "grid_height": grid_height, "cells": cells, "skirt_depth": skirt_depth, "async_enabled": async_enabled}
+	var current_config := {"model_id": model.get_instance_id(), "noise_config": model.noise_config(), "origin": origin, "chunk_size": chunk_size, "grid_width": grid_width, "grid_height": grid_height, "cells": cells, "skirt_depth": skirt_depth, "async_enabled": async_enabled}
 	if geometry_config.is_empty():
 		geometry_config = current_config
 	elif geometry_config != current_config:

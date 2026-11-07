@@ -7,6 +7,24 @@ func _initialize() -> void:
 		printerr("Lift/stall curve invalid")
 		quit(1)
 		return
+	if absf(model.density_at_altitude(0.0) - 1.225) > 0.001 or absf(model.density_at_altitude(11000.0) - 0.364) > 0.005:
+		printerr("ISA density approximation failed reference values")
+		quit(1)
+		return
+	var spool = script.new()
+	spool.throttle = 1.0
+	spool.step(1.0/60.0, 0, 0, 0, 0)
+	if spool.engine_power <= 0.65 or spool.engine_power >= 1.0:
+		printerr("Engine did not respond smoothly to throttle")
+		quit(1)
+		return
+	var low_speed = script.new()
+	low_speed.velocity = Vector3.ZERO
+	low_speed.step(1.0/60.0, 1, 0, 0, 0)
+	if low_speed.angular_rates.length() > 0.0001:
+		printerr("Aerodynamic controls retained authority at zero airspeed")
+		quit(1)
+		return
 	var initial: Vector3 = model.position
 	for i in range(600):
 		model.step(1.0/60.0, 0.0, 0.0, 0.0, 0.2)

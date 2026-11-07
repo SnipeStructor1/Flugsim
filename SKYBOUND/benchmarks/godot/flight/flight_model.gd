@@ -14,6 +14,13 @@ var attitude := Quaternion.IDENTITY
 var angular_rates := Vector3.ZERO
 var throttle := 0.65
 var stalled := false
+var engine_power := 0.65
+var indicated_airspeed := 0.0
+
+# ISA troposphere, clamped to its 0–11 km domain; not a weather model.
+func density_at_altitude(altitude_m: float) -> float:
+	var height := clampf(altitude_m, 0.0, 11000.0)
+	return AIR_DENSITY * pow(1.0 - 0.0000225577 * height, 4.25588)
 
 func lift_coefficient(alpha: float) -> float:
 	var degrees := absf(rad_to_deg(alpha))
@@ -27,14 +34,20 @@ func step(dt: float, pitch: float, roll: float, yaw: float, throttle_delta: floa
 	if not is_finite(dt) or dt <= 0.0 or dt > 0.1:
 		return
 	throttle = clampf(throttle + clampf(throttle_delta, -1.0, 1.0) * dt * 0.35, 0.0, 1.0)
-	var targets := Vector3(clampf(pitch,-1,1) * 0.45, -clampf(yaw,-1,1) * 0.30, clampf(roll,-1,1) * 0.70)
+	var air_velocity := velocity - wind
+	var airspeed := air_velocity.length()
+	var density := density_at_altitude(position.y)
+	indicated_airspeed = airspeed * sqrt(density / AIR_DENSITY)
+	# Generic dynamic-pressure authority, not real F-22 control laws.
+	var authority := clampf(indicated_airspeed / 100.0, 0.0, 1.0)
+	var targets := Vector3(clampf(pitch,-1,1) * 0.45, -clampf(yaw,-1,1) * 0.30, clampf(roll,-1,1) * 0.70) * authority
+	# First-order response approximates spool lag; no afterburner model.
+	engine_power = lerpf(engine_power, throttle, 1.0 - exp(-dt / 1.5))
 	angular_rates = angular_rates.lerp(targets, 1.0 - exp(-2.5 * dt))
 	var rotation := Quaternion(Vector3.RIGHT, angular_rates.x * dt) * Quaternion(Vector3.UP, angular_rates.y * dt) * Quaternion(Vector3.FORWARD, angular_rates.z * dt)
 	attitude = (attitude * rotation).normalized()
 	var orientation := Basis(attitude)
-	var air_velocity := velocity - wind
-	var airspeed := air_velocity.length()
-	var force := Vector3.DOWN * MASS_KG * GRAVITY + (-orientation.z) * (throttle * MAX_THRUST_N)
+	var force := Vector3.DOWN * MASS_KG * GRAVITY + (-orientation.z) * (engine_power * MAX_THRUST_N * density / AIR_DENSITY)
 	stalled = false
 	if airspeed > 0.5:
 		var local := orientation.inverse() * air_velocity
@@ -43,7 +56,7 @@ func step(dt: float, pitch: float, roll: float, yaw: float, throttle_delta: floa
 		var coefficient := lift_coefficient(alpha)
 		var flow := air_velocity / airspeed
 		var lift_direction := orientation.y - flow * orientation.y.dot(flow)
-		var dynamic_pressure := 0.5 * AIR_DENSITY * airspeed * airspeed
+		var dynamic_pressure := 0.5 * density * airspeed * airspeed
 		if lift_direction.length_squared() > 0.000001:
 			force += lift_direction.normalized() * dynamic_pressure * WING_AREA_M2 * coefficient
 		var drag_coefficient := 0.032 + 0.045 * coefficient * coefficient + (0.14 if stalled else 0.0)

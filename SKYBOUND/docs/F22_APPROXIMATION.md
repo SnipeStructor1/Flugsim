@@ -9,7 +9,7 @@ Das Flugmodell verwendet derzeit 26.000 kg angenommene Flugmasse, 78 m²
 Referenzfläche und maximal 230 kN kombinierten vereinfachten Trockenschub.
 Dies sind Arbeitsannahmen, keine anhand einer Primärquelle überprüften oder
 kalibrierten F-22-Daten. Auftriebs- und Widerstandskurve, Regelverhalten,
-Luftdichte und Schub sind Näherungen; Triebwerksdynamik, Nachbrenner,
+Luftdichte und Schub sind Näherungen; Nachbrenner,
 Schubvektorsteuerung, Überschall- und Fly-by-Wire-Verhalten fehlen.
 
 Der automatische Überflug startet in 700 m Höhe und erreicht rund 1,45 km;
@@ -19,4 +19,11 @@ erfolgt in der Luft. Start/Landung, echte Flugtests, Gamepad, Windows und RTX
 sind nicht validiert. Öffentliche Primärquellen und belastbare Flugvergleichsdaten
 müssen vor einer weitergehenden Kalibrierung recherchiert und überprüft werden.
 
-Terrain-Freeze: keine Entwicklung an Geländecode oder neue Terrain-Tests.
+Der frühere Terrain-Freeze wurde durch den Nutzer aufgehoben.
+
+Die Standardatmosphäre ist im Bereich 0–11 km angenähert und außerhalb dieses
+Bereichs begrenzt. Der angezeigte IAS-Wert ist eine inkompressible
+Dichtekorrektur der Luftgeschwindigkeit, keine kalibrierte Fahrtmesser- oder
+Überschallanzeige. Schub folgt dem Hebel verzögert und skaliert vereinfacht
+mit der Dichte; aerodynamische Steuerautorität nimmt bei niedriger Fahrt ab.
+Diese allgemeinen Näherungen sind keine F-22-spezifisch validierten Daten.
