@@ -15,3 +15,8 @@
   Höhenalgorithmen oder neue Terrain-Tests ohne ausdrückliche neue Freigabe.
   Bekannte Einschränkungen dokumentieren. Aktueller Schwerpunkt: spielbarer
   Flugsimulator mit Flugzeug, Flugmodell und Cockpit-/Verfolgerkamera.
+
+- Während des Terrain-Freeze für Flugänderungen `python3 scripts/test_flight.py`
+  und bei Eingabeänderungen unter Linux `python3 scripts/test_flight_input.py`
+  verwenden. `scripts/validate.py` enthält Terrain-Tests; keine neuen Terrain-Tests
+  erstellen oder Terraincode ändern. Screenshots mit `scripts/flight_check.py`.

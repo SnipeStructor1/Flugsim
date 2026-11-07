@@ -93,3 +93,10 @@
 - Die beiden 960×540-Ansichten von synchronem und asynchronem Kachelaufbau
   erfüllen eine explizite Bildtoleranz von 1/255 mittlerer RGB-Abweichung,
   sind aber nicht pixelgleich. Dies ist kein Leistungsnachweis.
+
+- Flugprototyp als separate Szene über der bestehenden Landschaft; Terraincode
+  bleibt während des Freeze unverändert. Die vereinfachte Flugphysik verwendet
+  Godot-Datentypen und ist kein kalibrierter, engineunabhängiger Simulationskern.
+- Cockpit vorerst als Ansicht ohne Innenraum; Wolken als 2D-Schicht, Wasser als
+  visuelle Wellen-/Fresnel-Näherung. Softwarebilder sind keine GPU-Benchmarks.
+  Automatischer Überflug und reale X11-Eingabe für Nicken und Kamera sind geprüft.

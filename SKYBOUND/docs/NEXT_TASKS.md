@@ -6,11 +6,11 @@
 | TERR-002 | PAUSIERT – TERRAIN-FREEZE | Experimenteller Szenenmodus mit drei LODs, Kachel- und Objektverwaltung sowie verbundenen Rändern vorhanden. Eine integrierte Headless-Szenenreise prüft Entladen, Rückladen, 1.250 m und 10.000 m sowie 222 Objekte. Die LOD-Wahl nutzt konservative 3D-Distanz, der Ladezustand horizontale Distanz. Eine feine Linie ist in Kachel- und monolithischer Bodenansicht sichtbar; Kantennormalen und Skirt-Abschaltung sind untersucht, die Ursache bleibt offen. Als Nächstes bewegte Bilder und Objektzustand visuell prüfen, steile Übergänge, bildschirmfehlerbasiertes LOD und asynchronen Aufbau mit Zeit-/Speicherbudget untersuchen; Standardbenchmark bleibt monolithisch. |
 | VIS-001 | IN ARBEIT | Sieben feste Kameras, reproduzierbare Softwarebilder und automatisierter Pixelvergleich vorhanden. Wald-, Sonnenuntergangs-, Wolken- und Wasseransichten benötigen echte Inhalte; Streaming-Ansichten und Hardwareabweichungen prüfen. |
 | TERR-003 | OFFEN | Lizenzierte bzw. nachweisbar selbst erzeugte PBR-Texturen, Normalmaps und Variationsverfahren für Gelände; Nah-/Fernansicht prüfen. |
-| ATM-001 | OFFEN | Tageszeit und skalierbare Wolken mit nachvollziehbaren Grenzen und Vergleichsbildern. |
-| WATER-001 | OFFEN | Wasser mit Wellen, Fresnel und Tiefenfärbung; Ufer- und Tiefenfälle prüfen. |
+| ATM-001 | IN ARBEIT – Flugszene mit prozeduralem Himmel und 2D-Wolken; volumetrische Wolken und Tageszeit fehlen. | Tageszeit und skalierbare Wolken mit nachvollziehbaren Grenzen und Vergleichsbildern. |
+| WATER-001 | IN ARBEIT – Flugszene mit animierter Oberfläche, Fresnel und Tiefenfärbung; Ufer und weitere Ansichten prüfen. | Wasser mit Wellen, Fresnel und Tiefenfärbung; Ufer- und Tiefenfälle prüfen. |
 | ENV-001 | OFFEN | Vegetation mit Instancing, Wind und LOD; Lizenznachweise und Anzahl/Performance messen. |
-| FLIGHT-001 | HÖCHSTE PRIORITÄT | Sichtbares steuerbares 3D-Flugzeug und testbarer Flugphysikkern; spielbarer Flug mit Cockpit- und Verfolgerkamera. |
-| SIM-001 | OFFEN | Flugphysik schrittweise kalibrieren: Auftrieb, Widerstand, Schub, Gravitation, Strömungsabriss, Wind und Zeitschritttests. |
+| FLIGHT-001 | IN ARBEIT – spielbarer Flugprototyp, automatischer Überflug und Tastatureingabe S/C geprüft; Cockpitinnenraum, Start und Landung fehlen. | Sichtbares steuerbares 3D-Flugzeug und testbarer Flugphysikkern; spielbarer Flug mit Cockpit- und Verfolgerkamera. |
+| SIM-001 | IN ARBEIT – vereinfachtes Modell vorhanden, realistische Kalibrierung fehlt. | Flugphysik schrittweise kalibrieren: Auftrieb, Widerstand, Schub, Gravitation, Strömungsabriss, Wind und Zeitschritttests. |
 | PERF-001 | BLOCKIERT | Windows-/RTX-5070-Benchmarks: Zielhardware und Treiberzugang fehlen in der Cloud. |
 | O3DE-001 | BLOCKIERT | Vergleichsszene und Messung auf geeigneter Plattform mit genügend Speicher/GPU. |
 

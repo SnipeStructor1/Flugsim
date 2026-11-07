@@ -3,9 +3,7 @@
 ## Grenzen und Koordinaten
 
 Simulation und Darstellung tauschen reine Daten aus. Der künftige C++20-Kern enthält
-keine Engine-Header, Renderobjekte oder GPU-Abhängigkeiten. Die aktuelle Umsetzung
-enthält bewusst noch keinen Aerodynamik-Solver. Python ist Werkzeugschicht,
-GDScript nur Szenen-/Benchmarkadapter. Eine spätere C++-Anbindung benötigt Tests
+keine Engine-Header, Renderobjekte oder GPU-Abhängigkeiten. Der Flugprototyp enthält einen vereinfachten Aerodynamikansatz in GDScript; dieser ist noch kein engineunabhängiger C++-Kern. Python ist Werkzeugschicht. Eine spätere C++-Anbindung benötigt Tests
 für beide Adapter; sie ist noch nicht implementiert.
 
 Weltkoordinaten: WGS84/ECEF in Double-Präzision für globale Positionen;
@@ -149,3 +147,14 @@ konfigurierbare Modellparameter müssen explizit übertragen werden.
 Godot-Dokumentation: https://github.com/godotengine/godot-docs/blob/4.7/tutorials/performance/thread_safe_apis.rst
 Der Worker ist experimentell und gemäß Terrain-Freeze pausiert. Er beweist kein
 Zeit-/Byte-Budget und keinen Leistungsgewinn auf einer RTX 5070.
+
+## Flugprototyp und Terrain-Freeze
+
+`flight/flight.tscn` instanziiert die vorhandene Benchmarkwelt. Eingaben aus
+Tastatur, Maus oder vorgesehenem Gamepad gelangen über `flight_scene.gd` in
+`flight_model.gd`; dieses berechnet pro Physikschritt Kräfte und Bewegung. Der
+Szenenadapter aktualisiert Modell, Kameras und HUD. Bodenhöhen und Wassergrenzen
+werden für die Kollision nur gelesen. Ein eigener Sky- und Wasser-Shader ersetzt
+die Darstellung ausschließlich in der Fluginstanz. Wolken sind eine 2D-Näherung,
+Wasser keine hydrodynamische Simulation; das Flugmodell nutzt Godot-Mathematik
+und ist nicht an ein reales Flugzeug kalibriert. Terrainentwicklung bleibt gesperrt.

@@ -4,7 +4,23 @@ Stand: 2026-11-07. Wiederaufnahme: `AGENTS.md`, diese Datei, `NEXT_TASKS.md` und
 
 Die Benchmark-Basis wurde in Commit `2eb0373` gesichert und auf GitHub `main` veröffentlicht. Godot 4.7.2 ist projektlokal verfügbar; das Cloud-System hat keine RTX-GPU. Die Engine-/NVIDIA-Recherche und historische Ergebnisse stehen in `ENGINE_COMPARISON.md` und `BENCHMARK_RESULTS.md`.
 
-## Aktuelle Arbeit: TERR-001
+## Aktueller Schwerpunkt: FLIGHT-001
+
+Ein separat startbarer Flugprototyp nutzt die bestehende Landschaft unverändert.
+Er bietet ein sichtbares Flugzeug, vereinfachte Kräfte und Steuerung, konstanten
+Wind, Kollision mit Boden und Wasser sowie Verfolger- und Cockpitkamera. Ein
+prozeduraler Himmel und ein animierter Wasser-Shader gelten nur in der Flugszene.
+Ein automatischer Flug aus 700 m Höhe überquerte etwa 1.450 m; Modell- und
+Szenentests sowie echte X11-Tasteneingaben für S und C bestanden. Bildprüfungen
+verwenden Software-Vulkan und sind keine Hardware-Benchmarks.
+
+Einschränkungen: Das Flugmodell ist nicht real kalibriert, Start/Landung fehlen,
+die Cockpitkamera besitzt keinen Innenraum, Wolken sind nicht volumetrisch und
+Wasser ist eine visuelle Näherung. Maus, Gamepad und Windows sind nicht vollständig
+geprüft. Der bestehende 2-km-Ausschnitt begrenzt den Flug. Terrain-Freeze bleibt
+aktiv; die ältere feine Bodenlinie und fehlende RTX-Messungen bleiben offen.
+
+## Historischer Stand: TERR-001
 
 Die Revision 2 zeigte flache Hügel, geometrische Wolken und geringe Materialvariation. Revision 3 entwickelt ein deterministisches Rausch-/Bergkammmodell, eine See-Senke, stetige Normalen und einen prozeduralen Gelände-Shader mit Höhen-/Hangverteilung und triplanarer Rauschvariation. Sie ist ein technischer Schritt, kein fotorealistisches Terrain: Textur-Normalmaps, Erosion und Flüsse fehlen; Chunk-Streaming und Terrain-LOD sind nur experimentell vorhanden. Alte Benchmarkdaten beschreiben Revision 2 und sind mit Revision 3 nicht direkt vergleichbar.
 
@@ -12,7 +28,7 @@ Die Revision 2 zeigte flache Hügel, geometrische Wolken und geringe Materialvar
 
 ## Blocker und Grenzen
 
-Kein Hardware-GPU-Zugriff, Windows/RTX-5070-Performance ungetestet. O3DE-Quellbuild übersteigt den Cloud-Speicher. Flugphysik, echte volumetrische Wolken, Wasserphysik und vollständiges Streaming sind noch nicht implementiert. Bei nicht verfügbarem Godot markiert `scripts/validate.py` die Godot-Tests als übersprungen.
+Kein Hardware-GPU-Zugriff, Windows/RTX-5070-Performance ungetestet. O3DE-Quellbuild übersteigt den Cloud-Speicher. Real kalibrierte Flugphysik, echte volumetrische Wolken, Wasserphysik und vollständiges Streaming sind noch nicht implementiert. Bei nicht verfügbarem Godot markiert `scripts/validate.py` die Godot-Tests als übersprungen.
 
 ## Aktuelle Arbeit: TERR-002
 

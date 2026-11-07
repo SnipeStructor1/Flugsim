@@ -12,6 +12,40 @@ O3DE: nicht installiert; kein funktionsfähiger O3DE-Adapter vorhanden.
 Die aktuellen stabilen Releases und Rendering-Funktionen sind anhand offizieller
 Quellen geprüft; siehe `docs/ENGINE_COMPARISON.md`.
 
+## Flugprototyp starten
+
+Vom Verzeichnis `SKYBOUND` mit dem lokal vorbereiteten Godot:
+
+```sh
+.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64 --path benchmarks/godot --rendering-method forward_plus res://flight/flight.tscn
+```
+
+Unter Windows mit vorhandenem Godot (noch nicht auf Windows geprüft):
+
+```powershell
+.\scripts\Flight.ps1 -Godot 'C:\Tools\Godot\Godot_v4.7.2-stable_win64_console.exe'
+```
+
+Der Flug beginnt in der Luft. W/S steuern das Nicken, A/D das Rollen, Q/E das
+Gieren und R/F den Schub. C wechselt zwischen Verfolger- und Cockpitkamera,
+M schaltet Maussteuerung um, Rücktaste setzt zurück und Esc beendet. Bei einer
+Kollision hilft die Rücktaste. Ein Gamepad ist vorgesehen, aber nicht geprüft.
+
+Das vereinfachte Flugmodell ist nicht an einem realen Flugzeug kalibriert; die
+Cockpitansicht hat noch keinen ausmodellierten Innenraum. Wolken sind eine
+zweidimensionale Näherung, Wasser und Wind sind vereinfacht. Start und Landung
+sind noch nicht umgesetzt, die vorhandene Landschaft ist etwa 2 km breit.
+Windows und RTX-Hardware sind nicht getestet. [Erster Flugzeug-Screenshot](docs/visuals/flight_first.png).
+
+Flugspezifische Prüfungen (ohne Terrain-Tests):
+
+```sh
+python scripts/test_flight.py
+# Linux mit X11/Xvfb und libXtst:
+python scripts/test_flight_input.py
+python scripts/flight_check.py --view chase --output /tmp/skybound-flight-check
+```
+
 ## Lokale Funktionsprüfung (Python 3.11+ / Godot 4.7.2)
 
 Vom Verzeichnis `SKYBOUND`:
