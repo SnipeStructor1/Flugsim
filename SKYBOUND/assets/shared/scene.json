@@ -6,7 +6,7 @@
   "terrain": {
     "size_m": 2048,
     "grid_cells": 128,
-    "height_formula": "32*sin(x*0.004)*cos(z*0.003)+110*exp(-((x-350)^2+(z+300)^2)/180000)+65*exp(-((x+430)^2+(z-260)^2)/130000)"
+    "height_formula": "terrain_model.gd: seeded fractal noise, ridged mountain envelopes, lake basin"
   },
   "camera": {
     "duration_s": 60,
@@ -91,7 +91,7 @@
       2160
     ]
   ],
-  "scene_revision": 2,
+  "scene_revision": 3,
   "water": {
     "position_m": [
       -400,

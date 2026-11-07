@@ -125,7 +125,7 @@ def main():
     folder.mkdir(parents=True, exist_ok=False)
     version = subprocess.run([args.godot, '--version'], capture_output=True, text=True, timeout=10, check=True).stdout.strip()
     scene_hash = hashlib.sha256((ROOT / 'assets/shared/scene.json').read_bytes()).hexdigest()
-    source_hash = hashlib.sha256(b''.join(p.read_bytes() for p in sorted((ROOT / 'benchmarks/godot').glob('*')) if p.is_file() and p.suffix in ['.gd', '.tscn', '.godot'])).hexdigest()
+    source_hash = hashlib.sha256(b''.join(p.read_bytes() for p in sorted((ROOT / 'benchmarks/godot').glob('*')) if p.is_file() and p.suffix in ['.gd', '.gdshader', '.tscn', '.godot'])).hexdigest()
     summary = {'schema_version': 1, 'created_utc': stamp, 'engine': version, 'mode': 'smoke' if args.smoke else ('software-validation' if args.software_validation else 'measured'),
                'hardware': hardware(), 'gpu_observation': gpu_sample(), 'scene_sha256': scene_hash, 'source_sha256': source_hash,
                'frame_generation': False, 'upscaling': 'native', 'render_scale': 1.0,

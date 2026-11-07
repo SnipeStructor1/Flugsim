@@ -14,6 +14,7 @@ var pitch := 0.0
 var smoke := false
 var sunlight: DirectionalLight3D
 var render_check := false
+var terrain = preload("res://terrain_model.gd").new()
 
 func fail(message: String) -> void:
 	push_error(message)
@@ -34,6 +35,8 @@ func _ready() -> void:
 		return
 	var manifest_path := ProjectSettings.globalize_path("res://../../assets/shared/scene.json")
 	settings = JSON.parse_string(FileAccess.get_file_as_string(manifest_path))
+	if settings != null and settings.has("seed"):
+		terrain = preload("res://terrain_model.gd").new(int(settings.seed))
 	if settings.is_empty() or not settings.profiles.has(options.profile):
 		fail("Missing scene manifest or unknown profile")
 		return
@@ -80,7 +83,7 @@ func _ready() -> void:
 	print("SKYBOUND_READY ", JSON.stringify({"smoke": smoke, "render_check": options["render-check"] == "true", "profile": options.profile, "renderer": RenderingServer.get_current_rendering_method(), "adapter": RenderingServer.get_video_adapter_name(), "engine": Engine.get_version_info().string, "width": resolution[0], "height": resolution[1], "upscaling": "native", "frame_generation": false}))
 
 func terrain_height(x: float, z: float) -> float:
-	return 32.0 * sin(x * 0.004) * cos(z * 0.003) + 110.0 * exp(-((x-350.0)*(x-350.0)+(z+300.0)*(z+300.0))/180000.0) + 65.0 * exp(-((x+430.0)*(x+430.0)+(z-260.0)*(z-260.0))/130000.0)
+	return terrain.height(x, z)
 
 func material(color: Color, roughness: float, metallic := 0.0) -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
@@ -135,11 +138,10 @@ func build_scene(profile: Dictionary) -> void:
 				var px: float = (x + corner.x - cells / 2.0) * step
 				var pz: float = (z + corner.y - cells / 2.0) * step
 				var h := terrain_height(px, pz)
-				surface.set_color(Color(0.16,0.25,0.09).lerp(Color(0.48,0.46,0.43), clampf((h-35.0)/85.0,0.0,1.0)))
+				surface.set_normal(terrain.normal(px, pz))
 				surface.add_vertex(Vector3(px,h,pz))
-	surface.generate_normals()
-	var terrain_material := material(Color.WHITE,0.94)
-	terrain_material.vertex_color_use_as_albedo = true
+	var terrain_material := ShaderMaterial.new()
+	terrain_material.shader = load("res://terrain_material.gdshader")
 	mesh_instance(surface.commit(),Vector3.ZERO,Vector3.ONE,terrain_material)
 	mesh_instance(PlaneMesh.new(),vector(settings.water.position_m),Vector3(float(settings.water.size_m[0])/2.0,1,float(settings.water.size_m[1])/2.0),material(Color(0.03,0.16,0.22),0.13,0.15))
 	var rng := RandomNumberGenerator.new()
@@ -152,7 +154,7 @@ func build_scene(profile: Dictionary) -> void:
 	for i in range(240):
 		var x := rng.randf_range(-900,900)
 		var z := rng.randf_range(-900,900)
-		var h := terrain_height(x,z)
+		var h := terrain.mesh_height(x,z,step,float(settings.terrain.size_m)/2.0)
 		if h < 10: continue
 		if i % 3 == 0:
 			mesh_instance(rock,Vector3(x,h+2,z),Vector3(8,5,7),stone)
@@ -165,12 +167,13 @@ func build_scene(profile: Dictionary) -> void:
 	for i in range(8):
 		var x := -180.0 + i * 30
 		var z := -120.0
-		mesh_instance(BoxMesh.new(),Vector3(x,terrain_height(x,z)+6,z),Vector3(16,12,20),material(Color(0.57,0.42,0.29),0.75))
+		mesh_instance(BoxMesh.new(),Vector3(x,terrain.mesh_height(x,z,step,float(settings.terrain.size_m)/2.0)+6,z),Vector3(16,12,20),material(Color(0.57,0.42,0.29),0.75))
 	for i in range(4):
-		mesh_instance(SphereMesh.new(),Vector3(70+i*12,terrain_height(70+i*12,80)+5,80),Vector3(9,9,9),material(Color(0.75,0.7,0.55),0.05+i*0.23,1.0 if i % 2 == 0 else 0.0))
+		mesh_instance(SphereMesh.new(),Vector3(70+i*12,terrain.mesh_height(70+i*12,80,step,float(settings.terrain.size_m)/2.0)+5,80),Vector3(9,9,9),material(Color(0.75,0.7,0.55),0.05+i*0.23,1.0 if i % 2 == 0 else 0.0))
 	# Explicit approximation: opaque geometric clouds, not volumetric cloud scattering.
 	for i in range(16):
-		mesh_instance(rock,Vector3(rng.randf_range(-1400,1400),480+rng.randf_range(0,100),rng.randf_range(-1400,1400)),Vector3(160,24,90),material(Color(0.88,0.90,0.94),1.0))
+		var cloud := mesh_instance(rock,Vector3(rng.randf_range(-1400,1400),700+rng.randf_range(0,100),rng.randf_range(-1400,1400)),Vector3(160,24,90),material(Color(0.88,0.90,0.94),1.0))
+		cloud.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	camera = Camera3D.new()
 	camera.fov = float(settings.camera.fov_y_deg)
 	camera.near = float(settings.camera.near_m)

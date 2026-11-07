@@ -1,5 +1,8 @@
 # Benchmark-Ergebnisse – 2026-11-07
 
+**Historische Szenenrevision 2.** Das aktuelle Terrain ist Revision 3; diese
+Ergebnisse sind nicht ohne neue Messung übertragbar.
+
 ## Nachgewiesener Stand
 
 Godot **4.7.2.stable.official.ed1daf0bf**, offizielles Linux-Paket projektlokal,

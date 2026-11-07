@@ -55,3 +55,14 @@ externen Assetimporte nötig. Der O3DE-Adapter fehlt noch. Daher besteht noch ke
 Nachweis engineübergreifender Gleichheit. Kamera ist zeitbasierte stückweise lineare
 Interpolation mit Blick auf einen festen Punkt; Ecken und Blickrotation sind
 bewusst nicht geglättet und müssen in jedem Adapter gleich umgesetzt werden.
+
+## Terrainrevision 3
+
+`terrain_model.gd` verwendet deterministisches FastNoiseLite in Weltkoordinaten,
+Bergmassiv-Gewichte und ein abgesenktes Seebecken. Zentraldifferenzen liefern
+Normalen; `mesh_height` interpoliert dieselben Dreiecke wie das gerenderte Netz,
+damit platzierte Objekte auf dem Netz stehen. Der Shader mischt prozedurale
+Fels-, Gras-, Ufer- und Schneefarben anhand Höhe und Hang; triplanares Rauschen
+ist Farbvariation, keine gescannten PBR-Texturen oder Normalmaps. Das Terrain ist
+weiter ein einzelnes 2-km-Netz ohne Streaming/LOD. Nahtlose Kacheln und kontrollierte
+LOD-Wechsel sind nächste Architekturaufgabe.

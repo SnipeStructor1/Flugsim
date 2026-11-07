@@ -1,0 +1,19 @@
+{
+  "scene_revision": 3,
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "headless_runs_passed": 27,
+  "profiles": [
+    "Medium",
+    "High",
+    "Ultra"
+  ],
+  "resolutions": [
+    "1920x1080",
+    "2560x1440",
+    "3840x2160"
+  ],
+  "terrain_samples": 441,
+  "software_visual_check": "Medium, 1920x1080; Mesa llvmpipe; non-performance",
+  "scene_sha256": "05feeb00a4fa6c73c69896e9e905d87013ad50479c1d968b41a2fad26f7ecce2",
+  "source_sha256": "6c4a0a552cd2d3a30590eadbae131a4cd76e26ef7083afc43b4c2979ead6eb3a"
+}

@@ -25,3 +25,13 @@
   feste Framezahl statt der Benchmarkzeit und schreibt keine Performance-CSV.
 - Die Wasserfläche liegt jetzt im Tal statt unsichtbar unter dem zentralen Hügel;
   gemeinsames Manifest `scene_revision=2` markiert diese Szenenänderung.
+
+- 2026-11-07, Directive 002: Revision 3 erhält deterministische, weltkoordinatenbasierte
+  Höhen- und Hangmaterialien. Ein anfängliches Modell führte zu nadelartigen Bergen;
+  reduzierte Rauschfrequenz und geglättete Normalen verbessern das gerenderte Bild.
+- Objekte werden auf der tatsächlich triangulierten Oberfläche positioniert. Der
+  ursprüngliche Funktionswert allein verursachte Schweben zwischen Netzvertices.
+- Die frühere benchmarkfähige Revision 2 bleibt in Git und in gespeicherten
+  Ergebnissen erhalten. Gemessene Revision-2-Werte sind keine Revision-3-Messungen.
+- Geometrische Wolken werfen vorerst keine Schatten: ihre großen dunklen Scheiben
+  waren sichtbar unplausibel. Echtes Wolkenschattenmodell bleibt offen.
