@@ -198,3 +198,6 @@ lizenzierten Godot-Demo-Texturen (Albedo, Rauheit, Höhe und Normale),
 triplanarer Projektion und prozeduraler Mischung. Vergleich und Rechte stehen
 in `VISUAL_OVERHAUL.md` und `assets/licenses/README.md`. Vegetation,
 Flugzeugdetails und hochwertige Atmosphäre sind weiterhin unfertig.
+
+Die Flugansicht besitzt eine einfache dynamische Tageslichtschleife und eine
+Sonnenuntergangsreferenz; weder astronomisch kalibriert noch echte Nacht.

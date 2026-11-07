@@ -1,5 +1,7 @@
 shader_type sky;
 
+uniform float sunset_strength = 0.0;
+
 // Lightweight layered cloud/sky approximation for the flight prototype.
 // This is not volumetric cloud rendering or a validated atmospheric solver.
 float hash2(vec2 p) {
@@ -26,7 +28,11 @@ void sky() {
 	vec3 direction = normalize(EYEDIR);
 	float elevation = max(direction.y, 0.0);
 	float sky_gradient = pow(elevation, 0.42);
-	vec3 sky_color = mix(vec3(0.53, 0.67, 0.79), vec3(0.075, 0.22, 0.42), sky_gradient);
+	vec3 day_horizon = vec3(0.50, 0.64, 0.76);
+	vec3 dusk_horizon = vec3(0.74, 0.43, 0.27);
+	vec3 horizon_color = mix(day_horizon, dusk_horizon, sunset_strength);
+	vec3 zenith_color = mix(vec3(0.075, 0.22, 0.42), vec3(0.12, 0.17, 0.29), sunset_strength);
+	vec3 sky_color = mix(horizon_color, zenith_color, sky_gradient);
 	vec3 sun_direction = normalize(LIGHT0_DIRECTION);
 	float alignment = max(dot(direction, sun_direction), 0.0);
 	float glow = pow(alignment, 10.0);
@@ -39,5 +45,6 @@ void sky() {
 	float shape = cloud_noise(cloud_uv);
 	float cloud = smoothstep(0.47, 0.68, shape) * smoothstep(0.035, 0.20, direction.y);
 	vec3 cloud_color = mix(vec3(0.55, 0.61, 0.66), vec3(0.95, 0.96, 0.98), clamp(shape * 1.2 + glow * 0.12, 0.0, 1.0));
+	cloud_color = mix(cloud_color, cloud_color * vec3(1.0, 0.70, 0.54), sunset_strength * 0.65);
 	COLOR = mix(sky_color, cloud_color, cloud * 0.85);
 }

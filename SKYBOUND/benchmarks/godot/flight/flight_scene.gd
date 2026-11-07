@@ -28,6 +28,8 @@ var capture_started := false
 var capture_frame := 30
 var camera_test_count := 0
 var control_surface_test_seen := false
+var day_phase := 0.5
+var sky_material: ShaderMaterial
 
 func _ready() -> void:
 	input_test = OS.get_environment("SKYBOUND_FLIGHT_INPUT_TEST") == "1"
@@ -38,6 +40,7 @@ func _ready() -> void:
 	var frame_env := OS.get_environment("SKYBOUND_FLIGHT_CAPTURE_FRAME")
 	if frame_env.is_valid_int(): capture_frame = maxi(1, int(frame_env))
 	if not capture_path.is_empty() and capture_view == "cockpit": camera_mode = 1
+	if not capture_path.is_empty() and capture_view == "sunset": day_phase = 0.73
 	world = load("res://main.tscn").instantiate()
 	# Configure the existing landscape without modifying its implementation.
 	world.options.interactive = "true"
@@ -77,6 +80,7 @@ func _ready() -> void:
 	manager.build_budget = 2
 	world.sync_ground_objects()
 	apply_flight_atmosphere()
+	update_daylight(0.0)
 	build_aircraft()
 	add_child(aircraft)
 	add_child(camera)
@@ -119,7 +123,7 @@ func _ready() -> void:
 func apply_flight_atmosphere() -> void:
 	for child in world.get_children():
 		if child is WorldEnvironment and child.environment != null and child.environment.sky != null:
-			var sky_material := ShaderMaterial.new()
+			sky_material = ShaderMaterial.new()
 			sky_material.shader = load("res://flight/flight_sky.gdshader")
 			child.environment.sky.sky_material = sky_material
 			# Retain distance haze on geometry without washing out the entire sky.
@@ -161,6 +165,18 @@ func build_aircraft() -> void:
 	if left_flaperon == null or right_flaperon == null:
 		push_error("Aircraft control surfaces missing from GLB")
 		get_tree().quit(2)
+
+# Visual day cycle, intentionally simplified and not astronomically calibrated.
+func update_daylight(delta: float) -> void:
+	if capture_path.is_empty():
+		day_phase = fposmod(day_phase + delta / 1200.0, 1.0)
+	var elevation := 35.0 + 35.0 * sin(day_phase * TAU)
+	var dusk := 1.0 - smoothstep(3.0, 22.0, elevation)
+	world.sunlight.rotation_degrees.x = -maxf(elevation, 1.0)
+	world.sunlight.light_color = Color(1.0, lerpf(0.96, 0.62, dusk), lerpf(0.87, 0.40, dusk))
+	world.sunlight.light_energy = lerpf(1.2, 0.70, dusk)
+	if sky_material != null:
+		sky_material.set_shader_parameter("sunset_strength", dusk)
 
 func cockpit_box(position_value: Vector3, dimensions: Vector3, color: Color) -> void:
 	var node := MeshInstance3D.new()
@@ -332,6 +348,8 @@ func update_camera() -> void:
 		camera.quaternion = model.attitude
 
 func _process(_delta: float) -> void:
+	if world != null and world.sunlight != null:
+		update_daylight(_delta)
 	if not capture_path.is_empty() and not capture_started and physics_frames >= capture_frame:
 		capture_started = true
 		await RenderingServer.frame_post_draw

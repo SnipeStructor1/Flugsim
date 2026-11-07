@@ -59,3 +59,11 @@ bleibt erhalten. `visuals/visual_terrain_pbr.png` zeigt die neue Ansicht;
 `visuals/raptor_atmosphere.png` dient als ältere Orientierung. Die Änderung ist
 aus großer Flughöhe eher subtil; Nahdetail, Grastexturen, Baummodelle und
 realistische Landschaft bleiben offen. Keine 1440p-/RTX-Performance gemessen.
+
+## Licht und Tageszeit
+
+Eine einfache 20-minütige Lichtschleife verändert Sonnenhöhe und -farbe; der
+Sky-Shader färbt Horizont und Wolken bei tiefem Sonnenstand. Beispiel:
+`visuals/visual_sunset.png`. Die Phase ist keine geografische/astronomische
+Simulation und hat keine echte Nacht. Die Wolken bleiben zweidimensional;
+das Bild wirkt wärmer, aber Terrain und Cockpit weiterhin stilisiert.
