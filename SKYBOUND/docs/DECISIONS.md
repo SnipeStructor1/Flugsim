@@ -86,3 +86,10 @@
   ursprüngliche konstante Nebel den 2-km-Ausschnitt in 10 km Höhe verdeckte.
   Dies ist weder ein physikalisch vollständiges Atmosphärenmodell noch eine
   globale Welt.
+
+- Terrain-Freeze auf ausdrückliche Nutzeranweisung: aktueller asynchroner Test
+  wird gesichert; keine weiteren Terrainänderungen oder neuen Terrain-Tests ohne
+  neue Freigabe. Offene Terrainprobleme bleiben dokumentiert.
+- Die beiden 960×540-Ansichten von synchronem und asynchronem Kachelaufbau
+  erfüllen eine explizite Bildtoleranz von 1/255 mittlerer RGB-Abweichung,
+  sind aber nicht pixelgleich. Dies ist kein Leistungsnachweis.

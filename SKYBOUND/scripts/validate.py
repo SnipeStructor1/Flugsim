@@ -23,7 +23,7 @@ if result.returncode:
 local_godot = root / '.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64'
 godot = str(local_godot) if local_godot.is_file() else (shutil.which('godot') or shutil.which('godot4'))
 if not godot:
-    print('SKIP: Godot unavailable; terrain, LOD, chunk, stream-planning and lifecycle tests were not run', flush=True)
+    print('SKIP: Godot unavailable; terrain, LOD, chunk, stream-planning, lifecycle, worker and async tests were not run', flush=True)
     raise SystemExit(0)
 env = os.environ.copy()
 if sys.platform == 'linux':
@@ -34,14 +34,18 @@ if check.returncode != 0 or 'ERROR:' in check.stdout + check.stderr:
     print(check.stdout + check.stderr, file=sys.stderr)
     raise SystemExit(1)
 print('BENCHMARK_SCRIPT_CHECK_PASS', flush=True)
-for test in ['test_terrain.gd', 'test_lod.gd', 'test_chunk_mesh.gd', 'test_stream_plan.gd', 'test_stream_manager.gd']:
+for test in ['test_terrain.gd', 'test_lod.gd', 'test_chunk_mesh.gd', 'test_stream_plan.gd', 'test_stream_manager.gd', 'test_chunk_job.gd', 'test_stream_async.gd']:
     result = subprocess.run([godot, '--headless', '--path', str(root / 'benchmarks/godot'), '--script', 'res://' + test], env=env, timeout=60)
     if result.returncode:
         raise SystemExit(result.returncode)
-journey = subprocess.run([godot, '--headless', '--path', str(root / 'benchmarks/godot'), '--rendering-method', 'gl_compatibility', '--', '--smoke=true', '--terrain-stream=true', '--stream-journey=true', '--profile=Medium', '--warmup=0', '--duration=20'], capture_output=True, text=True, env=env, timeout=60)
-output = journey.stdout + journey.stderr
-if journey.returncode != 0 or 'ERROR:' in output or 'STREAM_JOURNEY_PASS phases=5' not in output or output.count('STREAM_JOURNEY_PHASE ') != 5:
-    print(output, file=sys.stderr)
-    raise SystemExit(1)
-print('STREAM_JOURNEY_TEST_PASS: 64 loaded, 0 outside radius, high- and extreme-altitude LOD plus low-altitude return; LOD, object visibility and placement checked', flush=True)
+for asynchronous in [False, True]:
+    args = [godot, '--headless', '--path', str(root / 'benchmarks/godot'), '--rendering-method', 'gl_compatibility', '--', '--smoke=true', '--terrain-stream=true', '--stream-journey=true', '--profile=Medium', '--warmup=0', '--duration=20']
+    if asynchronous:
+        args.append('--stream-async=true')
+    journey = subprocess.run(args, capture_output=True, text=True, env=env, timeout=60)
+    output = journey.stdout + journey.stderr
+    if journey.returncode != 0 or 'ERROR:' in output or 'STREAM_JOURNEY_PASS phases=5' not in output or output.count('STREAM_JOURNEY_PHASE ') != 5:
+        print(output, file=sys.stderr)
+        raise SystemExit(1)
+    print(f'STREAM_JOURNEY_TEST_PASS async={asynchronous}: loading, unloading, high/extreme altitude, LOD, object visibility and placement', flush=True)
 raise SystemExit(0)

@@ -9,10 +9,12 @@ const MAX_HEIGHT := 698.0
 func conservative_bounds() -> Vector2:
 	return Vector2(MIN_HEIGHT, MAX_HEIGHT)
 
+var seed_value := 41017
 var terrain_noise := FastNoiseLite.new()
 var ridge_noise := FastNoiseLite.new()
 
-func _init(seed_value: int = 41017) -> void:
+func _init(initial_seed: int = 41017) -> void:
+	seed_value = initial_seed
 	terrain_noise.seed = seed_value
 	terrain_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
 	terrain_noise.frequency = 0.0018

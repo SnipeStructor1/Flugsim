@@ -1,7 +1,7 @@
 extends Node3D
 
 var settings: Dictionary
-var options := {"profile": "High", "width": "1920", "height": "1080", "warmup": "30", "duration": "60", "output": "", "smoke": "false", "interactive": "false", "render-check": "false", "capture": "", "terrain-stream": "false", "view": "benchmark", "stream-journey": "false", "view-altitude": ""}
+var options := {"profile": "High", "width": "1920", "height": "1080", "warmup": "30", "duration": "60", "output": "", "smoke": "false", "interactive": "false", "render-check": "false", "capture": "", "terrain-stream": "false", "view": "benchmark", "stream-journey": "false", "view-altitude": "", "stream-async": "false"}
 var camera: Camera3D
 var output: FileAccess
 var started_us: int
@@ -16,6 +16,7 @@ var sunlight: DirectionalLight3D
 var scene_environment: Environment
 var render_check := false
 var streaming := false
+var stream_async := false
 var stream_manager: Node3D
 var ground_objects: Array[Dictionary] = []
 var reference_view: Dictionary = {}
@@ -40,6 +41,10 @@ func _ready() -> void:
 	render_check = options["render-check"] == "true"
 	streaming = options["terrain-stream"] == "true"
 	stream_journey = options["stream-journey"] == "true"
+	stream_async = options["stream-async"] == "true"
+	if stream_async and not streaming:
+		fail("Async streaming requires terrain streaming")
+		return
 	if stream_journey and not (smoke and streaming):
 		fail("Stream journey is only available for streaming smoke tests")
 		return
@@ -120,7 +125,7 @@ func _ready() -> void:
 	started_us = Time.get_ticks_usec()
 	previous_us = started_us
 	set_process(true)
-	print("SKYBOUND_READY ", JSON.stringify({"smoke": smoke, "render_check": options["render-check"] == "true", "profile": options.profile, "renderer": RenderingServer.get_current_rendering_method(), "adapter": RenderingServer.get_video_adapter_name(), "engine": Engine.get_version_info().string, "width": resolution[0], "height": resolution[1], "upscaling": "native", "frame_generation": false, "terrain_stream": streaming, "view": options.view}))
+	print("SKYBOUND_READY ", JSON.stringify({"smoke": smoke, "render_check": options["render-check"] == "true", "profile": options.profile, "renderer": RenderingServer.get_current_rendering_method(), "adapter": RenderingServer.get_video_adapter_name(), "engine": Engine.get_version_info().string, "width": resolution[0], "height": resolution[1], "upscaling": "native", "frame_generation": false, "terrain_stream": streaming, "stream_async": stream_async, "view": options.view}))
 
 func terrain_height(x: float, z: float) -> float:
 	return terrain.height(x, z)
@@ -195,7 +200,7 @@ func stream_triangle_count() -> int:
 func stream_is_settled() -> bool:
 	var camera_xz := Vector2(camera.position.x, camera.position.z)
 	var plan: Dictionary = stream_manager.planner.plan(camera_xz, stream_manager.origin, stream_manager.chunk_size, stream_manager.grid_width, stream_manager.grid_height, stream_manager.resident, stream_manager.max_resident, 1, camera.position.y, stream_manager.height_bounds)
-	return plan.valid and plan.unload.is_empty() and plan.build.is_empty()
+	return plan.valid and plan.unload.is_empty() and plan.build.is_empty() and not stream_manager.has_pending()
 
 func build_scene(profile: Dictionary) -> void:
 	var environment := Environment.new()
@@ -283,6 +288,7 @@ func build_scene(profile: Dictionary) -> void:
 	if streaming:
 		stream_manager = load("res://terrain_stream_manager.gd").new()
 		stream_manager.model = terrain
+		stream_manager.async_enabled = stream_async
 		stream_manager.terrain_material = terrain_material
 		var ground_bounds: Vector2 = terrain.conservative_bounds()
 		# Include 32 m skirts and the tallest 15 m ground object.
@@ -403,5 +409,5 @@ func _process(delta: float) -> void:
 		else:
 			if stream_journey:
 				print("STREAM_JOURNEY_PASS phases=5")
-			print("SKYBOUND_COMPLETE ", JSON.stringify({"smoke":smoke,"render_check":render_check,"frames":recorded,"total_frames":frame_index,"camera_end":str(camera.position), "terrain_stream":streaming, "resident_chunks":stream_manager.resident.size() if streaming else 0, "stream_settled":stream_is_settled() if streaming else false, "lod_counts":stream_lod_counts(), "terrain_triangles":stream_triangle_count() if streaming else int(settings.terrain.grid_cells)*int(settings.terrain.grid_cells)*2, "camera_far_m":camera.far, "fog_density":scene_environment.fog_density}))
+			print("SKYBOUND_COMPLETE ", JSON.stringify({"smoke":smoke,"render_check":render_check,"frames":recorded,"total_frames":frame_index,"camera_end":str(camera.position), "terrain_stream":streaming, "stream_async":stream_async, "resident_chunks":stream_manager.resident.size() if streaming else 0, "stream_settled":stream_is_settled() if streaming else false, "lod_counts":stream_lod_counts(), "terrain_triangles":stream_triangle_count() if streaming else int(settings.terrain.grid_cells)*int(settings.terrain.grid_cells)*2, "camera_far_m":camera.far, "fog_density":scene_environment.fog_density}))
 			get_tree().quit()

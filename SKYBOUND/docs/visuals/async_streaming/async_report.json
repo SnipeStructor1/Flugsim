@@ -1,0 +1,100 @@
+{
+  "mode": "SOFTWARE_RENDER_CHECK",
+  "performance_measured": false,
+  "resolution": [
+    960,
+    540
+  ],
+  "code_sha256": "4fe15638b6b91d08d18d15f13a0c9dd302928ea46b918212d62330a4dcf2178c",
+  "scene_sha256": "05feeb00a4fa6c73c69896e9e905d87013ad50479c1d968b41a2fad26f7ecce2",
+  "views_sha256": "bb1dcc3ef4df16b6fef190bb80d2e917e163289b826ee2637412a18686834940",
+  "runs": [
+    {
+      "profile": "Medium",
+      "view": "mountains",
+      "view_altitude_override_m": null,
+      "status": "PASS",
+      "wall_seconds_including_shader_compilation": 17.92316244199992,
+      "engine_settings": {
+        "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 540,
+        "profile": "Medium",
+        "render_check": true,
+        "renderer": "forward_plus",
+        "smoke": false,
+        "stream_async": true,
+        "terrain_stream": true,
+        "upscaling": "native",
+        "view": "mountains",
+        "width": 960
+      },
+      "completion": {
+        "camera_end": "(0.0, 180.0, 700.0)",
+        "camera_far_m": 5000.0,
+        "fog_density": 0.000349999987520278,
+        "frames": 65,
+        "lod_counts": [
+          12,
+          10,
+          42
+        ],
+        "render_check": true,
+        "resident_chunks": 64,
+        "smoke": false,
+        "stream_async": true,
+        "stream_settled": true,
+        "terrain_stream": true,
+        "terrain_triangles": 15808,
+        "total_frames": 65
+      },
+      "screenshot": "Medium_mountains.png",
+      "sha256": "de0a3c94061642394fb38adaf8ea8947c5298dfc9cee71ea8a542c90e6c14906"
+    },
+    {
+      "profile": "Medium",
+      "view": "high_altitude",
+      "view_altitude_override_m": null,
+      "status": "PASS",
+      "wall_seconds_including_shader_compilation": 20.587902434999705,
+      "engine_settings": {
+        "adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+        "engine": "4.7.2-stable (official)",
+        "frame_generation": false,
+        "height": 540,
+        "profile": "Medium",
+        "render_check": true,
+        "renderer": "forward_plus",
+        "smoke": false,
+        "stream_async": true,
+        "terrain_stream": true,
+        "upscaling": "native",
+        "view": "high_altitude",
+        "width": 960
+      },
+      "completion": {
+        "camera_end": "(0.0, 1250.0, 700.0)",
+        "camera_far_m": 5000.0,
+        "fog_density": 0.000349999987520278,
+        "frames": 65,
+        "lod_counts": [
+          0,
+          12,
+          52
+        ],
+        "render_check": true,
+        "resident_chunks": 64,
+        "smoke": false,
+        "stream_async": true,
+        "stream_settled": true,
+        "terrain_stream": true,
+        "terrain_triangles": 8064,
+        "total_frames": 65
+      },
+      "screenshot": "Medium_high_altitude.png",
+      "sha256": "33da6f331f6b76a20a29d4a229855606ff0713c1e474d6fd50660baf5e9646ba"
+    }
+  ],
+  "status": "PASS"
+}

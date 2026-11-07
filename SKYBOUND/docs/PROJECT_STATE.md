@@ -110,3 +110,26 @@ und [nachher](visuals/altitude/extreme_after.png): Der kleine quadratische
 2-km-Ausschnitt ist wieder erkennbar, eine globale Welt und physikalisch korrekte
 Atmosphäre existieren aber weiterhin nicht. Die Nähe-/Höhen-/Extremhöhen- und
 Rückkehrzustände bestehen im integrierten Headless-Szenentest.
+
+## Nutzeranweisung: Terrain-Freeze
+
+Ab sofort keine weitere Terrain-Entwicklung, LOD-Optimierungen, Kachelverwaltung,
+Threading, Terrain-Streaming, Höhenalgorithmen oder neue Terrain-Tests ohne
+ausdrückliche neue Freigabe. Der laufende asynchrone Test wurde abgeschlossen.
+Der Schwerpunkt wechselt unmittelbar zum spielbaren Flugsimulator: sichtbares,
+steuerbares Flugzeug, nachvollziehbare Flugphysik, Verfolger-/Cockpitkamera und
+frühes Bild eines Flugzeugs. Himmel, Wolken, Beleuchtung und Wasser folgen.
+
+Der experimentelle einzelne Worker berechnet nur Vertex-/Normaldaten; Mesh und
+Scene Tree bleiben auf dem Hauptthread. Tests decken gleiches Datenresultat,
+Worker-Wiederverwendung, veraltete Ergebnisse nach Kamerasprüngen, fehlerhaften
+Mesh-Ersatz, Cleanup sowie vollständige synchrone und asynchrone Headless-Reisen
+ab. Zwei 960×540-Ansichten mit synchroner und asynchroner Erzeugung bestehen
+den Vergleich mit expliziter Toleranz 1/255; die mittleren RGB-Abweichungen
+betragen etwa 0,257 und 0,296/255. Die Bilder sind nicht pixelgleich und
+keine Performance-Messung. Daten: `visuals/async_streaming/`.
+
+Bekannte Terrain-Einschränkungen bleiben bestehen: nur 2 km Ausschnitt,
+experimentelles LOD/Streaming, offene allgemeine feine Darstellungslinie,
+keine nachgewiesenen harten Zeit-/Byte-Budgets oder RTX-5070-Messungen.
+Terrainarbeiten sind pausiert, auch wenn diese Punkte offen sind.

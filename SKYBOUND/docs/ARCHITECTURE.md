@@ -134,3 +134,18 @@ Die integrierte Diagnose `--smoke=true --terrain-stream=true
 Laderadius und zurück. Erst nach jedem stabilen Zustand prüft sie Kachelbestand
 und Sichtbarkeit/Höhe der Bodenobjekte. Sie ist auf Headless-Smoke beschränkt
 und endet nach Abschluss selbst; kein Zeit-/Performance-Benchmark.
+
+## Eingefrorener Worker-Prototyp
+
+Ein optionaler einzelner Worker berechnet Kachel-Vertices und Normalen mit einem
+eigenen Geländemodell. Die Daten werden nach Thread-Abschluss übergeben; die
+Erzeugung/Änderung von Meshes und des aktiven Scene Tree erfolgt auf dem
+Hauptthread. Veraltete Ergebnisse werden anhand des aktuellen Kameraplans
+verworfen; erfolglose Mesh-Ersetzung erhält das alte Netz. Ein Manager verwendet
+eine unveränderliche Geometriekonfiguration und wird für Änderungen neu erstellt.
+Der Worker rekonstruiert die heutige Modellkonfiguration aus dem Seed; zukünftige
+konfigurierbare Modellparameter müssen explizit übertragen werden.
+
+Godot-Dokumentation: https://github.com/godotengine/godot-docs/blob/4.7/tutorials/performance/thread_safe_apis.rst
+Der Worker ist experimentell und gemäß Terrain-Freeze pausiert. Er beweist kein
+Zeit-/Byte-Budget und keinen Leistungsgewinn auf einer RTX 5070.

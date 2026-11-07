@@ -9,3 +9,9 @@
 - Nach einem Arbeitspaket Tests, Bildprüfung (bei Grafikänderungen), `PROJECT_STATE.md`, `NEXT_TASKS.md` und gegebenenfalls `DECISIONS.md` aktualisieren; abgeschlossene Meilensteine sauber committen.
 - Keine erfundenen Messwerte, keine ungeprüften NVIDIA-Integrationen. Windows-/RTX-5070-Ergebnisse nur auf der tatsächlichen Hardware als solche ausweisen.
 - `assets/shared/scene.json` trägt eine Szenenrevision. Änderungen an Geometrie, Kameras oder Materialien machen alte Benchmarkwerte nicht vergleichbar; historische Ergebnisse erhalten und getrennt ausweisen.
+
+- **Terrain-Freeze (Nutzeranweisung):** Keine weitere Terrain-Entwicklung,
+  LOD-Optimierung, Kachelverwaltung, Threading, Terrain-Streaming,
+  Höhenalgorithmen oder neue Terrain-Tests ohne ausdrückliche neue Freigabe.
+  Bekannte Einschränkungen dokumentieren. Aktueller Schwerpunkt: spielbarer
+  Flugsimulator mit Flugzeug, Flugmodell und Cockpit-/Verfolgerkamera.

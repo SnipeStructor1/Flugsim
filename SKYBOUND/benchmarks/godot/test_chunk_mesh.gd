@@ -23,7 +23,23 @@ func _initialize() -> void:
 			printerr("Chunk generation failed for LOD ", lod)
 			quit(1)
 			return
-		var vertices: PackedVector3Array = mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+		var data: Dictionary = builder.build_data(model, Vector2.ZERO, 256, 16, lod, 32)
+		var arrays: Array = mesh.surface_get_arrays(0)
+		var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+		if data.vertices != vertices:
+			printerr("CPU vertex data differs from the committed mesh")
+			quit(1)
+			return
+		var committed_normals: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
+		if data.normals.size() != committed_normals.size():
+			printerr("CPU/mesh normal count mismatch")
+			quit(1)
+			return
+		for i in range(committed_normals.size()):
+			if data.normals[i].distance_to(committed_normals[i]) > 0.001:
+				printerr("CPU normal differs materially from the committed mesh")
+				quit(1)
+				return
 		var n := 16 >> lod
 		if vertices.size() != n * n * 6 + 4 * n * 12:
 			printerr("Unexpected triangle count at LOD ", lod, ": ", vertices.size())
