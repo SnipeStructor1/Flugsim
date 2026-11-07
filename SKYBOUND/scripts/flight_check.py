@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--view', choices=['chase', 'cockpit', 'lake', 'far'], default='chase')
+    parser.add_argument('--view', choices=['chase', 'cockpit', 'lake', 'far', 'aircraft'], default='chase')
     parser.add_argument('--frame', type=int, default=30, help='Capture after this many fixed simulation frames')
     parser.add_argument('--output', type=Path, required=True, help='New output directory')
     args = parser.parse_args()

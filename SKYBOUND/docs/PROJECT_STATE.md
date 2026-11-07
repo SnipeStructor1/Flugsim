@@ -7,7 +7,7 @@ Die Benchmark-Basis wurde in Commit `2eb0373` gesichert und auf GitHub `main` ve
 ## Aktueller Schwerpunkt: FLIGHT-001
 
 Ein separat startbarer Flugprototyp nutzt die bestehende Landschaft unverändert.
-Das selbst erzeugte Flugzeug ist nun an die F-22 angelehnt: gepfeilte Flächen,
+Das selbst erzeugte Blender-Flugzeug ist an die F-22 angelehnt: gepfeilte Flächen,
 zwei schräg stehende Leitwerke und zwei Auslässe. Ein einfacher Cockpitplatzhalter
 ist vorhanden. Die Modellannahmen stehen in `F22_APPROXIMATION.md`.
 Er bietet ein sichtbares Flugzeug, vereinfachte Kräfte und Steuerung, konstanten
@@ -184,3 +184,11 @@ erzeugt, was zu Rucklern führen kann; falls die nächste Kachel noch fehlt,
 pausiert die Flugbewegung bis sie geladen ist. Eine Langzeit-/Hardwareprüfung
 und visuelle Übergangsprüfung fehlen. Das Flugzeug bleibt ein prozeduraler,
 nicht fotorealistischer Platzhalter.
+
+## Visuelle Überarbeitung – in Arbeit
+
+Bestandsaufnahme und Quellenprüfung: `VISUAL_OVERHAUL.md`. Eigenes Blender-GLB
+mit separaten Materialien, Düsen und beweglichen Steuerflächen ersetzt den
+vorigen prozeduralen Flugzeugrumpf. Das Cockpit ist weiterhin ein Platzhalter.
+Bilder und Flugtests sind dokumentiert; PBR-Assets, echte Beleuchtungsqualität,
+Wasser, Vegetation, Presets und hochwertige Flugzeugdetails bleiben offen.

@@ -6,6 +6,8 @@ var world: Node3D
 var aircraft := Node3D.new()
 var camera := Camera3D.new()
 var cockpit := Node3D.new()
+var left_flaperon: Node3D
+var right_flaperon: Node3D
 var hud := Label.new()
 var camera_mode := 0
 var mouse_enabled := false
@@ -25,6 +27,7 @@ var input_response_seen := false
 var capture_started := false
 var capture_frame := 30
 var camera_test_count := 0
+var control_surface_test_seen := false
 
 func _ready() -> void:
 	input_test = OS.get_environment("SKYBOUND_FLIGHT_INPUT_TEST") == "1"
@@ -129,7 +132,26 @@ func apply_flight_atmosphere() -> void:
 			child.visible = false
 
 func build_aircraft() -> void:
-	preload("res://flight/raptor_visual.gd").new(aircraft).build()
+	# Load the checked-in GLB directly so a fresh Windows checkout does not
+	# depend on the editor having generated an import cache beforehand.
+	var document := GLTFDocument.new()
+	var state := GLTFState.new()
+	var path := ProjectSettings.globalize_path("res://flight/assets/raptor.glb")
+	if document.append_from_file(path, state) != OK:
+		push_error("Could not load Blender aircraft asset")
+		get_tree().quit(2)
+		return
+	var visual := document.generate_scene(state)
+	if visual == null:
+		push_error("Could not instantiate Blender aircraft asset")
+		get_tree().quit(2)
+		return
+	aircraft.add_child(visual)
+	left_flaperon = visual.find_child("Flaperon L", true, false) as Node3D
+	right_flaperon = visual.find_child("Flaperon R", true, false) as Node3D
+	if left_flaperon == null or right_flaperon == null:
+		push_error("Aircraft control surfaces missing from GLB")
+		get_tree().quit(2)
 
 func cockpit_box(position_value: Vector3, dimensions: Vector3, color: Color) -> void:
 	var node := MeshInstance3D.new()
@@ -150,6 +172,10 @@ func build_cockpit() -> void:
 	cockpit_box(Vector3(-1.95, 0.1, -2.7), Vector3(0.12, 2.4, 0.12), frame)
 	cockpit_box(Vector3(1.95, 0.1, -2.7), Vector3(0.12, 2.4, 0.12), frame)
 	cockpit_box(Vector3(0, -0.72, -2.39), Vector3(0.75, 0.24, 0.05), Color(0.08, 0.27, 0.22))
+	# Generic cockpit displays, not a reproduction of F-22 avionics.
+	for x in [-1.08, 0.0, 1.08]:
+		cockpit_box(Vector3(x, -0.96, -1.99), Vector3(0.86, 0.34, 0.035), Color(0.025, 0.06, 0.065))
+		cockpit_box(Vector3(x, -0.94, -1.965), Vector3(0.67, 0.018, 0.02), Color(0.13, 0.40, 0.28))
 
 func reset_flight() -> void:
 	model = preload("res://flight/flight_model.gd").new()
@@ -208,6 +234,11 @@ func _physics_process(delta: float) -> void:
 		return
 	if terrain_update.built > 0 or terrain_update.unloaded > 0:
 		world.sync_ground_objects()
+	if left_flaperon != null and right_flaperon != null:
+		left_flaperon.rotation.x = clampf(-pitch * 0.15 - roll * 0.18, -0.3, 0.3)
+		right_flaperon.rotation.x = clampf(-pitch * 0.15 + roll * 0.18, -0.3, 0.3)
+		if test_mode and absf(left_flaperon.rotation.x - right_flaperon.rotation.x) > 0.01:
+			control_surface_test_seen = true
 	terrain_loading = false
 	if not crashed:
 		var predicted: Vector3 = model.position + model.velocity * delta
@@ -262,11 +293,11 @@ func _physics_process(delta: float) -> void:
 			print("FLIGHT_JOURNEY_TEST_PASS ", JSON.stringify({"frames": physics_frames, "distance_m": model.position.distance_to(initial_position), "position": str(model.position), "start_altitude_m": 700.0, "resident_chunks": manager.resident.size(), "max_resident": manager.max_resident}))
 			get_tree().quit()
 	if test_mode and not journey_test and physics_frames >= 240:
-		if crashed or camera_test_count != 2 or not model.position.is_finite() or model.position.distance_to(initial_position) < 100.0:
+		if crashed or camera_test_count != 2 or not control_surface_test_seen or not model.position.is_finite() or model.position.distance_to(initial_position) < 100.0:
 			push_error("Flight scene functional test failed")
 			get_tree().quit(2)
 		else:
-			print("FLIGHT_SCENE_TEST_PASS ", JSON.stringify({"frames": physics_frames, "distance_m": model.position.distance_to(initial_position), "position": str(model.position), "camera_switches": camera_test_count}))
+			print("FLIGHT_SCENE_TEST_PASS ", JSON.stringify({"frames": physics_frames, "distance_m": model.position.distance_to(initial_position), "position": str(model.position), "camera_switches": camera_test_count, "control_surfaces": control_surface_test_seen}))
 			get_tree().quit()
 
 func update_camera() -> void:
@@ -275,6 +306,12 @@ func update_camera() -> void:
 		camera.look_at(Vector3(-400, 8, -400), Vector3.UP)
 		return
 	var orientation := Basis(model.attitude)
+	if not capture_path.is_empty() and capture_view == "aircraft":
+		aircraft.visible = true
+		cockpit.visible = false
+		camera.position = model.position + orientation * Vector3(19, 9, 20)
+		camera.look_at(model.position, Vector3.UP)
+		return
 	cockpit.visible = camera_mode == 1
 	if camera_mode == 0:
 		aircraft.visible = true

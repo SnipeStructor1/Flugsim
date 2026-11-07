@@ -30,3 +30,21 @@ Ausgangsbilder: `visuals/raptor_atmosphere.png` und
 Nächster Schritt: eigenes reproduzierbares Blender-Modell mit einfacher
 Materialtrennung als Basis; Qualitätskontrolle anhand gleicher Kameraansichten.
 Die vollständige Direktive bleibt in Arbeit.
+
+## Erstes eigenes Blender-Flugzeug
+
+`tools/aircraft/build_raptor.py` erzeugt `flight/assets/raptor.glb` mit Blender
+4.3.2 aus eigenem Code. Das Modell hat ein geschlossenes Rumpfnetz, separate
+Flächen, Cockpitverglasung, Einläufe, Düsen und verschiedene Materialien.
+Die beiden Querruder reagieren sichtbar auf Steuerbefehle. Godot liest GLB
+direkt zur Laufzeit, ohne einen vorherigen Editorimport vorauszusetzen.
+
+Bilder: `visuals/visual_jet_blender.png` und
+`visuals/visual_cockpit_blender.png`, Ausgangsbild `visuals/raptor_atmosphere.png`.
+Die Form und Düsen sind deutlicher als zuvor, aber Flügel, Leitwerk, Cockpit
+und Landschaft wirken weiterhin schematisch; Fahrwerk und LOD fehlen. Dies ist
+noch kein hochwertiges oder fotorealistisches Endergebnis. Der aktuelle Jet ist
+eine eigenständige, unbewaffnete Annäherung, nicht vermessenes F-22-Modell.
+
+Validierung: Flugmodell, Kameraund Kontrollflächen, 4,2-km-Überflug headless;
+Bilder mit Software-Vulkan, kein Windows- oder GPU-Performance-Nachweis.
