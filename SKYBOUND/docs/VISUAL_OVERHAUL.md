@@ -75,3 +75,20 @@ Muster variiert Wasserfarbe und Rauheit, ein dezenter Rand reagiert auf
 Tiefendifferenz. Bestehende Wellen, Tiefenfarbe und Fresnel bleiben erhalten.
 Die Aufnahme zeigt allerdings weiterhin eine relativ flache Wasserfläche und
 steile künstliche Ufer; realistische Spiegelungen und Wellen sind nicht belegt.
+
+## Grafikstufen und Referenzansichten
+
+`SKYBOUND_GRAPHICS_PRESET`: Medium (2048 Schattenatlas, ohne SSAO/SSR/Nebel),
+High (4096, SSAO/SSR/volumetrischer Nebel), Ultra (8192, dieselben Effekte),
+Cinematic (Ultra plus 2500 m Schattenreichweite und Schattenfilter 1,4).
+`SKYBOUND_RESOLUTION` unterstützt 1920×1080, 2560×1440 und 3840×2160.
+Alle Stufen durchlaufen den Headless-Szenentest; Medium ist als Softwarebild
+`visuals/visual_preset_medium.png` sichtbar. Keine Hardwaremessung. SSR auf
+transparentem Wasser und 1440p/60 FPS sind nicht nachgewiesen.
+
+Referenzen: Berg/Jet `visuals/visual_terrain_pbr.png`, Jet/See
+`visuals/visual_jet_lake.png`, Cockpit `visuals/visual_cockpit_blender.png`,
+Sonnenuntergang `visuals/visual_sunset.png`, Tiefflug
+`visuals/visual_low_flight.png`. Einen Flughafen gibt es nicht; ein sechstes
+Bild wäre irreführend. Der Tiefflug zeigt besonders deutlich, dass die
+Baumkegel durch echte Vegetationsassets ersetzt werden müssen.

@@ -29,6 +29,7 @@ var capture_frame := 30
 var camera_test_count := 0
 var control_surface_test_seen := false
 var day_phase := 0.5
+var visual_preset := "High"
 var sky_material: ShaderMaterial
 
 func _ready() -> void:
@@ -42,6 +43,24 @@ func _ready() -> void:
 	if not capture_path.is_empty() and capture_view == "cockpit": camera_mode = 1
 	if not capture_path.is_empty() and capture_view == "sunset": day_phase = 0.73
 	world = load("res://main.tscn").instantiate()
+	var requested := OS.get_environment("SKYBOUND_GRAPHICS_PRESET")
+	if not requested.is_empty():
+		var mapping := {"medium": "Medium", "high": "High", "ultra": "Ultra", "cinematic": "Cinematic"}
+		if not mapping.has(requested.to_lower()):
+			push_error("Unknown graphics preset: " + requested)
+			get_tree().quit(2)
+			return
+		visual_preset = mapping[requested.to_lower()]
+	world.options.profile = "Ultra" if visual_preset == "Cinematic" else visual_preset
+	var resolution := OS.get_environment("SKYBOUND_RESOLUTION")
+	if not resolution.is_empty():
+		if resolution not in ["1920x1080", "2560x1440", "3840x2160"]:
+			push_error("Unsupported flight resolution: " + resolution)
+			get_tree().quit(2)
+			return
+		var dimensions := resolution.split("x")
+		world.options.width = dimensions[0]
+		world.options.height = dimensions[1]
 	# Configure the existing landscape without modifying its implementation.
 	world.options.interactive = "true"
 	world.options["terrain-stream"] = "true"
@@ -55,6 +74,10 @@ func _ready() -> void:
 		get_tree().quit(2)
 		return
 	world.camera.current = false
+	if visual_preset == "Cinematic":
+		world.sunlight.directional_shadow_max_distance = 2500.0
+		world.sunlight.shadow_blur = 1.4
+	print("FLIGHT_GRAPHICS_PRESET ", visual_preset, " ", world.options.width, "x", world.options.height)
 	var manager = world.stream_manager
 	manager.terrain_material.shader = load("res://flight/terrain_look.gdshader")
 	for entry in [["rock_albedo", "rock_albedo.jpg"], ["rock_roughness", "rock_rough.jpg"], ["rock_height", "rock_depth.jpg"], ["rock_normal", "rock_normal.jpg"]]:
@@ -106,8 +129,13 @@ func _ready() -> void:
 	hud.add_theme_constant_override("shadow_offset_y", 2)
 	layer.add_child(hud)
 	reset_flight()
-	if capture_view in ["far", "lake_jet"] and not capture_path.is_empty():
-		model.position = Vector3(0, 350, -5000) if capture_view == "far" else Vector3(-400, 140, -230)
+	if capture_view in ["far", "lake_jet", "low"] and not capture_path.is_empty():
+		if capture_view == "lake_jet":
+			model.position = Vector3(-400, 140, -230)
+		elif capture_view == "low":
+			model.position = Vector3(0, world.terrain.height(0, -5000) + 85.0, -5000)
+		else:
+			model.position = Vector3(0, 350, -5000)
 		for i in range(4):
 			manager.tick(Vector2(model.position.x, model.position.z), model.position.y)
 		world.sync_ground_objects()

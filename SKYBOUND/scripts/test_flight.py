@@ -26,12 +26,18 @@ def main():
         (common + ['--fixed-fps', '60', '--quit-after', '1000', 'res://flight/flight.tscn'], {'SKYBOUND_FLIGHT_AUTOTEST': '1'}, 'FLIGHT_SCENE_TEST_PASS'),
         (common + ['--fixed-fps', '60', '--quit-after', '5000', 'res://flight/flight.tscn'], {'SKYBOUND_FLIGHT_JOURNEY': '1'}, 'FLIGHT_JOURNEY_TEST_PASS'),
     ]
+    for preset in ['Medium', 'High', 'Ultra', 'Cinematic']:
+        checks.append((common + ['--fixed-fps', '60', '--quit-after', '1000', 'res://flight/flight.tscn'],
+                       {'SKYBOUND_FLIGHT_AUTOTEST': '1', 'SKYBOUND_GRAPHICS_PRESET': preset}, 'FLIGHT_SCENE_TEST_PASS'))
     for command, extra, marker in checks:
         run_env = env.copy()
         run_env.update(extra)
         result = subprocess.run(command, capture_output=True, text=True, env=run_env, timeout=60)
         output = result.stdout + result.stderr
         if result.returncode or 'ERROR:' in output or marker not in output:
+            print(output, file=sys.stderr)
+            return 1
+        if 'SKYBOUND_GRAPHICS_PRESET' in extra and f"FLIGHT_GRAPHICS_PRESET {extra['SKYBOUND_GRAPHICS_PRESET']} " not in output:
             print(output, file=sys.stderr)
             return 1
         print(next(line for line in output.splitlines() if line.startswith(marker)))

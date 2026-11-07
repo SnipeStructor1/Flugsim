@@ -205,3 +205,7 @@ Sonnenuntergangsreferenz; weder astronomisch kalibriert noch echte Nacht.
 Der Wasser-Shader enthält zusätzliche Oberflächenvariation und einen einfachen
 Tiefenrand. Die Jet-über-See-Ansicht zeigt weiterhin flaches Wasser und
 künstliche Ufer; weitere visuelle Arbeit nötig.
+
+Vier Flug-Grafikstufen und drei Auflösungen sind per Umgebungsvariable
+auswählbar. Headless-Funktionsprüfung aller Stufen bestanden; Medium wurde
+zusätzlich mit Software-Vulkan gerendert. Keine RTX-/Windows-Leistungswerte.

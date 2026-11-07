@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--view', choices=['chase', 'cockpit', 'lake', 'far', 'aircraft', 'sunset', 'lake_jet'], default='chase')
+    parser.add_argument('--view', choices=['chase', 'cockpit', 'lake', 'far', 'aircraft', 'sunset', 'lake_jet', 'low'], default='chase')
     parser.add_argument('--frame', type=int, default=30, help='Capture after this many fixed simulation frames')
     parser.add_argument('--output', type=Path, required=True, help='New output directory')
     args = parser.parse_args()
@@ -37,8 +37,8 @@ def main():
     if check.returncode != 0 or 'ERROR:' in check.stdout + check.stderr:
         print(check.stdout + check.stderr, file=sys.stderr)
         return 1
-    sources = sorted(p for p in (ROOT / 'benchmarks/godot/flight').glob('*') if p.suffix in ['.gd', '.gdshader', '.tscn'])
-    source_sha256 = hashlib.sha256(b''.join(p.read_bytes() for p in sources)).hexdigest()
+    sources = sorted(p for p in (ROOT / 'benchmarks/godot/flight').rglob('*') if p.is_file() and p.suffix.lower() in ['.gd', '.gdshader', '.tscn', '.glb', '.jpg', '.png'])
+    source_sha256 = hashlib.sha256(b''.join(p.relative_to(ROOT).as_posix().encode() + b'\0' + p.read_bytes() for p in sources)).hexdigest()
     with (output / 'xvfb.log').open('w') as log:
         server = subprocess.Popen([str(portable / 'usr/bin/Xvfb'), '-displayfd', '1', '-screen', '0', '1920x1080x24', '-nolisten', 'tcp', '-ac'], stdout=subprocess.PIPE, stderr=log, env=env)
         try:

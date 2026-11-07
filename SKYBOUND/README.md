@@ -39,6 +39,18 @@ sind noch nicht umgesetzt. Das Gelände wird beim Flug prozedural nachgeladen;
 sehr große Entfernungen und Langzeitstabilität sind noch nicht validiert.
 Windows und RTX-Hardware sind nicht getestet. [F-22-inspirierter Flugzeug-Screenshot](docs/visuals/raptor_chase.png).
 
+Grafikstufen lassen sich vor dem Start per Umgebungsvariable wählen:
+
+```powershell
+$env:SKYBOUND_GRAPHICS_PRESET = "High"       # Medium, High, Ultra, Cinematic
+$env:SKYBOUND_RESOLUTION = "2560x1440"      # auch 1920x1080 oder 3840x2160
+```
+
+Danach den oben beschriebenen Godot-Startbefehl im selben PowerShell-Fenster
+verwenden. Standard sind High und 1920×1080. Cinematic nutzt Ultra mit höherer
+Schattenreichweite und weicherem Schattenfilter. Windows und GPU-Leistung dieser
+Einstellungen sind noch nicht getestet; 1440p/60 FPS ist ein Ziel, kein Messwert.
+
 Flugspezifische Prüfungen (ohne Terrain-Tests):
 
 ```sh
