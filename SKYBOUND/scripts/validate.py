@@ -20,13 +20,18 @@ if result.returncode:
 local_godot = root / '.tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64'
 godot = str(local_godot) if local_godot.is_file() else (shutil.which('godot') or shutil.which('godot4'))
 if not godot:
-    print('SKIP: Godot unavailable; terrain, LOD, chunk and stream-planning tests were not run', flush=True)
+    print('SKIP: Godot unavailable; terrain, LOD, chunk, stream-planning and lifecycle tests were not run', flush=True)
     raise SystemExit(0)
 env = os.environ.copy()
 if sys.platform == 'linux':
     for name, part in [('XDG_DATA_HOME', 'data'), ('XDG_CONFIG_HOME', 'config'), ('XDG_CACHE_HOME', 'cache')]:
         env[name] = str(root / '.tools/validation' / part)
-for test in ['test_terrain.gd', 'test_lod.gd', 'test_chunk_mesh.gd', 'test_stream_plan.gd']:
+check = subprocess.run([godot, '--headless', '--path', str(root / 'benchmarks/godot'), '--check-only', '--script', 'res://benchmark.gd'], capture_output=True, text=True, env=env, timeout=60)
+if check.returncode != 0 or 'ERROR:' in check.stdout + check.stderr:
+    print(check.stdout + check.stderr, file=sys.stderr)
+    raise SystemExit(1)
+print('BENCHMARK_SCRIPT_CHECK_PASS', flush=True)
+for test in ['test_terrain.gd', 'test_lod.gd', 'test_chunk_mesh.gd', 'test_stream_plan.gd', 'test_stream_manager.gd']:
     result = subprocess.run([godot, '--headless', '--path', str(root / 'benchmarks/godot'), '--script', 'res://' + test], env=env, timeout=60)
     if result.returncode:
         raise SystemExit(result.returncode)

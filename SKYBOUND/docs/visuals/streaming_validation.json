@@ -1,0 +1,46 @@
+[
+  {
+    "name": "preview",
+    "resolution": [
+      960,
+      540
+    ],
+    "terrain_stream": true,
+    "resident_chunks": 64,
+    "sha256": "81fd17e333a0324e89dc707292d8088aa9c63e4d856e6ee185dccf300215cf96",
+    "mode": "software visual check; not performance"
+  },
+  {
+    "name": "stream_1080",
+    "resolution": [
+      1920,
+      1080
+    ],
+    "terrain_stream": true,
+    "resident_chunks": 64,
+    "sha256": "31f85c12f68a88236c13f317098d3780b11e575981ff6c099b8d1515574b197d",
+    "mode": "software visual check; not performance"
+  },
+  {
+    "name": "baseline_1440",
+    "resolution": [
+      2560,
+      1440
+    ],
+    "terrain_stream": false,
+    "resident_chunks": 0,
+    "sha256": "4f32fe728d4e947803b9b88b28cf7200be263aee8336eded73f99a35c430f03d",
+    "mode": "software visual check; not performance"
+  },
+  {
+    "name": "baseline_4k",
+    "resolution": [
+      3840,
+      2160
+    ],
+    "terrain_stream": false,
+    "resident_chunks": 0,
+    "sha256": "7b4433a9b9b5dd5710bc2cba8807290064469081b04a136c9f394d137be027bb",
+    "mode": "software visual check; not performance"
+  }
+]

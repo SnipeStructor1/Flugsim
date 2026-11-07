@@ -3,7 +3,7 @@
 | ID | Status | Aufgabe und Akzeptanzkriterien |
 | --- | --- | --- |
 | TERR-001 | ERLEDIGT | Deterministisches bergiges Terrain, nachvollziehbare Höhen-/Neigungsmaterialien, Tests und Vorher-/Nachher-Bild; alte Benchmarkrevision bewahren. |
-| TERR-002 | IN ARBEIT | Drei Kachel-LODs, Randpunkte, Skirts, Entfernungsauswahl und priorisierte Budgetplanung sind separat getestet. Als Nächstes Streaming mit Zeit-/Speicherbudget und Objektzuordnung anbinden; Bildtests auf Nähte/LOD-Wechsel. |
+| TERR-002 | IN ARBEIT | Experimenteller Szenenmodus mit drei LODs, Kachel- und Objektverwaltung sowie verbundenen Rändern vorhanden. Ein 3-km-Kamerasprung mit Entladen und Rückladen besteht im isolierten Test. Als Nächstes Kamerabewegung und Objektzustand in der Szene, steile Übergänge und asynchronen Aufbau mit Zeit-/Speicherbudget prüfen; Standardbenchmark bleibt monolithisch. |
 | VIS-001 | OFFEN | Sieben feste Referenzansichten samt dokumentiertem Bildvergleich und Regres­sionsprüfung. |
 | TERR-003 | OFFEN | Lizenzierte bzw. nachweisbar selbst erzeugte PBR-Texturen, Normalmaps und Variationsverfahren für Gelände; Nah-/Fernansicht prüfen. |
 | ATM-001 | OFFEN | Tageszeit und skalierbare Wolken mit nachvollziehbaren Grenzen und Vergleichsbildern. |

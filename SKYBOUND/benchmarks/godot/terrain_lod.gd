@@ -6,16 +6,17 @@ extends RefCounted
 const NEAR_DISTANCE := 320.0
 const MID_DISTANCE := 650.0
 const LOAD_DISTANCE := 1200.0
+var load_distance := LOAD_DISTANCE
 const HYSTERESIS := 32.0
 
 func choose(distance: float, previous: int) -> int:
 	if not is_finite(distance) or distance < 0.0 or previous < -1 or previous > 2:
 		return -1
 	if previous == -1:
-		if distance > LOAD_DISTANCE:
+		if distance > load_distance:
 			return -1
 		return 0 if distance < NEAR_DISTANCE else (1 if distance < MID_DISTANCE else 2)
-	if distance > LOAD_DISTANCE + HYSTERESIS:
+	if distance > load_distance + HYSTERESIS:
 		return -1
 	var lod := previous
 	while lod < 2:

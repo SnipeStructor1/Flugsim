@@ -134,6 +134,15 @@ def main():
     if sys.platform == 'linux':
         for name, part in [('XDG_DATA_HOME', 'data'), ('XDG_CONFIG_HOME', 'config'), ('XDG_CACHE_HOME', 'cache')]:
             env[name] = str(folder / 'userdata' / part)
+    preflight = subprocess.run([args.godot, '--headless', '--path', str(ROOT / 'benchmarks/godot'), '--check-only', '--script', 'res://benchmark.gd'], capture_output=True, text=True, env=env, timeout=60)
+    (folder / 'preflight.log').write_text(preflight.stdout + preflight.stderr, encoding='utf-8')
+    if preflight.returncode != 0 or 'ERROR:' in preflight.stdout + preflight.stderr:
+        summary['status'] = 'FAIL'
+        summary['error'] = 'Benchmark script validation failed; inspect preflight.log'
+        (folder / 'summary.json').write_text(json.dumps(summary, indent=2, allow_nan=False) + '\n', encoding='utf-8')
+        write_report(summary, folder / 'report.md')
+        print(summary['error'], file=sys.stderr)
+        return 1
     failed = False
     for profile in args.profiles:
         for resolution in args.resolutions:

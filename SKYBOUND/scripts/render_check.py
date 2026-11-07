@@ -14,10 +14,18 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument('--resolution', choices=['1920x1080', '2560x1440', '3840x2160'], default='1920x1080')
+    parser.add_argument('--preview', action='store_true', help='Use 960x540 for quicker visual diagnostics; not a benchmark resolution')
     parser.add_argument('--profiles', nargs='+', choices=['Medium', 'High', 'Ultra'], default=['Medium', 'High', 'Ultra'])
+    parser.add_argument('--terrain-stream', action='store_true', help='Exercise experimental chunk streaming instead of the baseline mesh')
     parser.add_argument('--pipeline-check', action='store_true', help='Also exercise real CSV collection: Medium/1080p, 30s warmup + 60s capture, 3 repetitions')
     parser.add_argument('--output', type=Path, required=True, help='New output folder')
     args = parser.parse_args()
+    if args.pipeline_check and args.terrain_stream:
+        parser.error('Experimental streaming cannot be used for performance pipeline checks')
+    if args.preview and args.resolution != '1920x1080':
+        parser.error('--preview cannot be combined with --resolution')
+    width, height = (960, 540) if args.preview else map(int, args.resolution.split('x'))
     tools = ROOT / '.tools'
     binary = tools / 'godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64'
     portable = tools / 'portable/root'
@@ -30,9 +38,12 @@ def main():
                 'XDG_CONFIG_HOME': str(tools / 'render-config'), 'XDG_CACHE_HOME': str(tools / 'render-cache'),
                 'VK_DRIVER_FILES': str(portable / 'usr/share/vulkan/icd.d/lvp_icd.json'),
                 'LD_LIBRARY_PATH': str(portable / 'usr/lib/x86_64-linux-gnu') + (os.pathsep + env['LD_LIBRARY_PATH'] if env.get('LD_LIBRARY_PATH') else '')})
-    report = {'mode': 'SOFTWARE_RENDER_CHECK', 'performance_measured': False, 'runs': []}
+    check = subprocess.run([str(binary), '--headless', '--path', str(ROOT / 'benchmarks/godot'), '--check-only', '--script', 'res://benchmark.gd'], capture_output=True, text=True, env=env, timeout=60)
+    if check.returncode != 0 or 'ERROR:' in check.stdout + check.stderr:
+        raise RuntimeError('Benchmark script validation failed: ' + check.stdout + check.stderr)
+    report = {'mode': 'SOFTWARE_RENDER_CHECK', 'performance_measured': False, 'resolution': [width, height], 'runs': []}
     with (output / 'xvfb.log').open('w') as log:
-        server = subprocess.Popen([str(portable / 'usr/bin/Xvfb'), '-displayfd', '1', '-screen', '0', '1920x1080x24', '-nolisten', 'tcp', '-ac'], stdout=subprocess.PIPE, stderr=log, env=env)
+        server = subprocess.Popen([str(portable / 'usr/bin/Xvfb'), '-displayfd', '1', '-screen', '0', f'{width}x{height}x24', '-nolisten', 'tcp', '-ac'], stdout=subprocess.PIPE, stderr=log, env=env)
         try:
             with selectors.DefaultSelector() as selector:
                 selector.register(server.stdout, selectors.EVENT_READ)
@@ -45,6 +56,9 @@ def main():
             for profile in args.profiles:
                 image = output / f'{profile}.png'
                 command = [str(binary), '--display-driver', 'x11', '--audio-driver', 'Dummy', '--path', str(ROOT / 'benchmarks/godot'), '--rendering-method', 'forward_plus', '--rendering-driver', 'vulkan', '--', '--render-check=true', f'--profile={profile}', '--warmup=0', f'--capture={image}']
+                if args.terrain_stream:
+                    command.append('--terrain-stream=true')
+                command.extend([f'--width={width}', f'--height={height}'])
                 start = time.monotonic()
                 result = subprocess.run(command, capture_output=True, text=True, env=env, timeout=300)
                 text = result.stdout + result.stderr
@@ -52,11 +66,11 @@ def main():
                 if result.returncode or 'ERROR:' in text or 'SKYBOUND_COMPLETE ' not in text or not image.exists():
                     raise RuntimeError(f'{profile}: engine render check failed; inspect log')
                 data = image.read_bytes()
-                if data[:8] != b'\x89PNG\r\n\x1a\n' or struct.unpack('>II', data[16:24]) != (1920, 1080):
+                if data[:8] != b'\x89PNG\r\n\x1a\n' or struct.unpack('>II', data[16:24]) != (width, height):
                     raise RuntimeError('Unexpected screenshot format or actual resolution')
                 ready = json.loads(next(line.split('SKYBOUND_READY ', 1)[1] for line in text.splitlines() if line.startswith('SKYBOUND_READY ')))
                 complete = json.loads(next(line.split('SKYBOUND_COMPLETE ', 1)[1] for line in text.splitlines() if line.startswith('SKYBOUND_COMPLETE ')))
-                if not ready['render_check'] or not complete['render_check'] or complete['total_frames'] < 4:
+                if not ready['render_check'] or not complete['render_check'] or complete['total_frames'] < 4 or ready['terrain_stream'] != args.terrain_stream or (args.terrain_stream and complete['resident_chunks'] == 0):
                     raise RuntimeError('Not a valid render-check run')
                 report['runs'].append({'profile': profile, 'status': 'PASS', 'wall_seconds_including_shader_compilation': time.monotonic()-start,
                                        'engine_settings': ready, 'completion': complete, 'screenshot': image.name, 'sha256': hashlib.sha256(data).hexdigest()})

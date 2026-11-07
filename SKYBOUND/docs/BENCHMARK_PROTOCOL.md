@@ -85,3 +85,17 @@ Software-CSV-Prüfungen sind nur mit `--software-validation` zugelassen. Erkannt
 llvmpipe/lavapipe/softpipe-/Microsoft-Basic-Renderer im regulären Messmodus werden
 als Fehler behandelt. Die separate JSON-Modus-/Statuskennzeichnung bleibt beim
 Report erhalten. Das erfüllt den Messwerkzeugtest, nicht die Zielhardware-Baseline.
+
+## Auflösung und experimentelles Gelände
+
+Das Fenster und der interne Puffer werden explizit auf die Zielgröße gesetzt.
+Nach dem ersten gerenderten Frame bricht das Projekt ab, wenn die Texturgröße
+nicht der Vorgabe entspricht; die Bildprüfung überprüft zusätzlich die PNG-Größe.
+960×540 ist nur ein optionales Diagnosebild, keine Benchmarkauflösung.
+960×540, 1920×1080, 2560×1440 und 3840×2160 wurden mit llvmpipe als Bildgrößen
+geprüft, nicht hinsichtlich RTX-Leistung.
+
+`--terrain-stream=true` aktiviert ein experimentelles Kachelgelände für die
+Bild-/Headless-/interaktive Prüfung. Es ist für Messläufe gesperrt. Die
+Standardwerte der historischen Revision 2 sowie das aktuelle monolithische
+Terrain dürfen nicht mit Ergebnissen des Streaming-Modus vermischt werden.

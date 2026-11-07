@@ -77,3 +77,15 @@ die echte CSV-Messkette auf dem CPU-Renderer prüfen (3 × 30 s Warm-up + 60 s A
 Diese Ausgaben sind als `SOFTWARE_PIPELINE_VALIDATED_NOT_TARGET_HARDWARE` markiert
 und sind keine RTX-5070-Ergebnisse. Software-Rendering im regulären Messmodus
 wird abgewiesen; die Freigabe dafür erfolgt ausschließlich mit `--software-validation`.
+
+## Experimentelles Kachelterrain
+
+```sh
+python scripts/render_check.py --terrain-stream --profiles Medium --output /tmp/skybound-stream-check
+# Für schnellere Sichtprüfung mit 960×540 zusätzlich --preview verwenden.
+```
+
+Für interaktive Prüfung `godot --path benchmarks/godot --rendering-method
+forward_plus -- --interactive=true --terrain-stream=true`. Der Modus ist für
+Benchmarks gesperrt: sichtbare Übergänge, Ladeverhalten, CPU-/GPU-Leistung und
+harte Speicherbudgets müssen noch überprüft werden.

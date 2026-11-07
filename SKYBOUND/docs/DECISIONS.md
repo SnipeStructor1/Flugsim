@@ -45,3 +45,14 @@
   fehlgeschlagene Mesh-Erzeugung darf keine Kachel als geladen markieren.
   Die Anzahl von Aufbauvorgängen wird begrenzt; harte Zeit- und Byte-Budgets
   werden erst nach Integration und Messung behauptet.
+
+- Experimentelles Terrainstreaming bleibt explizit wählbar und von
+  Performance-Messungen ausgeschlossen, bis Bild-/Bewegungs- und Budgettests
+  abgeschlossen sind. Eine anfängliche Kantenlösung mit Skirts zeigte im
+  1080p-Bild weiterhin Risse. Gemeinsame interpolierte Randlinien entfernten die
+  auffälligen Risse in der geprüften festen Ansicht; allgemeine Nahtfreiheit
+  ist damit nicht bewiesen.
+- Fenstergröße und interner Renderpuffer werden separat gesetzt und nach dem
+  ersten Bild verglichen. Die frühere Fenstereinstellung allein lieferte bei
+  angeforderten 960×540 einen 1920×1080-Puffer. Durch Vorprüfung des
+  Benchmark-GDScripts werden Parsefehler vor langen Bildläufen erkannt.

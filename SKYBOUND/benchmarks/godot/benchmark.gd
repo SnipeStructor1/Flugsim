@@ -1,7 +1,7 @@
 extends Node3D
 
 var settings: Dictionary
-var options := {"profile": "High", "width": "1920", "height": "1080", "warmup": "30", "duration": "60", "output": "", "smoke": "false", "interactive": "false", "render-check": "false", "capture": ""}
+var options := {"profile": "High", "width": "1920", "height": "1080", "warmup": "30", "duration": "60", "output": "", "smoke": "false", "interactive": "false", "render-check": "false", "capture": "", "terrain-stream": "false"}
 var camera: Camera3D
 var output: FileAccess
 var started_us: int
@@ -14,6 +14,9 @@ var pitch := 0.0
 var smoke := false
 var sunlight: DirectionalLight3D
 var render_check := false
+var streaming := false
+var stream_manager: Node3D
+var ground_objects: Array[Dictionary] = []
 var terrain = preload("res://terrain_model.gd").new()
 
 func fail(message: String) -> void:
@@ -30,8 +33,15 @@ func _ready() -> void:
 		options[pair[0]] = pair[1]
 	smoke = options.smoke == "true"
 	render_check = options["render-check"] == "true"
+	streaming = options["terrain-stream"] == "true"
+	if streaming and not smoke and not render_check and options.interactive != "true":
+		fail("Experimental terrain streaming is available only for render checks or interactive use")
+		return
 	if smoke and render_check:
 		fail("Smoke and render-check are separate modes")
+		return
+	if options.interactive == "true" and (smoke or render_check):
+		fail("Interactive mode cannot be combined with smoke or render-check")
 		return
 	var manifest_path := ProjectSettings.globalize_path("res://../../assets/shared/scene.json")
 	settings = JSON.parse_string(FileAccess.get_file_as_string(manifest_path))
@@ -47,6 +57,8 @@ func _ready() -> void:
 	var supported := false
 	for size in settings.resolutions:
 		if int(size[0]) == resolution[0] and int(size[1]) == resolution[1]: supported = true
+	if render_check and resolution[0] == 960 and resolution[1] == 540:
+		supported = true
 	if not supported:
 		fail("Unsupported resolution")
 		return
@@ -62,6 +74,8 @@ func _ready() -> void:
 	if not smoke and options.interactive != "true" and options["render-check"] != "true" and options.output.is_empty():
 		fail("Measured runs require --output=absolute/path.csv")
 		return
+	get_tree().root.content_scale_size = Vector2i(resolution[0], resolution[1])
+	get_tree().root.size = Vector2i(resolution[0], resolution[1])
 	DisplayServer.window_set_size(Vector2i(resolution[0], resolution[1]))
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	get_viewport().scaling_3d_scale = 1.0
@@ -77,10 +91,14 @@ func _ready() -> void:
 		output.store_csv_line(["frame", "elapsed_s", "frametime_ms"])
 	if not smoke:
 		await RenderingServer.frame_post_draw
+		var actual_resolution := get_viewport().get_texture().get_size()
+		if actual_resolution != Vector2(resolution[0], resolution[1]):
+			fail("Actual render resolution %s does not match requested %s" % [actual_resolution, resolution])
+			return
 	started_us = Time.get_ticks_usec()
 	previous_us = started_us
 	set_process(true)
-	print("SKYBOUND_READY ", JSON.stringify({"smoke": smoke, "render_check": options["render-check"] == "true", "profile": options.profile, "renderer": RenderingServer.get_current_rendering_method(), "adapter": RenderingServer.get_video_adapter_name(), "engine": Engine.get_version_info().string, "width": resolution[0], "height": resolution[1], "upscaling": "native", "frame_generation": false}))
+	print("SKYBOUND_READY ", JSON.stringify({"smoke": smoke, "render_check": options["render-check"] == "true", "profile": options.profile, "renderer": RenderingServer.get_current_rendering_method(), "adapter": RenderingServer.get_video_adapter_name(), "engine": Engine.get_version_info().string, "width": resolution[0], "height": resolution[1], "upscaling": "native", "frame_generation": false, "terrain_stream": streaming}))
 
 func terrain_height(x: float, z: float) -> float:
 	return terrain.height(x, z)
@@ -100,6 +118,32 @@ func mesh_instance(mesh: Mesh, position: Vector3, scale_value: Vector3, mat: Mat
 	instance.material_override = mat
 	add_child(instance)
 	return instance
+
+func ground_instance(mesh: Mesh, position: Vector3, scale_value: Vector3, mat: Material) -> MeshInstance3D:
+	var instance := mesh_instance(mesh, position, scale_value, mat)
+	if streaming:
+		var step := float(settings.terrain.size_m) / int(settings.terrain.grid_cells)
+		var half := float(settings.terrain.size_m) / 2.0
+		var offset := position.y - terrain.mesh_height(position.x, position.z, step, half)
+		ground_objects.append({"node": instance, "offset": offset})
+		instance.visible = false
+	return instance
+
+func sync_ground_objects() -> void:
+	var half := float(settings.terrain.size_m) / 2.0
+	for entry in ground_objects:
+		var instance: MeshInstance3D = entry.node
+		var key := Vector2i(floori((instance.position.x + half) / stream_manager.chunk_size), floori((instance.position.z + half) / stream_manager.chunk_size))
+		instance.visible = stream_manager.resident.has(key)
+		if instance.visible:
+			var lod: int = stream_manager.resident[key]
+			var chunk_origin: Vector2 = stream_manager.origin + Vector2(key.x, key.y) * stream_manager.chunk_size
+			instance.position.y = stream_manager.builder.sample_height(terrain, chunk_origin, stream_manager.chunk_size, stream_manager.cells, lod, instance.position.x, instance.position.z) + float(entry.offset)
+
+func stream_is_settled() -> bool:
+	var camera_xz := Vector2(camera.position.x, camera.position.z)
+	var plan: Dictionary = stream_manager.planner.plan(camera_xz, stream_manager.origin, stream_manager.chunk_size, stream_manager.grid_width, stream_manager.grid_height, stream_manager.resident, stream_manager.max_resident, 1)
+	return plan.valid and plan.unload.is_empty() and plan.build.is_empty()
 
 func build_scene(profile: Dictionary) -> void:
 	var environment := Environment.new()
@@ -128,21 +172,22 @@ func build_scene(profile: Dictionary) -> void:
 	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = 1800.0
 	add_child(sun)
-	var surface := SurfaceTool.new()
-	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var cells := int(settings.terrain.grid_cells)
 	var step := float(settings.terrain.size_m) / cells
-	for z in range(cells):
-		for x in range(cells):
-			for corner in [Vector2(0,0), Vector2(1,0), Vector2(0,1), Vector2(1,0), Vector2(1,1), Vector2(0,1)]:
-				var px: float = (x + corner.x - cells / 2.0) * step
-				var pz: float = (z + corner.y - cells / 2.0) * step
-				var h := terrain_height(px, pz)
-				surface.set_normal(terrain.normal(px, pz))
-				surface.add_vertex(Vector3(px,h,pz))
 	var terrain_material := ShaderMaterial.new()
 	terrain_material.shader = load("res://terrain_material.gdshader")
-	mesh_instance(surface.commit(),Vector3.ZERO,Vector3.ONE,terrain_material)
+	if not streaming:
+		var surface := SurfaceTool.new()
+		surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+		for z in range(cells):
+			for x in range(cells):
+				for corner in [Vector2(0,0), Vector2(1,0), Vector2(0,1), Vector2(1,0), Vector2(1,1), Vector2(0,1)]:
+					var px: float = (x + corner.x - cells / 2.0) * step
+					var pz: float = (z + corner.y - cells / 2.0) * step
+					var h := terrain_height(px, pz)
+					surface.set_normal(terrain.normal(px, pz))
+					surface.add_vertex(Vector3(px,h,pz))
+		mesh_instance(surface.commit(),Vector3.ZERO,Vector3.ONE,terrain_material)
 	mesh_instance(PlaneMesh.new(),vector(settings.water.position_m),Vector3(float(settings.water.size_m[0])/2.0,1,float(settings.water.size_m[1])/2.0),material(Color(0.03,0.16,0.22),0.13,0.15))
 	var rng := RandomNumberGenerator.new()
 	rng.seed = int(settings.seed)
@@ -157,19 +202,19 @@ func build_scene(profile: Dictionary) -> void:
 		var h := terrain.mesh_height(x,z,step,float(settings.terrain.size_m)/2.0)
 		if h < 10: continue
 		if i % 3 == 0:
-			mesh_instance(rock,Vector3(x,h+2,z),Vector3(8,5,7),stone)
+			ground_instance(rock,Vector3(x,h+2,z),Vector3(8,5,7),stone)
 		else:
 			var tree := CylinderMesh.new()
 			tree.top_radius = 0.0
 			tree.bottom_radius = 4.0
 			tree.height = 15.0
-			mesh_instance(tree,Vector3(x,h+7.5,z),Vector3.ONE,grass)
+			ground_instance(tree,Vector3(x,h+7.5,z),Vector3.ONE,grass)
 	for i in range(8):
 		var x := -180.0 + i * 30
 		var z := -120.0
-		mesh_instance(BoxMesh.new(),Vector3(x,terrain.mesh_height(x,z,step,float(settings.terrain.size_m)/2.0)+6,z),Vector3(16,12,20),material(Color(0.57,0.42,0.29),0.75))
+		ground_instance(BoxMesh.new(),Vector3(x,terrain.mesh_height(x,z,step,float(settings.terrain.size_m)/2.0)+6,z),Vector3(16,12,20),material(Color(0.57,0.42,0.29),0.75))
 	for i in range(4):
-		mesh_instance(SphereMesh.new(),Vector3(70+i*12,terrain.mesh_height(70+i*12,80,step,float(settings.terrain.size_m)/2.0)+5,80),Vector3(9,9,9),material(Color(0.75,0.7,0.55),0.05+i*0.23,1.0 if i % 2 == 0 else 0.0))
+		ground_instance(SphereMesh.new(),Vector3(70+i*12,terrain.mesh_height(70+i*12,80,step,float(settings.terrain.size_m)/2.0)+5,80),Vector3(9,9,9),material(Color(0.75,0.7,0.55),0.05+i*0.23,1.0 if i % 2 == 0 else 0.0))
 	# Explicit approximation: opaque geometric clouds, not volumetric cloud scattering.
 	for i in range(16):
 		var cloud := mesh_instance(rock,Vector3(rng.randf_range(-1400,1400),700+rng.randf_range(0,100),rng.randf_range(-1400,1400)),Vector3(160,24,90),material(Color(0.88,0.90,0.94),1.0))
@@ -182,7 +227,19 @@ func build_scene(profile: Dictionary) -> void:
 	add_child(camera)
 	camera.current = true
 	set_camera(0.0)
-	print("SCENE_CHECK ", JSON.stringify({"children":get_child_count(),"terrain_triangles":cells*cells*2,"camera_start":str(camera.position)}))
+	if streaming:
+		stream_manager = load("res://terrain_stream_manager.gd").new()
+		stream_manager.model = terrain
+		stream_manager.terrain_material = terrain_material
+		stream_manager.chunk_size = 256.0
+		stream_manager.origin = Vector2(-float(settings.terrain.size_m)/2.0, -float(settings.terrain.size_m)/2.0)
+		stream_manager.grid_width = int(float(settings.terrain.size_m) / stream_manager.chunk_size)
+		stream_manager.grid_height = stream_manager.grid_width
+		stream_manager.max_resident = stream_manager.grid_width * stream_manager.grid_height
+		stream_manager.build_budget = 8 if render_check else 2
+		stream_manager.planner.policy.load_distance = 3000.0
+		add_child(stream_manager)
+	print("SCENE_CHECK ", JSON.stringify({"children":get_child_count(),"terrain_triangles":cells*cells*2 if not streaming else null,"camera_start":str(camera.position)}))
 
 func vector(values: Array) -> Vector3:
 	return Vector3(values[0],values[1],values[2])
@@ -220,13 +277,20 @@ func _process(delta: float) -> void:
 		camera.position += camera.basis * movement * delta * 120.0
 	else:
 		set_camera(0.0 if render_check else maxf(0.0,elapsed-warmup))
+	if streaming:
+		var update: Dictionary = stream_manager.tick(Vector2(camera.position.x, camera.position.z))
+		if not update.valid or update.failed > 0:
+			fail("Terrain streaming update failed")
+			return
+		if update.built > 0 or update.unloaded > 0:
+			sync_ground_objects()
 	if elapsed >= warmup and previous_us >= started_us + int(warmup*1000000) and elapsed < warmup+float(options.duration):
 		if output != null:
 			output.store_csv_line([str(recorded),str(elapsed-warmup),str((now-previous_us)/1000.0)])
 		recorded += 1
 	previous_us = now
 	frame_index += 1
-	if options.interactive != "true" and ((render_check and frame_index >= 4) or (not render_check and elapsed >= warmup+float(options.duration))):
+	if options.interactive != "true" and ((render_check and frame_index >= 4 and (not streaming or stream_is_settled())) or (not render_check and elapsed >= warmup+float(options.duration))):
 		if options["render-check"] == "true" and not options.capture.is_empty():
 			set_process(false)
 			await RenderingServer.frame_post_draw
@@ -238,5 +302,5 @@ func _process(delta: float) -> void:
 		if not render_check and recorded < 2:
 			fail("Too few frames")
 		else:
-			print("SKYBOUND_COMPLETE ", JSON.stringify({"smoke":smoke,"render_check":render_check,"frames":recorded,"total_frames":frame_index,"camera_end":str(camera.position)}))
+			print("SKYBOUND_COMPLETE ", JSON.stringify({"smoke":smoke,"render_check":render_check,"frames":recorded,"total_frames":frame_index,"camera_end":str(camera.position), "terrain_stream":streaming, "resident_chunks":stream_manager.resident.size() if streaming else 0, "stream_settled":stream_is_settled() if streaming else false}))
 			get_tree().quit()

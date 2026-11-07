@@ -63,8 +63,7 @@ Bergmassiv-Gewichte und ein abgesenktes Seebecken. Zentraldifferenzen liefern
 Normalen; `mesh_height` interpoliert dieselben Dreiecke wie das gerenderte Netz,
 damit platzierte Objekte auf dem Netz stehen. Der Shader mischt prozedurale
 Fels-, Gras-, Ufer- und Schneefarben anhand Höhe und Hang; triplanares Rauschen
-ist Farbvariation, keine gescannten PBR-Texturen oder Normalmaps. Das Terrain ist
-weiter ein einzelnes 2-km-Netz ohne Streaming/LOD. Nahtlose Kacheln und kontrollierte
+ist Farbvariation, keine gescannten PBR-Texturen oder Normalmaps. Der Standard-Benchmark verwendet weiter ein einzelnes 2-km-Netz ohne Streaming/LOD. Nahtlose Kacheln und kontrollierte
 LOD-Wechsel sind nächste Architekturaufgabe.
 
 ## Vorbereitete Kacheln und Detailstufen
@@ -75,9 +74,11 @@ Hysterese, damit Grenzbewegungen nicht ständig neue Netze erzeugen.
 `terrain_chunk_mesh.gd` berechnet aus derselben Höhenfunktion drei Rasterstufen
 mit weltweit identischen gemeinsamen Stützpunkten und vertikalen Skirts.
 Tests prüfen gemeinsame Randpunkte, nicht die tatsächliche Nahtfreiheit im Bild.
-Die Bausteine sind noch nicht mit der Szene verbunden: Streaming, Objektzuordnung,
-Ressourcenfreigabe, Arbeitsbudget und LOD-Übergänge müssen erst implementiert und
-visuell validiert werden. Die Bildszene benutzt weiterhin das monolithische Netz.
+Die Standard-Benchmarkszene benutzt weiterhin das monolithische Netz. Ein
+experimenteller Szenenmodus verbindet diese Bausteine mit einem Kachel-Lifecycle
+und ordnet Bodenobjekte den geladenen Kacheln zu. Ressourcenfreigabe und
+fehlgeschlagener LOD-Ersatz sind headless getestet; visuelle LOD-Übergänge und
+Zeit-/Speicherbudgets benötigen weitere Prüfungen.
 
 `terrain_stream_plan.gd` berechnet aus Kamera und tatsächlichem Bestand einen
 reproduzierbar sortierten Plan. Zu entladende Kacheln stehen getrennt vor
@@ -86,3 +87,22 @@ Schritt begrenzen die geplante Arbeit. Der Planer verändert den Bestand nicht:
 Aufrufer müssen Erfolg/Fehler beim Aufbau selbst behandeln und erst danach den
 Zustand aktualisieren. Eine feste Anzahl Aufbauten begrenzt weder einzelne
 Aufbauzeit noch Bytes; echte Zeit-/Speicherbudgets bleiben offen.
+
+## Experimenteller Terrainmodus
+
+`--terrain-stream=true` ist für `--interactive=true`, Headless-Smoke und
+`--render-check=true` freigegeben; reguläre Performance-Messungen werden
+abgewiesen. Der Szenenausschnitt besteht aus 256-m-Kacheln, bis zu drei
+Detailstufen und bis zu 64 gleichzeitig vorhandenen Netzen. Die Oberflächen
+benachbarter LODs benutzen an jeder Kante dieselbe lineare Randfunktion der
+grobsten Stützpunkte; beidseitige Skirts dienen zusätzlich als Absicherung.
+Ein `terrain_stream_manager.gd` erstellt und verwirft Netze nach Plan, erhält
+bei fehlgeschlagenem Ersatz das alte Netz und aktualisiert den Bestand erst
+nach erfolgreichem Aufbau. Bodenobjekte werden bei einer Bestandsänderung
+ausgeblendet oder auf den aktuellen Dreiecken platziert.
+
+Aufbau erfolgt derzeit synchron; ein Limit von zwei Netzen pro Frame ist kein
+Zeitbudget. Maximal 64 Kacheln sind kein belegtes Byte-Budget. Der 3-km-Radius
+umfasst den kurzen Benchmarkpfad; ein aussagekräftiger Entlade-/Nachladetest
+benötigt größere Kamerabewegungen. Harte Frametimes, Ressourcenfreigabe im
+Dauerlauf und visuelle Nahtfreiheit an steilen Übergängen sind noch offen.

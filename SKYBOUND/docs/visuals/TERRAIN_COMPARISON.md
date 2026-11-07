@@ -17,3 +17,13 @@ Farben statt hochwertiger Textur-/Normalmaps, abstrakte Bäume/Gebäude/Wolken,
 fehlende Uferdetails. Der See liegt in einer Senke, ist aber von dieser Kamera
 durch das Gelände verdeckt. Zusätzliche Referenzkameras und kontrollierte
 Nahansichten stehen noch aus. Die Bilder belegen keine RTX-5070-Leistung.
+
+## Experimentelles Kachelterrain
+
+[Streaming, 1080p Medium](terrain_streaming_revision3_medium.png): 64 geladene
+Kacheln und drei Entfernungs-LODs; dieselbe feste Startansicht wie oben. Erste
+Kachelbilder zeigten blaue Spalten. Gemeinsame interpolierte Randlinien und
+beidseitige Skirts beseitigen die auffälligsten Spalten in dieser Ansicht.
+Bildprüfungen anderer Kamerapositionen, schneller LOD-Wechsel und großer
+Ladegrenzen stehen aus. Die grobe Randlinie verändert die Geometrie am
+Kachelrand; sanfte LOD-Morphs fehlen. Keine Performance-Aussage.
