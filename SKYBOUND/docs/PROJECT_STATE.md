@@ -14,4 +14,8 @@ Die Revision 2 zeigte flache Hügel, geometrische Wolken und geringe Materialvar
 
 Kein Hardware-GPU-Zugriff, Windows/RTX-5070-Performance ungetestet. O3DE-Quellbuild übersteigt den Cloud-Speicher. Flugphysik, echte volumetrische Wolken, Wasserphysik und vollständiges Streaming sind noch nicht implementiert. Bei nicht verfügbarem Godot markiert `scripts/validate.py` den Terrain-Test als übersprungen.
 
-Nächster Schritt: TERR-002 – Kachel- und LOD-Design mit nahtlosen Übergängen und reproduzierbaren Tests implementieren. Danach visuelle Referenzansichten ausbauen.
+## Aktuelle Arbeit: TERR-002
+
+`terrain_lod.gd` bietet drei Detailstufen, Lade-/Entladeschwellen mit Hysterese und Distanz zur Kachelbegrenzung; 20 Grenz-/Sprungfälle und drei Distanzfälle bestehen. `terrain_chunk_mesh.gd` erzeugt drei LOD-Meshes in Weltkoordinaten mit Skirts. Tests prüfen Dreieckszahlen, ungültige Eingaben und gemeinsame Randpunkte benachbarter Kacheln. Diese Bausteine sind noch nicht an die Szene angeschlossen; es gibt derzeit kein laufendes Streaming und keine validierte Nahtfreiheit. Die Medium-Bildprüfung zeigt weiterhin ausschließlich das monolithische Revision-3-Terrain.
+
+Nächster Schritt: Kachel-Lebenszyklus mit begrenztem Arbeits-/Speicherbudget und zugeordneten Objekten anbinden. Unterschiedliche LOD-Ränder in steilem Gelände und schnelle Kamerabewegungen visuell prüfen, danach Referenzansichten ausbauen.

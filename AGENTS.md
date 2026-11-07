@@ -3,7 +3,7 @@
 - Arbeite im vorhandenen Checkout und lies vor jedem Arbeitsabschnitt `SKYBOUND/docs/PROJECT_STATE.md`, `NEXT_TASKS.md` und den Git-Status.
 - Erhalte bestehende Änderungen; keine Worktrees, Resets oder Remote-Pushes ohne ausdrücklichen Auftrag.
 - Projektstamm: `SKYBOUND/`. Python 3.11+, Godot 4.7.2; projektlokale Werkzeuge unter `.tools` sind ignoriert. `python3 scripts/setup_tools.py --software-renderer` bereitet sie unter Debian 13 vor.
-- `python3 scripts/validate.py` führt Python-Tests und, falls Godot vorhanden ist, den deterministischen Terrain-Test aus. Fehlendes Godot wird als übersprungen ausgewiesen.
+- `python3 scripts/validate.py` führt Python-Tests und, falls Godot vorhanden ist, die deterministischen Terrain-, LOD- und Kachelnetztests aus. Fehlendes Godot wird als übersprungen ausgewiesen.
 - `python3 benchmarks/tools/run.py --smoke --profiles High --resolutions 1920x1080` prüft den Benchmark-Ablauf; keine GPU-Messung.
 - `python3 scripts/render_check.py --profiles Medium --output /tmp/skybound-render-<eindeutig>` rendert ein Bild mit Software-Vulkan. Die Ausgabe ist keine RTX-Messung.
 - Nach einem Arbeitspaket Tests, Bildprüfung (bei Grafikänderungen), `PROJECT_STATE.md`, `NEXT_TASKS.md` und gegebenenfalls `DECISIONS.md` aktualisieren; abgeschlossene Meilensteine sauber committen.

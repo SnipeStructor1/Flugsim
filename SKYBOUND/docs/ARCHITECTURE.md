@@ -66,3 +66,15 @@ Fels-, Gras-, Ufer- und Schneefarben anhand Höhe und Hang; triplanares Rauschen
 ist Farbvariation, keine gescannten PBR-Texturen oder Normalmaps. Das Terrain ist
 weiter ein einzelnes 2-km-Netz ohne Streaming/LOD. Nahtlose Kacheln und kontrollierte
 LOD-Wechsel sind nächste Architekturaufgabe.
+
+## Vorbereitete Kacheln und Detailstufen
+
+`terrain_lod.gd` entscheidet anhand der horizontalen Distanz zum nächsten Punkt
+einer Kachel. Drei LOD-Stufen und separate Lade-/Entladeschwellen besitzen 32 m
+Hysterese, damit Grenzbewegungen nicht ständig neue Netze erzeugen.
+`terrain_chunk_mesh.gd` berechnet aus derselben Höhenfunktion drei Rasterstufen
+mit weltweit identischen gemeinsamen Stützpunkten und vertikalen Skirts.
+Tests prüfen gemeinsame Randpunkte, nicht die tatsächliche Nahtfreiheit im Bild.
+Die Bausteine sind noch nicht mit der Szene verbunden: Streaming, Objektzuordnung,
+Ressourcenfreigabe, Arbeitsbudget und LOD-Übergänge müssen erst implementiert und
+visuell validiert werden. Die Bildszene benutzt weiterhin das monolithische Netz.

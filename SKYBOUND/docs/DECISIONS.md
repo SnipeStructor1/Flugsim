@@ -35,3 +35,8 @@
   Ergebnissen erhalten. Gemessene Revision-2-Werte sind keine Revision-3-Messungen.
 - Geometrische Wolken werfen vorerst keine Schatten: ihre großen dunklen Scheiben
   waren sichtbar unplausibel. Echtes Wolkenschattenmodell bleibt offen.
+
+- TERR-002 wird zunächst getrennt vom produktiven Szenenpfad entwickelt.
+  Gemeinsame Weltkoordinaten und Skirts sind eine Grundlage; sie ersetzen keine
+  geprüfte Übergangsgeometrie, insbesondere an steilen Kanten. Hysterese verhindert
+  Schwellenflattern, sagt aber nichts über Ladezeiten und Budgetierung aus.
