@@ -241,3 +241,20 @@ Detailstufen und bis 450 m angezeigt; aus größerer Entfernung wirkt die
 Bodentextur. Die Pflanzen sind selbst erzeugte, vereinfachte Geometrie,
 keine fotorealistischen Scans. RTX-/Windows-FPS und Langzeitverbrauch sind
 noch nicht getestet. Flug-, Pflanzen-, Preset- und Überflugtests bestehen.
+
+## 25 modulare Buschvarianten
+
+Der Flugmodus lädt 25 einzeln vorhandene Buschmodelle, wählt sie deterministisch
+nach Gelände/Habitat aus und platziert sie mit Bodenkontakt. Zehn Modelle
+sind texturierte MIT-Varianten aus Groundcover Gift, 15 stammen aus eigenem
+Generatorcode. Das sind 25 visuelle Varianten, keine 25 botanischen Arten.
+`visuals/bush_25_showcase.png` zeigt sie in Godot. In einem 81-Kachel-Test
+wurden 14.126 Platzierungen aller 25 Modelle sowie Wiederholbarkeit,
+Kachel-/Meshzuordnung, Höhe, Hang und Seegrenze geprüft. Der 4,2-km-Flug
+und vier Preset-Funktionstests bestehen. Echte Windows-/GPU-Leistung ist
+nicht gemessen; die Pflanzen sind keine fotorealistischen Scans. Quellen,
+Lizenzen und Build-Anleitung: `flight/assets/vegetation/bushes/README.md`.
+
+Ein Medium-Softwarebild der Büsche in der Landschaft wurde nach einem
+Simulationsschritt erzeugt. Eine 10-Schritt-Bildprüfung erreichte das
+180-s-Timeout des Software-Renderers. Keine Aussage über Windows/RTX-FPS.

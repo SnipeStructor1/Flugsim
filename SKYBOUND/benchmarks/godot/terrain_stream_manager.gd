@@ -22,6 +22,8 @@ var flight_vegetation := false
 var tree_mesh: Mesh
 var fir_mesh: Mesh
 var groundcover_mesh: Mesh
+const BUSH_VARIANT_COUNT := 25
+var bush_meshes: Array[Mesh] = []
 var vegetation_noise := FastNoiseLite.new()
 var job = null
 var pending: Dictionary = {}
@@ -70,12 +72,19 @@ func load_flight_tree() -> bool:
 	tree_mesh = _load_visual_mesh("res://flight/assets/vegetation/tree.glb")
 	fir_mesh = _load_visual_mesh("res://flight/assets/vegetation/alpine_fir.glb")
 	groundcover_mesh = _load_visual_mesh("res://flight/assets/vegetation/groundcover.glb")
+	bush_meshes.clear()
+	for index in range(BUSH_VARIANT_COUNT):
+		var bush := _load_visual_mesh("res://flight/assets/vegetation/bushes/bush_%02d.glb" % index)
+		if bush == null:
+			push_error("Failed to load bush variant %02d" % index)
+			return false
+		bush_meshes.append(bush)
 	vegetation_noise.seed = int(model.seed_value) + 1207
 	vegetation_noise.frequency = 0.0017
 	vegetation_noise.fractal_octaves = 3
 	return tree_mesh != null and fir_mesh != null and groundcover_mesh != null
 
-func _add_vegetation_batch(parent: MeshInstance3D, source: Mesh, transforms: Array[Transform3D], max_distance: float = 0.0) -> void:
+func _add_vegetation_batch(parent: MeshInstance3D, source: Mesh, transforms: Array[Transform3D], max_distance: float = 0.0, label: String = "") -> void:
 	if transforms.is_empty():
 		return
 	var multi := MultiMesh.new()
@@ -85,6 +94,8 @@ func _add_vegetation_batch(parent: MeshInstance3D, source: Mesh, transforms: Arr
 	for i in range(transforms.size()):
 		multi.set_instance_transform(i, transforms[i])
 	var node := MultiMeshInstance3D.new()
+	if not label.is_empty():
+		node.name = label
 	node.multimesh = multi
 	if max_distance > 0.0:
 		node.visibility_range_end = max_distance
@@ -146,13 +157,45 @@ func _groundcover_transforms(operation: Dictionary) -> Array[Transform3D]:
 		result.append(Transform3D(basis, Vector3(x, y - 0.03, z)))
 	return result
 
+# Select distinct shrub assets rather than resizing the existing tree mesh.
+# World-space habitat fields and per-chunk seeds make replacement repeatable.
+func _bush_transforms(operation: Dictionary) -> Array:
+	var result := []
+	for index in range(BUSH_VARIANT_COUNT):
+		result.append([])
+	var chunk_origin: Vector2 = operation.origin
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(operation.key) ^ int(model.seed_value) ^ 0x319b17
+	for i in range(260):
+		var x := chunk_origin.x + rng.randf_range(1.0, chunk_size - 1.0)
+		var z := chunk_origin.y + rng.randf_range(1.0, chunk_size - 1.0)
+		var y: float = builder.sample_height(model, chunk_origin, chunk_size, cells, operation.lod, x, z)
+		var slope: float = model.normal(x, z).y
+		var in_lake := absf(x + 400.0) <= 220.0 and absf(z + 400.0) <= 160.0
+		if (in_lake and y < 13.0) or y > 330.0 or slope < 0.72:
+			continue
+		var habitat: float = vegetation_noise.get_noise_2d(x + 1300.0, z - 900.0)
+		if habitat < -0.25:
+			continue
+		# Five broad habitats and five separate silhouettes per habitat.
+		var family := clampi(int(floor((habitat + 0.25) * 8.0)), 0, 4)
+		var variant := family * 5 + rng.randi_range(0, 4)
+		var scale := rng.randf_range(0.78, 1.22)
+		var basis := Basis(Vector3.UP, rng.randf_range(0.0, TAU)).scaled(Vector3(scale, scale * rng.randf_range(0.9, 1.1), scale))
+		result[variant].append(Transform3D(basis, Vector3(x, y, z)))
+	return result
+
 func _add_flight_trees(parent: MeshInstance3D, operation: Dictionary) -> void:
 	if tree_mesh == null or fir_mesh == null:
 		return
 	var groups := _vegetation_transforms(operation)
 	_add_vegetation_batch(parent, fir_mesh, groups.firs)
 	_add_vegetation_batch(parent, tree_mesh, groups.broadleaf)
-	_add_vegetation_batch(parent, tree_mesh, groups.shrubs)
+	var bushes := _bush_transforms(operation)
+	for index in range(mini(bush_meshes.size(), BUSH_VARIANT_COUNT)):
+		var transforms: Array[Transform3D] = []
+		transforms.assign(bushes[index])
+		_add_vegetation_batch(parent, bush_meshes[index], transforms, 0.0, "Bush_%02d" % index)
 	# Only near/intermediate chunks need meter-scale grass at flight distances.
 	if operation.lod < 2 and groundcover_mesh != null:
 		_add_vegetation_batch(parent, groundcover_mesh, _groundcover_transforms(operation), 450.0)

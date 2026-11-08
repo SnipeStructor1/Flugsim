@@ -168,3 +168,23 @@ aber noch vereinfacht und stellen keine fotorealistischen Scans dar.
 Vegetations- und Flugtests sowie X11-Tastaturtest bestanden. Die dichtere
 Szene braucht beim Software-Rendering länger; VRAM/FPS auf RTX 5070 oder
 Windows sind nicht gemessen.
+
+## 25 modulare Büsche
+
+Die Fluglandschaft verwendet 25 einzeln ladbare Modelle: zehn texturierte
+MIT-Varianten von Groundcover Gift und 15 eigene prozedurale Varianten.
+Die Übersicht `visuals/bush_25_showcase.png` wurde in Godot mit Software-Vulkan
+erstellt; sie zeigt unterschiedliche Wuchsformen, nicht 25 botanische Arten.
+Der Katalog im Assetordner hält für jedes Modell Ursprung und Hash fest,
+die Lizenzen liegen daneben. Die Modelle sind keine fotorealistischen Scans.
+Die Verteilung und Bodenhöhe wurden automatisiert geprüft.
+
+Eine zusätzliche Landschaftsaufnahme `visuals/bushes_in_world.png` wurde mit
+Medium nach dem ersten Simulationsschritt aufgenommen. Der Versuch mit zehn
+Schritten lief im Software-Renderer in ein 180-s-Timeout; das ist keine
+Messung für eine RTX 5070. Manche eigenen Modelle wirken im Gelände noch
+feingliedrig/stilisiert; die Szene ist nicht fotorealistisch.
+
+Die Kontaktübersicht lässt sich unter Linux mit der vorhandenen lokalen
+Software-Renderer-Umgebung reproduzieren: `python3 scripts/bush_showcase.py
+--output /tmp/skybound-bush-showcase-neu`.

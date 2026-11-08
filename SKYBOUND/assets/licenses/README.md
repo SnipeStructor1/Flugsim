@@ -64,3 +64,13 @@ dem mit den Bildern veröffentlichten Terrain3D-Hinweis.
 `flight/assets/vegetation/groundcover.glb` wird aus
 `tools/vegetation/build_groundcover.py` in Blender generiert und enthält
 keine externen Texturen oder übernommenen Pflanzenmodelle.
+
+## 25 Buschvarianten
+
+Die Modelle `bush_00.glb`–`bush_09.glb` basieren auf dem MIT-lizenzierten
+Generator Groundcover Gift von Jalapeño Seed Productions. Copyright und
+Lizenztexte sowie genaue Version und Erzeugungsschritte stehen in
+`benchmarks/godot/flight/assets/vegetation/bushes/README.md` und den dort
+beigelegten `JALAPENOSEED-*`-Dateien. Modelle `bush_10.glb`–`bush_24.glb`
+sind aus eigenem prozeduralem Code erzeugt. Der Katalog enthält Hashes und
+Quellen pro Variante.
